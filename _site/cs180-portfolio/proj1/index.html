@@ -41,6 +41,11 @@
                         <li><a href="#section4.2">4.2 Result</a></li>
                     </ul>
                     <li><a href="#section5">5 Bells and Whistles</a></li>
+                    <ul>
+                        <li><a href="#section5.1">5.1 Gradient</a></li>
+                        <li><a href="#section5.2">5.2 Auto-contrast</a></li>
+                    </ul>
+                    <li><a href="#section6">6 Gallery</a></li>
                 </ul>
             </nav>
         </aside>
@@ -337,16 +342,20 @@
                         </div>
                         
                     </section>
-                
+                </section>
+            </section>   
 
 
-                <p></p>
+        
+            <hr class="custom-line">
 
-                <!-- Section 5 -->
-                <section id="section5" class="section">
-                    <h1>5 Bells and Whistles</h1>
+            <!-- Section 5 -->
+            <section id="section5" class="section">
 
-                        <h3>5.1 Improvement: Gradient Edge Detection</h3>
+                <h1>5 Bells and Whistles</h1>
+
+                    <section id="section5.1" class="section">
+                        <h3>5.1 Better Features: Gradient Edge Detection</h3>
                         <ul>
                             <li>Due to different brightness in the orginal glass plates, L2 and NCC metrics are not effective anymore.</li>
                             <li>Therefore, we choose to not use the raw pixel data for alignment, instead, we choose to detect edges since this feature is less affected by brightness.</li>
@@ -383,8 +392,127 @@
                                     <p>Run-time: 17.5s</p>
                                 </div>
                             </div>
-
+                        </section>
                     </section>
+
+
+
+
+
+                    <p></p>
+
+                    <section id="section5.2" class="section"></section>
+                        <h3>5.2 Auto Contrasting</h3>
+                        <ul>
+                            <li>Due to different brightness in the orginal glass plates, L2 and NCC metrics are not effective anymore.</li>
+                            
+                            <li>Finally, we apply the total displacement values to the original images to get the final aligned images!</li>
+                        </ul>
+                        <p></p>
+
+                        <img src="src/misc/sec4-sobel-steps.jpg" alt="Edge Detection" class="section-image-single">
+                    
+                        <p></p>
+                        <p>And, here is the final result!</p>
+
+                        <section id="image-array-large">
+                            <div class="image-card-large">
+                                <img src="src/large/emir_NCC.jpg" alt="emir_NCC">
+                                <div class="image-large-info">
+                                    <p><strong>Emir (w/o edge detection)</strong></p>
+                                    <p>Green Channel: (24, 48)</p>
+                                    <p>Red Channel: (70, 117)</p>
+                                    <p>Run-time: 15.6s</p>
+                                </div>
+                            </div>
+
+                            <div class="image-card-large">
+                                <img src="src/large/emir_NCC_grad.jpg" alt="emir_NCC_grad">
+                                <div class="image-large-info">
+                                    <p><strong>Emir (w/ edge detection)</strong></p>
+                                    <p>Green Channel: (24, 49)</p>
+                                    <p>Red Channel: (41, 107)</p>
+                                    <p>Run-time: 17.5s</p>
+                                </div>
+                            </div>
+                        </section>
+                    </section>
+
+
+
+
+
+            </section>
+
+
+
+
+
+
+
+
+
+            
+            <hr class="custom-line">
+
+            <section id="section6" class="section"></section>
+                <h1>6 Gallery</h1>
+                <ul>
+                    <li>All source images from <a href="https://www.loc.gov/collections/prokudin-gorskii/?fa=original-format:photo,+print,+drawing&sp=1&st=grid" target="_blank">Library Of Congress</a></li>
+                    <li>No special sricks spplied: just normal cutting, edge-detecting, aligning, stacking and cropping!</li>
+                    <li>Prudkin was really a genius. Just enjoy!</li>
+                </ul>
+                <section id="image-array-large">
+                    <div class="image-card-large">
+                        <img src="src/large/church_NCC_crop.jpg" alt="church_NCC">
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/gallery/1_crop.jpg" alt="1">
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/gallery/2_crop.jpg" alt="2">
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/gallery/3_crop.jpg" alt="3">
+                    </div>
+                    
+                    <div class="image-card-large">
+                        <img src="src/gallery/4_crop.jpg" alt="1">
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/gallery/5_crop.jpg" alt="2">
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/gallery/6_crop.jpg" alt="3">
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/gallery/7_crop.jpg" alt="1">
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/gallery/8_crop.jpg" alt="2">
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/gallery/9_crop.jpg" alt="3">
+                    </div>
+
+
+
+
+
+                </section>
+
+                
+                    
+
+            </section>
 
                 
 
