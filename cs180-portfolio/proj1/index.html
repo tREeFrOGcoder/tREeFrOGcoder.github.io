@@ -39,8 +39,8 @@
                     <ul>
                         <li><a href="#section4.1">4.1 Approach</a></li>
                         <li><a href="#section4.2">4.2 Result</a></li>
-                        <li><a href="#section4.3">4.3 Improvement</a></li>
                     </ul>
+                    <li><a href="#section5">5 Bells and Whistles</a></li>
                 </ul>
             </nav>
         </aside>
@@ -342,45 +342,47 @@
 
                 <p></p>
 
-                <!-- Section 4.3 -->
-                <section id="section4.3" class="section">
-                    <h3>4.3 Improvement: Gradient Edge Detection</h3>
-                    <ul>
-                        <li>Due to different brightness in the orginal glass plates, L2 and NCC metrics are not effective anymore.</li>
-                        <li>Therefore, we choose to not use the raw pixel data for alignment, instead, we choose to detect edges since this feature is less affected by brightness.</li>
-                        <li>So, we choose to use <strong>Sobel Filter</strong> that convolve the original image with a sobel kernel to generate a gradient graph.</li>
-                        $$ \text{sobel\_x} = \begin{bmatrix} 1 & 0 & -1 \\ 2 & 0 & -2 \\ 1 & 0 & -1 \end{bmatrix} \quad \text{sobel\_y} = \begin{bmatrix} 1 & 2 & 1 \\ 0 & 0 & 0 \\ -1 & -2 & -1 \end{bmatrix} $$
-                        $$ $$
-                        <li>Then, we use the same pyramid algorithm to align the gradient images to get the total displacement values.</li>
-                        <li>Finally, we apply the total displacement values to the original images to get the final aligned images!</li>
-                    </ul>
-                    <p></p>
+                <!-- Section 5 -->
+                <section id="section5" class="section">
+                    <h1>5 Bells and Whistles</h1>
 
-                    <img src="src/misc/sec4-sobel-steps.jpg" alt="Edge Detection" class="section-image-single">
-                
-                    <p></p>
-                    <p>And, here is the final result!</p>
+                        <h3>5.1 Improvement: Gradient Edge Detection</h3>
+                        <ul>
+                            <li>Due to different brightness in the orginal glass plates, L2 and NCC metrics are not effective anymore.</li>
+                            <li>Therefore, we choose to not use the raw pixel data for alignment, instead, we choose to detect edges since this feature is less affected by brightness.</li>
+                            <li>So, we choose to use <strong>Sobel Filter</strong> that convolve the original image with a sobel kernel to generate a gradient graph.</li>
+                            $$ \text{sobel\_x} = \begin{bmatrix} 1 & 0 & -1 \\ 2 & 0 & -2 \\ 1 & 0 & -1 \end{bmatrix} \quad \text{sobel\_y} = \begin{bmatrix} 1 & 2 & 1 \\ 0 & 0 & 0 \\ -1 & -2 & -1 \end{bmatrix} $$
+                            $$ $$
+                            <li>Then, we use the same pyramid algorithm to align the gradient images to get the total displacement values.</li>
+                            <li>Finally, we apply the total displacement values to the original images to get the final aligned images!</li>
+                        </ul>
+                        <p></p>
 
-                    <section id="image-array-large">
-                        <div class="image-card-large">
-                            <img src="src/large/emir_NCC.jpg" alt="emir_NCC">
-                            <div class="image-large-info">
-                                <p><strong>Emir (w/o edge detection)</strong></p>
-                                <p>Green Channel: (24, 48)</p>
-                                <p>Red Channel: (70, 117)</p>
-                                <p>Run-time: 15.6s</p>
+                        <img src="src/misc/sec4-sobel-steps.jpg" alt="Edge Detection" class="section-image-single">
+                    
+                        <p></p>
+                        <p>And, here is the final result!</p>
+
+                        <section id="image-array-large">
+                            <div class="image-card-large">
+                                <img src="src/large/emir_NCC.jpg" alt="emir_NCC">
+                                <div class="image-large-info">
+                                    <p><strong>Emir (w/o edge detection)</strong></p>
+                                    <p>Green Channel: (24, 48)</p>
+                                    <p>Red Channel: (70, 117)</p>
+                                    <p>Run-time: 15.6s</p>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="image-card-large">
-                            <img src="src/large/emir_NCC_grad.jpg" alt="emir_NCC_grad">
-                            <div class="image-large-info">
-                                <p><strong>Emir (w/ edge detection)</strong></p>
-                                <p>Green Channel: (24, 49)</p>
-                                <p>Red Channel: (41, 107)</p>
-                                <p>Run-time: 17.5s</p>
+                            <div class="image-card-large">
+                                <img src="src/large/emir_NCC_grad.jpg" alt="emir_NCC_grad">
+                                <div class="image-large-info">
+                                    <p><strong>Emir (w/ edge detection)</strong></p>
+                                    <p>Green Channel: (24, 49)</p>
+                                    <p>Red Channel: (41, 107)</p>
+                                    <p>Run-time: 17.5s</p>
+                                </div>
                             </div>
-                        </div>
 
                     </section>
 
