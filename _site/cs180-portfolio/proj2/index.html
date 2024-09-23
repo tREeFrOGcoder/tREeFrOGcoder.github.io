@@ -113,10 +113,9 @@
 
                     </section>
 
-
-                <p></p>
-
                 </section>
+
+                <p>&nbsp;&nbsp;</p>
 
                 <section id="section1.2" class="section">
                     <h3>1.2 DoG: Derivative of Gaussian Filter</h3>
@@ -243,24 +242,21 @@
                             <div class="image-condense-info">
                                 <p>edge_image_DoG</p>
                             </div>
-                        </div>
-
-                        
+                        </div>  
 
                     </section>
-
-
-
-                </section>
                 
+                <p></p>
+
+                <li>It's easily observable that edge_image from Method 1 looks almost identical to edge_image_DoG from Method 2, proving that convolution is indeed associative and commutative.</li>
+                
+                </section>
 
             </section>
 
+            <p>&nbsp;&nbsp;</p>
+
             <hr class="custom-line">
-
-
-
-
 
 
             <!-- Section 2 -->
@@ -269,8 +265,163 @@
 
                 <section id="section2.1" class="section">
                     <h3>2.1 Image "Sharpening"</h3>
-                    
+                    <ul>
+                        <li>How to sharpen an image? The idea is pretty simple in this implementation.</li>
+                        <li>First, we blur the image using a Gaussian filter with a kernel size of 5.</li>
+                        <li>Then, we subtract the blurred image from the original image to get the high frequency features of the image.</li>
+                        <li>Finally, we add the high frequency features back to the original image to get the sharpened image with <strong>fake but convincing</strong> details. The intensity of the weighted high frequency image is gauged by <code>alpha</code>.</li>
+                    </ul>
+
+                    <p></p>
+
+                    <h4><strong>Sample Image: Taj</strong></h4>
+
+                    <section id="image-array-condense">
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/taj.png" alt="taj">
+                            <div class="image-condense-info">
+                                <p>Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/taj_sharpened_1.png" alt="taj_sharpened_1">
+                            <div class="image-condense-info">
+                                <p>alpha = 1</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/taj_sharpened_2.png" alt="taj_sharpened_2">
+                            <div class="image-condense-info">
+                                <p>alpha = 2</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/taj_sharpened_10.png" alt="taj_sharpened_10">
+                            <div class="image-condense-info">
+                                <p>alpha = 10</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <p>&nbsp;&nbsp;</p>
+
+                    <h4><strong>Self Selected: Gru</strong></h4>
+
+                    <section id="image-array-condense">
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/gru.png" alt="gru">
+                            <div class="image-condense-info">
+                                <p>Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/gru_sharpened_1.png" alt="gru_sharpened_1">
+                            <div class="image-condense-info">
+                                <p>alpha = 1</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/gru_sharpened_4.png" alt="gru_sharpened_4">
+                            <div class="image-condense-info">
+                                <p>alpha = 4</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/gru_sharpened_10.png" alt="gru_sharpened_10">
+                            <div class="image-condense-info">
+                                <p>alpha = 10</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <p>&nbsp;&nbsp;</p>
+
+
+
+                    <h4><strong>Self Selected: Crease Pattern of Forest Scorpion 3.0 by Kota Imai</strong></h4>
+
+                    <section id="image-array-condense">
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/cp.png" alt="cp">
+                            <div class="image-condense-info">
+                                <p>Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/cp_sharpened_1.png" alt="cp_sharpened_1">
+                            <div class="image-condense-info">
+                                <p>alpha = 1</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/cp_sharpened_2.png" alt="cp_sharpened_2">
+                            <div class="image-condense-info">
+                                <p>alpha = 2</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/cp_sharpened_10.png" alt="cp_sharpened_10">
+                            <div class="image-condense-info">
+                                <p>alpha = 10</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <p>Notice the color of blue and red seems to disappear after sharpening! This is one typical drawback of this kind of sharpening, with high frequency part still being colored, the "sharpened" part actually becomes darker and darker as alpha goes up.</p>
+
+
+                    <p>&nbsp;&nbsp;</p>
+
+
+                    <h4><strong>Evaluation: Blurred and Resharpened Tomato</strong></h4>
+
+                    <section id="image-array-condense">
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/tomato.png" alt="tomato">
+                            <div class="image-condense-info">
+                                <p>Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/tomato_blurred.png" alt="tomato_blurred">
+                            <div class="image-condense-info">
+                                <p>Blurred</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/tomato_sharpened_5.png" alt="tomato_sharpened_5">
+                            <div class="image-condense-info">
+                                <p>Resharpened: alpha = 2</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/tomato_sharpened_20.png" alt="tomato_sharpened_20">
+                            <div class="image-condense-info">
+                                <p>Resharpened: alpha = 20</p>
+                            </div>
+                        </div>
+                    </section>
+                    <p>Observation: most details are recovered but really detailed and good features like the fluff texture on the stem of the tomato is permenantly lost.</p>
+
                 </section>
+
+                <p>&nbsp;&nbsp;</p>
 
 
                 <section id="section2.2" class="section">
