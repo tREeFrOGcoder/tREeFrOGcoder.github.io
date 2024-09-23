@@ -16,10 +16,10 @@
 
         <!-- Super large cover image section -->
         <section class="cover-image">
-            <img src="src/large/onion_church_NCC.jpg" alt="Cover Image" class="cover-img">
+            <img src="src/2.1/gru.png" alt="Cover Image" class="cover-img">
             <div class="title-block">
-                <h1>Reviving the Past: </h1>
-                <h2>Automatic Colorization of Prokudin-Gorskii's Russia</h2>
+                <h1>Fun with Frequencies: </h1>
+                <h2>Sharpening, Hybriding, Blending and more </h2>
             </div>
         </section>
 
@@ -28,19 +28,19 @@
         <aside class="sidebar">
             <nav>
                 <ul>
-                    <li><a href="#section1">1 Overview</a></li>
-                    <li><a href="#section2">2 Naive Way</a></li>
-                    <li><a href="#section3">3 Starting Small</a></li>
+                    <li><a href="#section1">1 Fun Filters</a></li>
                     <ul>
-                        <li><a href="#section3.1">3.1 Approach</a></li>
-                        <li><a href="#section3.2">3.2 Result</a></li>
+                        <li><a href="#section1.1">1.1 FDO</a></li>
+                        <li><a href="#section1.2">1.2 DoG</a></li>
                     </ul>
-                    <li><a href="#section4">4 Going Big</a></li>
+                    <li><a href="#section2">2 Fun Frequencies!</a></li>
                     <ul>
-                        <li><a href="#section4.1">4.1 Approach</a></li>
-                        <li><a href="#section4.2">4.2 Result</a></li>
-                        <li><a href="#section4.3">4.3 Improvement</a></li>
+                        <li><a href="#section2.1">2.1 Sharpening</a></li>
+                        <li><a href="#section2.2">2.2 Hybriding</a></li>
+                        <li><a href="#section2.3">2.3 G/L Stack</a></li>
+                        <li><a href="#section2.4">2.3 Blending!</a></li>
                     </ul>
+                
                 </ul>
             </nav>
         </aside>
@@ -51,10 +51,251 @@
             
             <!-- Section 1 -->
             <section id="section1" class="section">
-                <h1>1 Overview</h1>
+                <h1>1 Fun Filters</h1>
+
+
+
+                <section id="section1.1" class="section">
+                    <h3>1.1 FDO: Finite Difference Operator</h3>
+                    <div class="content-flex">
+                        <ul>
+                            <li>In section 1.1, we will derive and test a naive finite difference filter to perform the classic edge detection task.</li>
+                            <li>Finite difference operator is defined as:</li>
+                            <p>
+                                \( \mathbf{D}_x = \begin{bmatrix} 1 & -1 \end{bmatrix}, \quad \mathbf{D}_y = \begin{bmatrix} 1 \\ -1 \end{bmatrix} \)
+                            </p>
+                            <li>Then we convolve the image first with \(\mathbf{D}_x \) obtaining all vertical edges (img: grad_x), then with \(\mathbf{D}_y\) extracting all horizontal edges (img: grad_y).</li>
+                            <li>Then, we compute the gradient magnitude with a simple \(\sqrt{\mathbf{D}_x^2 + \mathbf{D}_y^2}\), which gives the edge image (img: grad_mag).</li>
+                            <li>Finally, choosing a threshold value of 0.28, we take the image with pixel value higher than threshold as the edge image (img: edge_image).</li>
+                        </ul>                
+                        <p>&nbsp;&nbsp;</p>
+
+                        <section id="image-array-single">
+                            <div class="image-card-single">
+                                <img src="src/1.1/original.png" alt="Section 1 Image">
+                                <div class="image-single-info">
+                                    <p><strong>Original: Cameraman</strong></p>
+                                    <p>Shape: (542, 540, 4)</p>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    
+                    <section id="image-array-condense">
+                        <div class="image-card-condense">
+                            <img src="src/1.1/grad_x.png" alt="grad_x">
+                            <div class="image-condense-info">
+                                <p>grad_x</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.1/grad_y.png" alt="grad_y">
+                            <div class="image-condense-info">
+                                <p>grad_y</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.1/grad_mag.png" alt="grad_mag">
+                            <div class="image-condense-info">
+                                <p>grad_mag</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.1/edge_image.png" alt="edge_image">
+                            <div class="image-condense-info">
+                                <p>edge_image</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+
+                <p></p>
+
+                </section>
+
+                <section id="section1.2" class="section">
+                    <h3>1.2 DoG: Derivative of Gaussian Filter</h3>
+
+                    <ul>   
+                        <li>To get rid of noise, in section 2.1, we derive two ways:</li>
+                        <li><strong>Method 1:</strong></li>
+                        <ul>   
+                            <li>First get a 2D Gaussian kernel using an outer product between two 1D Gaussian obtained from <code>cv2.getGaussianKernel()</code>.</li>
+                            <li>Then, convolve the image with the Gaussian kernel to get a blurred image.</li>
+                            <li>Next, we compute the gradient magnitude of the blurred image using the same method as in section 1.1.</li>
+                            <li>Finally, we choose a threshold to get the edge image.</li>
+                        </ul>
+                    </ul>
+
+
+                    <section id="image-array-condense">
+                        <div class="image-card-condense">
+                            <img src="src/1.2.1/blurred_image.png" alt="blurred_image">
+                            <div class="image-condense-info">
+                                <p>blurred_image</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.2.1/grad_x_blurred.png" alt="grad_x_blurred">
+                            <div class="image-condense-info">
+                                <p>grad_x from blurred_image</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.2.1/grad_y_blurred.png" alt="grad_y_blurred">
+                            <div class="image-condense-info">
+                                <p>grad_y from blurred_image</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.2.1/grad_mag_blurred.png" alt="grad_mag_blurred">
+                            <div class="image-condense-info">
+                                <p>grad_mag from blurred_image</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.2.1/edge_image_blurred.png" alt="edge_image">
+                            <div class="image-condense-info">
+                                <p>edge_image</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+
+
+
+                    <p></p>
+
+                    <li><strong>Method 2:</strong></li>
+
+                    <div class="content-flex">
+                        <ul>   
+                            <li>First, we use the Gaussian to convolve with \(\mathbf{D}_x \) and \(\mathbf{D}_y \) to obtain two blurred filters.</li>
+                            <li>Second, we convolve the original image with these two blurred filters respectively to obtain (img: grad_x_DoG) and (img: grad_y_DoG)</li>
+                            <li>Then, we compute the gradient magnitude as in section 1.1 (img: grad_mag_DoG).</li>
+                            <li>Finally, we choose a threshold to get the edge image (img: edge_image_DoG).</li>
+                        </ul>
+
+                        <p>&nbsp;</p>
+
+                        <section id="image-array-single">
+                            <div class="image-card-single">
+                                <img src="src/1.2.2/DoG_x_s.png" alt="DoG_x_s">
+                                <div class="image-single-info">
+                                    <p>DoG_x Filter</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="image-array-single">
+                            <div class="image-card-single">
+                                <img src="src/1.2.2/DoG_y_s.png" alt="DoG_y_s">
+                                <div class="image-single-info">
+                                    <p>DoG_y Filter</p>
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
+
+                    <section id="image-array-condense">
+
+                        <div class="image-card-condense">
+                            <img src="src/1.1/original.png" alt="blurred_x">
+                            <div class="image-condense-info">
+                                <p>blurred_x</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.2.2/grad_x_DoG.png" alt="grad_x_DoG">
+                            <div class="image-condense-info">
+                                <p>grad_x_DoG</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.2.2/grad_y_DoG.png" alt="grad_y_DoG">
+                            <div class="image-condense-info">
+                                <p>grad_y_DoG</p>
+                            </div>
+                        </div>
+                        
+                        <div class="image-card-condense">
+                            <img src="src/1.2.2/grad_mag_DoG.png" alt="grad_mag_DoG">
+                            <div class="image-condense-info">
+                                <p>grad_mag_DoG</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.2.2/edge_image_DoG.png" alt="edge_image_DoG">
+                            <div class="image-condense-info">
+                                <p>edge_image_DoG</p>
+                            </div>
+                        </div>
+
+                        
+
+                    </section>
+
+
+
+                </section>
                 
 
             </section>
+
+            <hr class="custom-line">
+
+
+
+
+
+
+            <!-- Section 2 -->
+            <section id="section2" class="section">
+                <h1>2 Fun with Frequencies!</h1>
+
+                <section id="section2.1" class="section">
+                    <h3>2.1 Image "Sharpening"</h3>
+                    
+                </section>
+
+
+                <section id="section2.2" class="section">
+                    <h3>2.2 Image Hybriding</h3>
+                    
+                </section>
+
+
+                <section id="section2.3" class="section">
+                    <h3>2.3 Gaussian and Laplacian Stacks</h3>
+                    
+                </section>
+
+
+                <section id="section2.4" class="section">
+                    <h3>2.4 Multiresolution Blending</h3>
+                    
+                </section>
+                
+
+            </section>
+
+
+
+
             
         </main>
     </div>
