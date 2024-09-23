@@ -264,7 +264,7 @@ ul {
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 10px;
-    margin-top: 40px;
+    margin-top: 1px;
 }
 
 /* Each image card */

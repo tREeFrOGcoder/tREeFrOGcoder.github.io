@@ -426,6 +426,150 @@
 
                 <section id="section2.2" class="section">
                     <h3>2.2 Image Hybriding</h3>
+                    <ul>
+                        <li>How to make a hybrid image? The idea is also simple. (But the implementation is lot of hard work).</li>
+                        <li>First, we choose img1 as the one to keep high frequency features and img2 as the one to keep low frequency features.</li>
+                        <li>For img1, we blur it with a hand-picked kernel sigma, and keep the high frequency features by subtracting the blurred one from the original, similar to what we did in section 2.1.</li>
+                        <li>For img2, we blur it with a hand-picked kernel sigma, and keep the low frequency directly after the low-pass filtering.</li>
+                        <li>Here are the results:</li>
+                    </ul>
+
+                    <p>&nbsp;&nbsp;</p>
+
+                    <h4><strong>Nutrek (sample images)</strong></h4>
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/nutrek/DerekPicture.jpg" alt="DerekPicture">
+                            <div class="image-small-info">
+                                <p>Derek Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/nutrek/nutmeg.jpg" alt="nutmeg">
+                            <div class="image-small-info">
+                                <p>Nutmeg Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/nutrek/nutmeg_derek_3_5_crop.jpg" alt="nutmeg_derek_3_5_crop">
+                            <div class="image-small-info">
+                                <p>Nutmeg_Derek (both colored)</p>
+                                <p>\(\sigma_1=3, \sigma_2=5\)</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+
+
+
+                    <p>&nbsp;&nbsp;</p>
+
+                    <h4><strong>Elonaltman (Fav!)</strong></h4>
+                    (Spoiler Alert: This are the images I will perform frequency analysis on.)
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/elonaltman/elon.jpg" alt="elon">
+                            <div class="image-small-info">
+                                <p>Elon Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/elonaltman/altman.jpg" alt="altman">
+                            <div class="image-small-info">
+                                <p>Altman Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/elonaltman/elon_altman_7_5_crop.jpg" alt="elon_altman_7_5_crop">
+                            <div class="image-small-info">
+                                <p>Elon_Altman (both colored)</p>
+                                <p>\(\sigma_1=7, \sigma_2=5\)</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+
+
+                    <p>&nbsp;&nbsp;</p>
+
+                    <h4><strong>Catiger</strong></h4>
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/catiger/cat2.jpg" alt="cat2">
+                            <div class="image-small-info">
+                                <p>Cat Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/catiger/tiger2.jpg" alt="tiger2">
+                            <div class="image-small-info">
+                                <p>Tiger Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/catiger/cat2G_tiger2_7_5_crop.jpg" alt="cat2G_tiger2_7_5_crop">
+                            <div class="image-small-info">
+                                <p>Cat_Tiger (Cat: Gray, Tiger: colored)</p>
+                                <p>\(\sigma_1=7, \sigma_2=5\)</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+                    <p>I also played around using colored Cat and colored Tiger to hybrid, which is not good looking since the color of cat actually enhanced the red-ish and yellow-ish thing. Failed images are omitted.</p>
+
+
+
+                    <p>&nbsp;&nbsp;</p>
+
+                    <h4><strong>Hamelon</strong></h4>
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/hamelon/hamster.jpg" alt="hamster">
+                            <div class="image-small-info">
+                                <p>Hamster Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/hamelon/watermelon.jpg" alt="watermelon">
+                            <div class="image-small-info">
+                                <p>Watermelon Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/hamelon/hamster_watermelon_11_13_crop.jpg" alt="hamster_watermelon_11_13_crop">
+                            <div class="image-small-info">
+                                <p>Hamster_Watermelon (both colored)</p>
+                                <p>\(\sigma_1=11, \sigma_2=13\)</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+
+
+
+
+
+
                     
                 </section>
 
@@ -441,7 +585,6 @@
                     
                 </section>
                 
-
             </section>
 
 
