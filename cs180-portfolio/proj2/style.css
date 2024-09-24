@@ -409,7 +409,7 @@ ul {
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 20px;
-    margin-top: 1px;
+    margin-top: 5px;
 }
 
 /* Each image card */
