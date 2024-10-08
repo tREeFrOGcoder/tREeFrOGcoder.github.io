@@ -140,11 +140,12 @@
                     <ul>
                         <li>Just write a function to produce the morph for each frame:</li>
                         <li><code>morphed_im = morph(im1, im2, im1_pts, im2_pts, tri, warp_frac, dissolve_frac)</code></li>
+                        <li>In total, I created 45 frames here, and each frame stops for 35 ms to create this GIF.</li>
                     </ul>
 
                     <section id="image-array-single">
                         <div class="image-card-single">
-                            <img src="src/3/morph_sequence_pillow_35.gif" alt="Section 1 Image">
+                            <img src="src/3/morph_sequence_pillow_35.gif" alt="Section 3 GIF">
                             <div class="image-single-info">
                                 <p><strong>From Anne to Adams</strong></p>
                             </div>
@@ -153,11 +154,49 @@
 
                 </div>
 
+            </section>
+
+            <p>&nbsp;&nbsp;</p>
+
+            <hr class="custom-line">
+            
+
+
+
+            <section id="part4" class="section">
+                <h1>4 Mean Face of Population</h1>
+
+                <ul>
+                    <li><strong>Dataset Selection</strong></li>
+                    <li>I choose to use <a href="https://fei.edu.br/~cet/facedatabase.html" target="_blank">FEI Face Database</a></li>
+                    <li>In which, I choose <code>frontalimages_spatiallynormalized_part1</code> and <code>frontalshapes_manuallyannotated_46points</code>.</li>
+                    <li>This dataset contains 50 men and 50 women's front normalized faces. For each numbered participant, a is a neutral expression face and b is a smiling face.</li>
+                    <li>
+                </ul>
+
+
+
+
+                <ul>
+                    <li></li>
+                </ul>
+
+
+            
+                Average Face Calculation
+
+                Compute the average face shape for the entire population or a subpopulation (e.g., old/young, men/women).
+                Morph each face in the dataset into the average shape and display examples.
+                Compute and display the average face of the population.
+                Display:
+                Your face warped into the average geometry.
+                The average face warped into your geometry.
+
+
+
+
+
                 
-
-
-
-
             </section>
             
         </main>
