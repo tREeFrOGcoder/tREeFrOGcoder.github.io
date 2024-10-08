@@ -33,6 +33,7 @@
                     <li><a href="#part3">3 Morph Sequence</a></li>
                     <li><a href="#part4">4 Mean Face</a></li>
                     <li><a href="#part5">5 Caricature</a></li>
+                    <li><a href="#part6">Bells & Whistles</a></li>
                 </ul>
             </nav>
         </aside>
@@ -354,7 +355,6 @@
                             </div>
                         </div>
                     </section>
-
                 </div>
 
             </section>
@@ -383,6 +383,59 @@
                     <div class="image-card-large">
                         <img src="src/5/elon_caricature_alpha_1.5.jpg" alt="elon_caricature_alpha_1.5">
                         <div class="image-large-info">
+                            <p><strong>More Elon Elon</strong></p>
+                            <p>\(\alpha = 1.5\)</p>
+                        </div>
+                    </div>
+                </section>
+
+            </section>
+
+            <p>&nbsp;&nbsp;</p>
+
+            <hr class="custom-line">
+
+
+
+
+            <!-- Section 6 -->
+            <section id="part6" class="section">
+                <h1>6 Bells & Whistles: PCA</h1>
+                <ul>
+                    <li>Let's try to get a eigen faces basis from the FEI dataset, using PCA on all 100 neutral faces.</li>
+                    <li>Below shows the first 12 eigen faces. In total, I created 100 components (which is the maxium, and I expect near pefect reconstruction.)</li>
+                </ul>
+
+                <section id="image-array-single">
+                    <div class="image-card-single">
+                        <img src="src/b/eigenfaces.jpg" alt="eigenfaces">
+                        <div class="image-single-info">
+                        </div>
+                    </div>
+                </section>
+
+                <p>&nbsp;&nbsp;</p>
+
+                <ul>
+                    <li>We first try to recontruct the faces, and then use a similar formula for caricature: <code>(1+alpha) * original_coeffs</code> where the original_coeffs is the list of coefficients of each eigen faces when projecting a target image into this Eigen space.</li>
+                    
+                </ul>
+
+
+                
+
+                <section id="image-array-large">
+                    <div class="image-card-large">
+                        <img src="src/5/elon_caricature_alpha_-0.5.jpg" alt="elon_caricature_alpha_-0.5">
+                        <div class="image-large-info">
+                            <p><strong>More Averaged Elon</strong></p>
+                            <p>\(\alpha = -0.5\)</p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/5/elon_caricature_alpha_1.5.jpg" alt="elon_caricature_alpha_1.5">
+                        <div class="image-large-info">
                             <p><strong>More Averaged Elon</strong></p>
                             <p>\(\alpha = 1.5\)</p>
                         </div>
@@ -390,6 +443,11 @@
                 </section>
 
             </section>
+
+
+
+
+
             
         </main>
     </div>
