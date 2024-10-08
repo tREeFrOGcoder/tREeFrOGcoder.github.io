@@ -16,10 +16,10 @@
 
         <!-- Super large cover image section -->
         <section class="cover-image">
-            <img src="src/large/onion_church_NCC.jpg" alt="Cover Image" class="cover-img">
+            <img src="anne-adams.jpg" alt="Cover Image" class="cover-img">
             <div class="title-block">
-                <h1>Reviving the Past: </h1>
-                <h2>Automatic Colorization of Prokudin-Gorskii's Russia</h2>
+                <h1>Face Morphing:</h1>
+                <h2>Triangulation, Average Geometry, Extrapolation, and more!</h2>
             </div>
         </section>
 
@@ -28,19 +28,11 @@
         <aside class="sidebar">
             <nav>
                 <ul>
-                    <li><a href="#section1">1 Overview</a></li>
-                    <li><a href="#section2">2 Naive Way</a></li>
-                    <li><a href="#section3">3 Starting Small</a></li>
-                    <ul>
-                        <li><a href="#section3.1">3.1 Approach</a></li>
-                        <li><a href="#section3.2">3.2 Result</a></li>
-                    </ul>
-                    <li><a href="#section4">4 Going Big</a></li>
-                    <ul>
-                        <li><a href="#section4.1">4.1 Approach</a></li>
-                        <li><a href="#section4.2">4.2 Result</a></li>
-                        <li><a href="#section4.3">4.3 Improvement</a></li>
-                    </ul>
+                    <li><a href="#part1">1 Correspondence</a></li>
+                    <li><a href="#part2">2 Mid-Way Face</a></li>
+                    <li><a href="#part3">3 Morph Sequence</a></li>
+                    <li><a href="#part4">4 Mean Face</a></li>
+                    <li><a href="#part5">5 Caricature</a></li>
                 </ul>
             </nav>
         </aside>
@@ -50,9 +42,121 @@
         <main class="content">
             
             <!-- Section 1 -->
-            <section id="section1" class="section">
-                <h1>1 Overview</h1>
+            <section id="part1" class="section">
+                <h1>1 Defining Correspondence</h1>
+                <ul>
+                    <li>To morph from Anne to Adams, we start by defining pairs of corresponding points by hand.</li>
+                    <li>I used given tools to create this correspondence, which is saved as point coordinates in a json file.</li>
+                    <li>In order to get the Delauney triangulation, I calculate the average point with <code>average_points = (im1_points + im2_points) / 2</code></li>
+                    <li>Below is a display of the triangulation results on the two faces.</li>
+                </ul>
+
+                <div class="content-flex">
+                    <section id="image-array-single">
+                        <div class="image-card-single">
+                            <img src="src/1/anne_with_triangulation.jpg" alt="Section 1 Image">
+                            <div class="image-single-info">
+                                <p><strong>Anne with Delauney Triangulation</strong></p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="image-array-single">
+                        <div class="image-card-single">
+                            <img src="src/1/adams_with_triangulation.jpg" alt="Section 1 Image">
+                            <div class="image-single-info">
+                                <p><strong>Adams with Delauney Triangulation</strong></p>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+
+            </section>
+
+            <p>&nbsp;&nbsp;</p>
+
+            <hr class="custom-line">
+
+
+            <!-- Section 2 -->
+            <section id="part2" class="section">
+                <h1>2 Computing the Mid-way Face</h1>
+                <ul>
+                    <li><strong>Mid-way Face Calculation</strong></li>
+                        <ul>    
+                            <li>This the pre-step before computing the full morph sequence: we compute the mid-way face of images A and B.</li>
+                            <li>Compute the average shape by averaging each keypoint location of faces A and B.</li>
+                            <li>Warp both faces into the average shape.</li>
+                            <li>Average the colors of both images.</li>
+                        </ul>
+                    <li><strong>Affine Warp Implementation</strong></li>
+                        <ul>
+                            <li>Implement an affine warp for each triangle in the triangulation.</li>
+                            <li>Compute an affine transformation matrix between two triangles with this: <code>A = computeAffine(tri1_pts,tri2_pts)</code></li>
+                            <li>Use a set of these transformation matrices to implement an inverse warp for all pixels.</li>
+                            <li>Generate a mask using polygons e.g., <code>polygon</code> in Python.</li>
+                            <li>Loop over triangles, not pixels.</li>
+                        </ul>
+                    <li>And...here is the result! Please just ignore the hair style issue, that's not an issue at all, in some sense~</li>
+                </ul>
+
+                <section id="image-array-small">
+
+                    <div class="image-card-small">
+                        <img src="src/2/anne.jpg" alt="anne">
+                        <div class="image-small-info">
+                            <p>Anne Original</p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-small">
+                        <img src="src/2/average_face.jpg" alt="average_face">
+                        <div class="image-small-info">
+                            <p>Anne-Adams Mid-way Face</p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-small">
+                        <img src="src/2/adams.jpg" alt="adams">
+                        <div class="image-small-info">
+                            <p>Adams Original</p>
+                        </div>
+                    </div>
+
+                </section>
+                    
+            </section>
+
+            <p>&nbsp;&nbsp;</p>
+
+            <hr class="custom-line">
+            
+
+            <section id="part3" class="section">
+                <h1>3 Morph Sequence!</h1>
+
+                <div class="content-flex">
+                    <ul>
+                        <li>Just write a function to produce the morph for each frame:</li>
+                        <li><code>morphed_im = morph(im1, im2, im1_pts, im2_pts, tri, warp_frac, dissolve_frac)</code></li>
+                    </ul>
+
+                    <section id="image-array-single">
+                        <div class="image-card-single">
+                            <img src="src/3/morph_sequence_pillow_35.gif" alt="Section 1 Image">
+                            <div class="image-single-info">
+                                <p><strong>From Anne to Adams</strong></p>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+
                 
+
+
+
 
             </section>
             
