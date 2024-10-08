@@ -166,13 +166,113 @@
             <section id="part4" class="section">
                 <h1>4 Mean Face of Population</h1>
 
+
+                <div class="content-flex">
+                    <ul>
+                        <li><strong>Dataset Selection</strong></li>
+                        <li>I choose to use <a href="https://fei.edu.br/~cet/facedatabase.html" target="_blank">FEI Face Database</a></li>
+                        <li>In which, I choose <code>frontalimages_spatiallynormalized_part1</code> and <code>frontalshapes_manuallyannotated_46points</code>.</li>
+                        <li>This dataset contains 50 men and 50 women's front normalized faces. For each numbered participant, a is a neutral expression face and b is a smiling face.</li>
+                        <li>Each face is annotated with 46 points following a specific order. See the image on the right for the sequence, which will be used for morphing from other faces into this dataset's faces.</li>
+                        <li>One thing to notice is that their annotations don't include the four points of the image, which would cause issue since I'm using mush that only calculate images within polygons!</li>
+                        <li>Before I manually added 4 annotated points to the image, the morphing image will only contain a polygon-shaped face, and black all around.</li>
+                        <li>Below are the typical images like in the dataset with my added points.</li>
+    
+                    </ul>
+
+                    <section id="section-image">
+                        <div class="section-image">
+                            <img src="src/4/im1a_numbered.jpg" alt="Section 4 numbered">
+                        </div>
+                    </section>
+                </div>
+
+                <section id="image-array-large">
+                    <div class="image-card-large">
+                        <img src="src/4/neutral_im1a_with_triangulation.jpg" alt="neutral_im1a_with_triangulation">
+                        <div class="image-large-info">
+                            <p><strong>1a participant with triangulation</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/4/smiling_im51b_with_triangulation.jpg" alt="smiling_im51b_with_triangulation">
+                        <div class="image-large-info">
+                            <p><strong>51b participant with triangulation</strong></p>
+                        </div>
+                    </div>
+                </section>
+
+                <p>&nbsp;&nbsp;</p>
+
                 <ul>
-                    <li><strong>Dataset Selection</strong></li>
-                    <li>I choose to use <a href="https://fei.edu.br/~cet/facedatabase.html" target="_blank">FEI Face Database</a></li>
-                    <li>In which, I choose <code>frontalimages_spatiallynormalized_part1</code> and <code>frontalshapes_manuallyannotated_46points</code>.</li>
-                    <li>This dataset contains 50 men and 50 women's front normalized faces. For each numbered participant, a is a neutral expression face and b is a smiling face.</li>
-                    <li>
+                    <li><strong>Average Face</strong></li>
+                    <li>After deviding the dataset into two types: neutral face and smiling face.</li>
+                    <li>Below is the result of average neutral, and average smiling face of this population.</li>
                 </ul>
+
+                <section id="image-array-large">
+                    <div class="image-card-large">
+                        <img src="src/4/average_neutral_face.jpg" alt="average_neutral_face">
+                        <div class="image-large-info">
+                            <p><strong>Average Neutral Face</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/4/average_smiling_face.jpg" alt="average_smiling_face">
+                        <div class="image-large-info">
+                            <p><strong>Average Smiling Face</strong></p>
+                        </div>
+                    </div>
+                </section>
+
+                <p>&nbsp;&nbsp;</p>
+
+
+                <ul>
+                    <li>Morph the first few examples into neutral faces and smiling faces geometry respectively.</li>
+                </ul>
+
+
+                <section id="image-array-condense">
+
+                    <div class="image-card-condense">
+                        <img src="src/4/1a.jpg" alt="1a">
+                    </div>
+
+
+                    <div class="image-card-condense">
+                        <img src="src/4/morphed_neutral_0.jpg" alt="morphed_neutral_0">
+                    </div>
+
+                    <div class="image-card-condense">
+                        <img src="src/4/morphed_neutral_1.jpg" alt="morphed_neutral_1">
+                    </div>
+
+                    <div class="image-card-condense">
+                        <img src="src/4/morphed_neutral_2.jpg" alt="morphed_neutral_2">
+                    </div>
+
+                    <div class="image-card-condense">
+                        <img src="src/4/morphed_smiling_0.jpg" alt="morphed_smiling_0">
+                    </div>
+
+                    <div class="image-card-condense">
+                        <img src="src/4/morphed_smiling_1.jpg" alt="morphed_smiling_1">
+                    </div>
+
+                    <div class="image-card-condense">
+                        <img src="src/4/morphed_smiling_2.jpg" alt="morphed_smiling_2">
+                    </div>
+                </section>
+
+
+
+
+
+
+
 
 
 
@@ -182,8 +282,10 @@
                 </ul>
 
 
+
+
             
-                Average Face Calculation
+                
 
                 Compute the average face shape for the entire population or a subpopulation (e.g., old/young, men/women).
                 Morph each face in the dataset into the average shape and display examples.
