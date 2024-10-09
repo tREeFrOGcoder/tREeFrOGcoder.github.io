@@ -371,22 +371,29 @@
                     <li>A negative alpha would emphasize the average face's feature, while a positive alpha would do the opposite.</li>
                 </ul>
 
-                <section id="image-array-large">
-                    <div class="image-card-large">
+                <section id="image-array-small">
+
+                    <div class="image-card-small">
+                        <img src="src/5/elon_normalized.jpg" alt="elon_normalized">
+                        <div class="image-small-info">
+                            <p>Elon Original</p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-small">
                         <img src="src/5/elon_caricature_alpha_-0.5.jpg" alt="elon_caricature_alpha_-0.5">
-                        <div class="image-large-info">
-                            <p><strong>More Averaged Elon</strong></p>
+                        <div class="image-small-info">
                             <p>\(\alpha = -0.5\)</p>
                         </div>
                     </div>
 
-                    <div class="image-card-large">
+                    <div class="image-card-small">
                         <img src="src/5/elon_caricature_alpha_1.5.jpg" alt="elon_caricature_alpha_1.5">
-                        <div class="image-large-info">
-                            <p><strong>More Elon Elon</strong></p>
+                        <div class="image-small-info">
                             <p>\(\alpha = 1.5\)</p>
                         </div>
                     </div>
+
                 </section>
 
             </section>
@@ -418,37 +425,86 @@
 
                 <ul>
                     <li>We first try to recontruct the faces, and then use a similar formula for caricature: <code>(1+alpha) * original_coeffs</code> where the original_coeffs is the list of coefficients of each eigen faces when projecting a target image into this Eigen space.</li>
-                    
+                    <li>We expect a negative alpha would emphasize the average face's feature, while a positive alpha would do the opposite.</li>
+                    <li>We test on 1a participant, since I am very familiar with this guy's face now...</li>
                 </ul>
 
+                <section id="image-array-small">
 
-                
+                    <div class="image-card-small">
+                        <img src="src/4/1a.jpg" alt="1a">
+                        <div class="image-small-info">
+                            <p>1a Original</p>
+                        </div>
+                    </div>
 
-                <section id="image-array-large">
-                    <div class="image-card-large">
-                        <img src="src/5/elon_caricature_alpha_-0.5.jpg" alt="elon_caricature_alpha_-0.5">
-                        <div class="image-large-info">
-                            <p><strong>More Averaged Elon</strong></p>
+                    <div class="image-card-small">
+                        <img src="src/b/caricature_im1a_alpha_-3.jpg" alt="caricature_im1a_alpha_-3">
+                        <div class="image-small-info">
+                            <p>\(\alpha = -3\)</p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-small">
+                        <img src="src/b/caricature_im1a_alpha_1.5.jpg" alt="caricature_im1a_alpha_1.5">
+                        <div class="image-small-info">
+                            <p>\(\alpha = 1.5\)</p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-small">
+                        <img src="src/b/caricature_im1a_alpha_0.0.jpg" alt="caricature_im1a_alpha_0.0">
+                        <div class="image-small-info">
+                            <p>\(\alpha = 0\)</p>
+                        </div>
+                    </div>
+
+                </section>
+
+                <ul>   
+                    <li>This actually looks pretty good, since the \(\alpha = -3\) looks nothing like the guy, all the key features of 1a are almost reversed, while \(\alpha = 1.5\) clearly exagerated the key features like the shape and depth of this guy's nose and upper lip.</li>
+                    <p>&nbsp;</p>
+                    <li>Now let's try our beloved Elon's face. (Spoiler Alert: It's pooooor...)</li>
+                </ul>
+
+                <section id="image-array-small">
+                    <div class="image-card-small">
+                        <img src="src/b/elon_normalized.jpg" alt="elon_normalized">
+                        <div class="image-small-info">
+                            <p>Elon Original</p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-small">
+                        <img src="src/b/caricature_alpha_-0.5.jpg" alt="caricature_alpha_-0.5">
+                        <div class="image-small-info">
                             <p>\(\alpha = -0.5\)</p>
                         </div>
                     </div>
 
-                    <div class="image-card-large">
-                        <img src="src/5/elon_caricature_alpha_1.5.jpg" alt="elon_caricature_alpha_1.5">
-                        <div class="image-large-info">
-                            <p><strong>More Averaged Elon</strong></p>
+                    <div class="image-card-small">
+                        <img src="src/b/caricature_alpha_1.5.jpg" alt="caricature_alpha_1.5">
+                        <div class="image-small-info">
                             <p>\(\alpha = 1.5\)</p>
                         </div>
                     </div>
+
+                    <div class="image-card-small">
+                        <img src="src/b/caricature_alpha_0.0.jpg" alt="caricature_alpha_0.0">
+                        <div class="image-small-info">
+                            <p>\(\alpha = 0\)</p>
+                        </div>
+                    </div>
+
                 </section>
+
+                <ul>   
+                    <li>You should have noticed that even when alpha=0, meaning we are basically reconstructing, the image is not even half like Elon. At the same time, we've seen an almost perfect reconstruction of the 1a guy's face!</li>
+                    <li>Therefore, we know why: Elon's face does not lie in the space that these eigen spaces span, so many features of elon's face just cannot be reconstructed using merely linear combination of these eigen faces.</li>
+                </ul>
 
             </section>
 
-
-
-
-
-            
         </main>
     </div>
 </body>
