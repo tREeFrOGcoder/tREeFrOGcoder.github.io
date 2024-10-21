@@ -44,24 +44,167 @@
             <section id="section1" class="section">
                 <h1>1 Take Photos</h1>
                 <p>Take two photos of a scene with a camera. The photos should have some overlap between them.</p>
+                <p>All these pictures are taken with only a planar rotation of the phone with the COF not changing position (the best I can...)</p>
+                
+
 
                 <section id="image-array-large">
                     <div class="image-card-large">
-                        <img src="src" alt="neutral_im1a_with_triangulation">
+                        <img src="src/data/room_left.png" alt="room_left">
                         <div class="image-large-info">
-                            <p><strong>1a participant with triangulation</strong></p>
+                            <p><strong>Room Left</strong></p>
                         </div>
                     </div>
 
                     <div class="image-card-large">
-                        <img src="src/4/smiling_im51b_with_triangulation.jpg" alt="smiling_im51b_with_triangulation">
+                        <img src="src/data/room_right.png" alt="room_right">
                         <div class="image-large-info">
-                            <p><strong>51b participant with triangulation</strong></p>
+                            <p><strong>Room Right</strong></p>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section id="image-array-large">
+                    <div class="image-card-large">
+                        <img src="src/data/prism_left_s.jpg" alt="prism_left_s">
+                        <div class="image-large-info">
+                            <p><strong>Prism Left</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/data/prism_right_s.jpg" alt="prism_right_s">
+                        <div class="image-large-info">
+                            <p><strong>Prism Right</strong></p>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section id="image-array-large">
+                    <div class="image-card-large">
+                        <img src="src/data/twin_left_s.jpg" alt="twin_left_s">
+                        <div class="image-large-info">
+                            <p><strong>Twin Falls Left</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/data/twin_right_s.jpg" alt="twin_right_s">
+                        <div class="image-large-info">
+                            <p><strong>Twin Falls Right</strong></p>
                         </div>
                     </div>
                 </section>
 
             </section>
+
+            <hr class="custom-line">
+
+            <section id="section2" class="section">
+                <h1>2 Recover Homography</h1>
+                <ul>
+                    <li><strong>Definition:</strong> A homography is a transformation that maps points from one plane to another, typically used in image processing for tasks like image alignment and stitching.</li>
+                    <li><strong>Use Case:</strong> The matrix represents a projective transformation, which preserves straight lines but not necessarily angles or lengths.</li>
+                    <li><strong>Equation:</strong> The transformation is defined by eight parameters, computed by solving a system of linear equations using corresponding points from two images.</li>
+                </ul>
+                $$
+                \begin{bmatrix}
+                x & y & 1 & 0 & 0 & 0 & -xx' & -yx' \\
+                0 & 0 & 0 & x & y & 1 & -xy' & -yy'
+                \end{bmatrix}
+                \begin{bmatrix}
+                a \\
+                b \\
+                c \\
+                d \\
+                e \\
+                f \\
+                g \\
+                h
+                \end{bmatrix}
+                =
+                \begin{bmatrix}
+                x' \\
+                y'
+                \end{bmatrix}
+                $$
+
+            </section>
+
+
+
+            <section id="section3" class="section">
+                <h1>3 Warp and Rectification</h1>
+                <ul>
+                    <li>Use either forward or inverse warping and avoid aliasing during resampling.</li>
+                    <li>Consider using <code>scipy.interpolate.griddata</code> for a vectorized solution.</li>
+                    <li>Predict the bounding box of the resulting image and manage unfilled pixels using an alpha mask.</li>
+                    <li>Here are some rectification result. With hand-written, known desination size.</li>
+                </ul>
+
+                <section id="image-array-large">
+                    <div class="image-card-large">
+                        <img src="src/data/kindle.JPG" alt="kindle">
+                        <div class="image-large-info">
+                            <p><strong>Kindle</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/4/kindle_rectified.jpg" alt="kindle_rectified">
+                        <div class="image-large-info">
+                            <p><strong>Kindle Rectified</strong></p>
+                        </div>
+                    </div>
+                </section>
+
+
+
+                <section id="image-array-large">
+                    <div class="image-card-large">
+                        <img src="src/data/cp.JPG" alt="cp">
+                        <div class="image-large-info">
+                            <p><strong>Cp</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/4/cp_rectified.jpg" alt="cp_rectified">
+                        <div class="image-large-info">
+                            <p><strong>Cp Rectified</strong></p>
+                        </div>
+                    </div>
+                </section>
+
+
+
+                <section id="image-array-large">
+                    <div class="image-card-large">
+                        <img src="src/data/cp2.jpg" alt="cp2">
+                        <div class="image-large-info">
+                            <p><strong>Cp2</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/4/cp2_rectified.jpg" alt="cp2_rectified">
+                        <div class="image-large-info">
+                            <p><strong>Cp2 Rectified</strong></p>
+                        </div>
+                    </div>
+                </section>
+
+
+
+
+
+
+            </section>
+
+
+
             
         </main>
     </div>
