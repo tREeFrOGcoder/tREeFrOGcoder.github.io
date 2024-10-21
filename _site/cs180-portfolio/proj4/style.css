@@ -19,20 +19,20 @@ body {
 .custom-line {
     border: 0;
     height: 2.5px;
-    background-image: linear-gradient(90deg, rgb(0, 0, 0), rgb(78, 132, 86) 40%, rgb(207, 255, 185));
+    background-image: linear-gradient(90deg, rgb(0, 0, 0), rgb(32, 13, 105) 40%, rgba(207, 255, 185, 0.096));
     margin: 15px;
   }
 
 
 
 
-/* Cover Image Section */
 .cover-image {
     position: absolute;
-    bottom: 180px;
-    left: 10px;
+    /* bottom: 180px; */
+    left: 220px;
     height: 80vh; /* Takes up 80% of the viewport height */
-    width: 100%;
+    width: 90%;
+    right: 0%;
     overflow: hidden;
 }
 
@@ -46,10 +46,10 @@ body {
 .title-block {
     position: absolute;
     bottom: 20px;
-    left: 230px;
-    right: 30px;
-    background-color: rgba(0, 0, 0, 0.85); /* Semi-transparent background */
-    color: white;
+    left: 20px;
+    /* right: 30px; */
+    background-color: rgba(255, 255, 255, 0.68); /* Semi-transparent background */
+    color: rgb(34, 17, 95);
     padding: 20px;
     border-radius: 8px;
 }
@@ -69,19 +69,17 @@ body {
 
 
 
-
-
-
 /* Main container layout */
 .container {
     display: flex;
     min-height: 100vh;
 }
 
+
 /* Sidebar styling */
 .sidebar {
     background-color: #eeeeee;
-    padding: 20px;
+    padding: 0px;
     width: 220px;
     border-right: 1px solid #ccc;
     position: fixed;
@@ -94,18 +92,19 @@ body {
 }
 
 .sidebar nav ul li {
-    margin: 20px 0;
+    margin: 13px 0;
 }
 
 .sidebar nav ul li a {
     text-decoration: none;
     color: #333;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 }
 
 .sidebar nav ul li a:hover {
     color: #007acc;
 }
+
 
 /* Content styling */
 .content {
@@ -194,7 +193,7 @@ ul {
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 20px;
-    margin-top: 40px;
+    margin-top: 18px;
 }
 
 /* Each image card */
@@ -262,7 +261,7 @@ ul {
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 10px;
-    margin-top: 40px;
+    margin-top: 1px;
 }
 
 /* Each image card */
@@ -315,13 +314,99 @@ ul {
 
 
 
+
+
+
+
+
+
+
+
+
+/* Image array container */
+#image-array-condense {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 5px;
+    margin-top: 20px;
+}
+
+/* Each image card */
+.image-card-condense {
+    background-color: #f1fffe;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: calc(25% - 5px); /* Responsive 4 columns */
+    padding: 8px;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Image styling */
+.image-card-condense img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+/* Image info (text) styling */
+.image-condense-info p {
+    font-size: 0.9rem;
+    margin: 5px 0;
+    color: #555;
+}
+
+/* Hover effect */
+.image-card-condense:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+@media screen and (max-width: 768px) {
+    #image-array-condense .image-card {
+        width: calc(25% - 10px); /* Responsive 4 columns for tablet */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #image-array-condense .image-card {
+        width: 100%; /* Responsive 1 column for mobile */
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Image array container */
 #image-array-single {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 20px;
-    margin-top: 1px;
+    margin-top: 5px;
 }
 
 /* Each image card */
@@ -330,8 +415,8 @@ ul {
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: calc(100%); /* Responsive 1 columns */
-    padding: 13px;
+    width: calc(98%); /* Responsive 1 columns */
+    padding: 8px;
     text-align: center;
     transition: transform 0.2s ease-in-out;
 }
@@ -345,7 +430,7 @@ ul {
 /* Image info (text) styling */
 .image-single-info p {
     font-size: 1rem;
-    margin: 10px 0;
+    margin: 5px 0;
     color: #555;
 }
 
