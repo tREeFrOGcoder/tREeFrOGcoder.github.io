@@ -32,6 +32,12 @@
                     <li><a href="#section2">2 Homography</a></li>
                     <li><a href="#section3">3 Rectify</a></li>
                     <li><a href="#section4">4 Stitch and Blend</a></li>
+                    <li><a href="#section5">5 Harris Corners</a></li>
+                    <li><a href="#section6">6 ANMS</a></li>
+                    <li><a href="#section7">7 Feature Descriptor</a></li>
+                    <li><a href="#section8">8 Feature Match</a></li>
+                    <li><a href="#section8">9 RANSAC</a></li>
+                    <li><a href="#section8">10 Auto-Blend</a></li>
                 </ul>
             </nav>
         </aside>
@@ -50,33 +56,16 @@
 
                 <section id="image-array-large">
                     <div class="image-card-large">
-                        <img src="src/data/room_left.png" alt="room_left">
+                        <img src="src/data/ball_left.jpg" alt="ball_left">
                         <div class="image-large-info">
-                            <p><strong>Room Left</strong></p>
+                            <p><strong>Ball Left</strong></p>
                         </div>
                     </div>
 
                     <div class="image-card-large">
-                        <img src="src/data/room_right.png" alt="room_right">
+                        <img src="src/data/ball_right.jpg" alt="ball_right">
                         <div class="image-large-info">
-                            <p><strong>Room Right</strong></p>
-                        </div>
-                    </div>
-                </section>
-
-
-                <section id="image-array-large">
-                    <div class="image-card-large">
-                        <img src="src/data/prism_left_s.jpg" alt="prism_left_s">
-                        <div class="image-large-info">
-                            <p><strong>Prism Left</strong></p>
-                        </div>
-                    </div>
-
-                    <div class="image-card-large">
-                        <img src="src/data/prism_right_s.jpg" alt="prism_right_s">
-                        <div class="image-large-info">
-                            <p><strong>Prism Right</strong></p>
+                            <p><strong>Ball Right</strong></p>
                         </div>
                     </div>
                 </section>
@@ -84,16 +73,33 @@
 
                 <section id="image-array-large">
                     <div class="image-card-large">
-                        <img src="src/data/twin_left_s.jpg" alt="twin_left_s">
+                        <img src="src/data/build_left.jpg" alt="build_left">
                         <div class="image-large-info">
-                            <p><strong>Twin Falls Left</strong></p>
+                            <p><strong>Build Left</strong></p>
                         </div>
                     </div>
 
                     <div class="image-card-large">
-                        <img src="src/data/twin_right_s.jpg" alt="twin_right_s">
+                        <img src="src/data/build_right.jpg" alt="build_right">
                         <div class="image-large-info">
-                            <p><strong>Twin Falls Right</strong></p>
+                            <p><strong>Build Right</strong></p>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section id="image-array-large">
+                    <div class="image-card-large">
+                        <img src="src/data/garden_left.jpg" alt="garden_left">
+                        <div class="image-large-info">
+                            <p><strong>Garden Left</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/data/garden_right.jpg" alt="garden_right">
+                        <div class="image-large-info">
+                            <p><strong>Garden Right</strong></p>
                         </div>
                     </div>
                 </section>
@@ -205,36 +211,62 @@
                     <li>Blend images into a mosaic using weighted averaging to avoid strong edge artifacts.</li>
                     <li>Warp the images so they’re registered and choose to warp into a reference projection or a new one.</li>
                     <li>Manage blending by using an alpha channel and consider using a Laplacian pyramid for blending if needed.</li>
-                    <li>I have huge difficulty resolving the blending issue and masking, so here are some very poor stitching result! I didn't do the blending, only the alignment.</li>
+                    <li>Naive blending would have huge artifects of seaming lines, so we adopt a distance transform with alpha blending.</li>
                 </ul>
 
 
-                <section id="image-array-small">
-
-                    <div class="image-card-small">
-                        <img src="src/data/room_left.png" alt="room_left">
-                        <div class="image-small-info">
-                            <p>Room Left</p>
+                <section id="image-array-large">
+                    <div class="image-card-large">
+                        <img src="src/5/ball_mask_1.jpg" alt="ball_mask_1">
+                        <div class="image-large-info">
+                            <p><strong>ball_mask_1</strong></p>
                         </div>
                     </div>
 
-                    <div class="image-card-small">
-                        <img src="src/data/room_right.png" alt="room_right">
-                        <div class="image-small-info">
-                            <p>Room Right</p>
+                    <div class="image-card-large">
+                        <img src="src/5/ball_mask_2.jpg" alt="ball_mask_2">
+                        <div class="image-large-info">
+                            <p><strong>ball_mask_2</strong></p>
                         </div>
                     </div>
-
-                    <div class="image-card-small">
-                        <img src="src/5/room_mosaic.jpg" alt="room_mosaic">
-                        <div class="image-small-info">
-                            <p>Room Mosaic</p>
-                        </div>
-                    </div>
-
                 </section>
+
+
+                <section id="image-array-single">
+                    <div class="image-card-single">
+                        <img src="src/5/ball_blended.jpg" alt="ball_blended">
+                        <div class="image-single-info">
+                            <p><strong>ball_blended</strong></p>
+                        </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section id="image-array-single">
+                    <div class="image-card-single">
+                        <img src="src/5/build_blended.jpg" alt="build_blended">
+                        <div class="image-single-info">
+                            <p><strong>build_blended</strong></p>
+                        </div>
+                        </div>
+                    </div>
+                </section>
+
                 
 
+                <section id="image-array-single">
+                    <div class="image-card-single">
+                        <img src="src/5/garden_blended.jpg" alt="garden_blended">
+                        <div class="image-single-info">
+                            <p><strong>garden_blended</strong></p>
+                        </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                
 
 
             </section>
