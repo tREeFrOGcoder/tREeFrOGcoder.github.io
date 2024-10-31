@@ -460,6 +460,21 @@
             <section id="section9" class="section">
                 <h1>9 RANSAC</h1>
 
+                <ul>
+                    <li><strong>Select Four Points for Homography:</strong>
+                      <ul>
+                        <li>Implement a RANSAC-based approach to find the best homography matrix.</li>
+                        <li>Randomly select four matched feature pairs, compute the homography, and calculate the transformation matrix.</li>
+                      </ul>
+                    </li>
+                    <li><strong>Iterate and Select Best Homography:</strong>
+                      <ul>
+                        <li>Run multiple RANSAC iterations to refine the homography matrix, minimizing re-projection errors.</li>
+                        <li>Discard outliers to ensure robust homography estimation.</li>
+                      </ul>
+                    </li>
+                  </ul>
+
 
                 <section id="image-array-large">
                     <div class="image-card-large">
@@ -484,6 +499,82 @@
                     </div>
 
                 </section>
+            
+            </section>
+
+
+
+
+            <hr class="custom-line">
+
+            <section id="section10" class="section">
+                <h1>10 Final Auto-blending Results</h1>
+
+                <section id="image-array-large">
+                    <div class="image-card-large">
+                        <img src="src/5/ball_blended.jpg" alt="ball_blended">
+                        <div class="image-large-info">
+                            <p><strong>ball_blended</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/8/ball_auto_blended.jpg" alt="ball_auto_blended">
+                        <div class="image-large-info">
+                            <p><strong>ball_auto_blended</strong></p>
+                        </div>
+                    </div>
+
+                </section>
+
+
+                <section id="image-array-large">
+                    <div class="image-card-large">
+                        <img src="src/5/build_blended.jpg" alt="ball_blended">
+                        <div class="image-large-info">
+                            <p><strong>build_blended</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/8/build_auto_blended.jpg" alt="ball_auto_blended">
+                        <div class="image-large-info">
+                            <p><strong>build_auto_blended</strong></p>
+                        </div>
+                    </div>
+
+                </section>
+
+
+
+                <section id="image-array-large">
+                    <div class="image-card-large">
+                        <img src="src/5/garden_blended.jpg" alt="garden_blended">
+                        <div class="image-large-info">
+                            <p><strong>garden_blended</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/8/garden_auto_blended.jpg" alt="garden_auto_blended">
+                        <div class="image-large-info">
+                            <p><strong>garden_auto_blended</strong></p>
+                        </div>
+                    </div>
+
+                </section>
+
+
+
+
+
+
+            </section>
+
+
+
+
+
 
 
 
