@@ -358,7 +358,7 @@
             <hr class="custom-line">
 
             <section id="section7" class="section">
-                <h1>7 Extract</h1>
+                <h1>7 Extract Feature Descriptors!</h1>
 
                 <div class="content-flex">
                     <ul>
@@ -397,7 +397,95 @@
             </section>
 
 
+            <hr class="custom-line">
+
+            <section id="section8" class="section">
+                <h1>8 Feature Matching</h1>
+
+                <ul>
+                    <li><strong>Nearest Neighbot with Lowe's Trick</strong>
+                      <ul>
+                        <li>For each feature descriptor in image A, find the nearest (most similar) descriptor in image B using Euclidean distance.</li>
+                        <li>Use the nearest-neighbor ratio test proposed by Lowe:
+                          <ul>
+                            <li>Calculate the ratio of the distance to the nearest neighbor to that of the second-nearest neighbor.</li>
+                            <li>Select matches where this ratio is below a certain threshold (refer to the figure in the paper for threshold estimation).</li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                    <li><strong>Filter Matches:</strong>
+                      <ul>
+                        <li>Retain only pairs that satisfy the threshold criterion, reducing incorrect matches.</li>
+                      </ul>
+                    </li>
+                    <li><strong>Save Matched Pairs for Visualization:</strong>
+                      <ul>
+                        <li>Optionally, overlay lines on an image to indicate the matched feature points between the two images.</li>
+                      </ul>
+                    </li>
+                </ul>
+
                 
+    
+                <section id="image-array-large">
+                    <div class="image-card-large">
+                        <img src="src/8/ball_match_features.jpg" alt="ball_match_features">
+                        <div class="image-large-info">
+                            <p><strong>ball_match_features</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/8/build_match_features.jpg" alt="build_match_features">
+                        <div class="image-large-info">
+                            <p><strong>build_match_features</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/8/garden_match_features.jpg" alt="garden_match_features">
+                        <div class="image-large-info">
+                            <p><strong>garden_match_features</strong></p>
+                        </div>
+                    </div>
+
+                </section>
+
+            </section>
+
+
+            <hr class="custom-line">
+
+            <section id="section9" class="section">
+                <h1>9 RANSAC</h1>
+
+
+                <section id="image-array-large">
+                    <div class="image-card-large">
+                        <img src="src/8/ball_ransac_matches.jpg" alt="ball_ransac_matches">
+                        <div class="image-large-info">
+                            <p><strong>ball_ransac_matches</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/8/build_ransac_matches.jpg" alt="build_ransac_matches">
+                        <div class="image-large-info">
+                            <p><strong>build_ransac_matches</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/8/garden_ransac_matches.jpg" alt="garden_ransac_matches">
+                        <div class="image-large-info">
+                            <p><strong>garden_ransac_matches</strong></p>
+                        </div>
+                    </div>
+
+                </section>
+
+
 
 
 
