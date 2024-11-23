@@ -14,46 +14,232 @@
 <body>
     <div class="container">
 
+
         <!-- Super large cover image section -->
         <section class="cover-image">
-            <img src="src/large/onion_church_NCC.jpg" alt="Cover Image" class="cover-img">
+            <img src="src/cover.png" alt="Cover Image" class="cover-img">
+            <!-- <img src="src/1.1/noisy_im_250.png" alt="Cover Image" class="cover-img"> -->
             <div class="title-block">
-                <h1>Reviving the Past: </h1>
-                <h2>Automatic Colorization of Prokudin-Gorskii's Russia</h2>
+                <h1>Diffusion Power:</h1>
+                <h2>Pure high-dimensional interpolation magic</h2>
             </div>
         </section>
+
+        
 
 
         <!-- Sidebar with navigation -->
         <aside class="sidebar">
             <nav>
                 <ul>
-                    <li><a href="#section1">1 Overview</a></li>
-                    <li><a href="#section2">2 Naive Way</a></li>
-                    <li><a href="#section3">3 Starting Small</a></li>
+                    <li><a href="#sectiona">Part A: Playground</a></li>
                     <ul>
-                        <li><a href="#section3.1">3.1 Approach</a></li>
-                        <li><a href="#section3.2">3.2 Result</a></li>
+                        <li><a href="#section0">Part 0: Set up</a></li>
+                        <li><a href="#section1">Part 1: Sampling</a></li>
+                        <ul>
+                            <li><a href="#section1.1">1.1 Forward</a></li>
+                            <li><a href="#section1.2">1.2 Classic</a></li>
+                            <li><a href="#section1.3">1.3 One-Step</a></li>
+                            <li><a href="#section1.4">1.4 Interactive</a></li>
+                            <li><a href="#section1.5">1.5 Diffusion</a></li>
+                            <li><a href="#section1.6">1.6 CFG</a></li>
+                            <li><a href="#section1.7">1.7 Translation</a></li>
+                            <ul>
+                                <li><a href="#section1.7.1">1.7.1 SDEdit</a></li>
+                                <li><a href="#section1.7.2">1.7.2 Inpaint</a></li>
+                                <li><a href="#section1.7.3">1.7.3 Text</a></li>
+                            </ul>
+                            <li><a href="#section1.8">1.8 Anagram</a></li>
+                            <li><a href="#section1.9">1.9 Hybrid</a></li>
+                            <li><a href="#section1.9*">1.9* B&W</a></li>
+                        </ul>
                     </ul>
-                    <li><a href="#section4">4 Going Big</a></li>
+            
+                    <li><a href="#sectionb">Part B: Forge</a></li>
                     <ul>
-                        <li><a href="#section4.1">4.1 Approach</a></li>
-                        <li><a href="#section4.2">4.2 Result</a></li>
-                        <li><a href="#section4.3">4.3 Improvement</a></li>
+                        <li><a href="#sectionb1">Part 1: UNet</a></li>
+                        <ul>
+                            <li><a href="#sectionb1.1">1.1 UNet</a></li>
+                            <li><a href="#sectionb1.2">1.2 Denoiser</a></li>
+                            <ul>
+                                <li><a href="#sectionb1.2.1">1.2.1 Train</a></li>
+                                <li><a href="#sectionb1.2.2">1.2.2 Test</a></li>
+                            </ul>
+                        </ul>
+                        <li><a href="#sectionb2">Part 2: Diffusion</a></li>
+                        <ul>
+                            <li><a href="#sectionb2.1">2.1 TCUNet</a></li>
+                            <li><a href="#sectionb2.2">2.2 Train</a></li>
+                            <li><a href="#sectionb2.3">2.3 Sampling</a></li>
+                            <li><a href="#sectionb2.4">2.4 CCUNet</a></li>
+                            <li><a href="#sectionb2.5">2.5 Sampling</a></li>
+                        </ul>
                     </ul>
                 </ul>
             </nav>
+            
         </aside>
 
         
         <!-- Main content section -->
         <main class="content">
             
-            <!-- Section 1 -->
-            <section id="section1" class="section">
-                <h1>1 Overview</h1>
+            <!-- Sectiona -->
+            <section id="sectiona" class="section">
+                <h1>Part A: Diffusion Playground</h1>
+
+                <!-- Section0 -->
+                <section id="section0" class="subsection">
+                    <h2>Part 0: Setup and initials</h2>
+                </section>
+                
+                <!-- Section1 -->
+                <section id="section1" class="subsection">
+                    <h2>Part 1: Sampling Loops for inference</h2>
+
+                    <section id="section1.1" class="subsubsection">
+                        <h3>1.1: Implementing the Forward Process</h3>
+                    </section>
+
+                    <section id="section1.2" class="subsubsection">
+                        <h3>1.2: Classic Denoising</h3>
+                    </section>
+
+                    <section id="section1.3" class="subsubsection">
+                        <h3>1.3: One-Step Denoising</h3>
+                    </section>
+
+                    <section id="section1.4" class="subsubsection">
+                        <h3>1.4: Interative Denoising</h3>
+                    </section>
+
+                    <section id="section1.5" class="subsubsection">
+                        <h3>1.5: Diffusion Model Sampling</h3>
+                    </section>
+
+                    <section id="section1.6" class="subsubsection">
+                        <h3>1.6: Classifier-Free Guidance (CFG)</h3>
+                    </section>
+
+                    <section id="section1.7" class="subsubsection">
+                        <h3>1.7: Image-to-Image Translation</h3>
+
+                        <section id="section1.7.1" class="subsubsubsection">
+                            <h4>1.7.1: SDEdit -- Editing Hand-Drawn and Web Images</h4>
+                        </section>
+
+                        <section id="section1.7.2" class="subsubsubsection">
+                            <h4>1.7.2: Inpainting</h4>
+                        </section>
+
+                        <section id="section1.7.3" class="subsubsubsection">
+                            <h4>1.7.3: Text-Conditional Image-to-Image Translation</h4>
+
+
+                            <section id="image-array-4">
+                                <div class="image-card-4">
+                                    <img src="df/1.4/gaussian_blur_final.png" alt="Image 1">
+                                    <div class="image-4-info">
+                                        <p><strong>gaussian_blur_final</strong></p>
+                                    </div>
+                                </div>
+
+                                <div class="image-card-4">
+                                    <img src="df/1.4/gaussian_blur_final.png" alt="Image 1">
+                                    <div class="image-4-info">
+                                        <p><strong>gaussian_blur_final</strong></p>
+                                    </div>
+                                </div>
+
+                                <div class="image-card-4">
+                                    <img src="df/1.4/gaussian_blur_final.png" alt="Image 1">
+                                    <div class="image-4-info">
+                                        <p><strong>gaussian_blur_final</strong></p>
+                                    </div>
+                                </div>
+
+
+                                <div class="image-card-4">
+                                    <img src="df/1.4/gaussian_blur_final.png" alt="Image 1">
+                                    <div class="image-4-info">
+                                        <p><strong>gaussian_blur_final</strong></p>
+                                    </div>
+                                </div>
+                            </section>
+
+                        </section>
+
+                    </section>
+
+                    <section id="section1.8" class="subsubsection">
+                        <h3>1.8: Visual Anagrams</h3>
+                    </section>
+
+                    <section id="section1.9" class="subsubsection">
+                        <h3>1.9: Hybrid Images</h3>
+                    </section>
+
+                    <section id="section1.9*" class="subsubsection">
+                        <h3>1.9*: Bells & Whistles</h3>
+                    </section>
+
+                </section>
+
+
+
+
                 
 
+            </section>
+
+            <section id="sectionb" class="section">
+                <h1>Part B: Diffusion Forge</h1>
+
+                <section id="sectionb1" class="subsubsection">
+                    <h2>Part 1: Training a Single-Step Denoising UNet</h2>
+
+                    <section id="sectionb1.1" class="subsubsubsection">
+                        <h3>1.1: Implementing the UNet</h3>
+                    </section>
+
+                    <section id="sectionb1.2" class="subsubsubsection">
+                        <h3>1.2: Using the UNet to Train a Denoiser</h3>
+
+                        <section id="sectionb1.2.1" class="subsubsubsection">
+                            <h4>1.2.1: Using the UNet to Train a Denoiser</h4>
+                        </section>
+
+                        <section id="sectionb1.2.2" class="subsubsubsection">
+                            <h4>1.2.2: Out-of-Distribution Testing</h4>
+                        </section>
+                    </section>
+                </section>
+
+                <section id="sectionb2" class="subsubsection">
+                    <h2>Part 2: Training a Diffusion Model</h2>
+                    
+                    <section id="sectionb2.1" class="subsubsubsection">
+                        <h3>2.1: Time Conditional UNet (TCUNet)</h3>
+                    </section>
+
+                    <section id="sectionb2.2" class="subsubsubsection">
+                        <h3>2.2: Training TCUnet</h3>
+                    </section>
+
+                    <section id="sectionb2.3" class="subsubsubsection">
+                        <h3>2.3: Sampling from TCUNet</h3>
+                    </section>
+
+                    <section id="sectionb2.4" class="subsubsubsection">
+                        <h3>2.4: Class Conditional UNet (CCUNet) + Training CCUNet</h3>
+                    </section>
+
+                    <section id="sectionb2.5" class="subsubsubsection">
+                        <h3>2.5: Sampling from TCUNet</h3>
+                    </section>
+
+                </section>
+                
             </section>
             
         </main>

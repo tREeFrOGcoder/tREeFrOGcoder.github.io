@@ -150,8 +150,10 @@ ul {
 }
 
 .section-image-single {
-    max-width: 85%;
+    width: 85%;
+    height: auto;
     border-radius: 8px;
+    image-rendering: pixelated; /* Ensures sharp pixel art scaling */
 }
 
 /* Vertical image styling */
