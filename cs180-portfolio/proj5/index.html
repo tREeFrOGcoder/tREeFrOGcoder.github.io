@@ -87,18 +87,121 @@
             <!-- Sectiona -->
             <section id="sectiona" class="section">
                 <h1>Part A: Diffusion Playground</h1>
-
+                <ul>
+                    <li>Here we explore the power of diffusion models mainly by implementing multiple ways of sampling, which is basically inference.</li>
+                    <li>The Diffusion Model we use is DeepFloyd IF with text embeddings from TF.</li>
+                    <li>Let's get started!</li>
+                </ul>
+                <p> </p>
                 <!-- Section0 -->
                 <section id="section0" class="subsection">
                     <h2>Part 0: Setup and initials</h2>
+                    <ul>
+                        <li>
+                          <p><b>Steps:</b></p>
+                          <ul>
+                            <li>Created a Hugging Face account and logged in.</li>
+                            <li>Accepted the license for the DeepFloyd model and generated a Hugging Face Hub token.</li>
+                            <li>Downloaded precomputed text embeddings to avoid GPU memory issues.</li>
+                            <li>Instantiated the <code>stage_1</code> and <code>stage_2</code> objects for text-to-image generation.</li>
+                            <li>Used provided prompts and experimented with different <code>num_inference_steps</code> values.</li>
+                          </ul>
+                        </li>
+                    </ul>
+
+                    <ul>
+                        <li>Below are results of taking different <code>num_inference_steps</code> values for the same prompt. </li>
+                        <li><code>num_inference_steps</code> on stage 1 won't affect the quality, but affects where the set of generated images will be on the image manifold.</li>
+                        <li>On the other hand, <code>num_inference_steps</code> on stage 2 DO affect the quality of the generated images.</li>
+                        <li>It's also obvious that the larger the <code>num_inference_steps</code> on stage 2, the more the details. Compare image 1 and 2, image 3 and 4 to get a feeling for this.</li>
+                    </ul>
+                    
+
+                    <section id="image-array-single">
+                        <div class="image-card-single">
+                            <img src="df/0/20-20.png" alt="Image 1">
+                            <div class="image-single-info">
+                                <p><strong>Stage 1: 20, Stage 2: 20</strong></p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="image-array-single">
+                        <div class="image-card-single">
+                            <img src="df/0/20-100.png" alt="Image 2">
+                            <div class="image-single-info">
+                                <p><strong>Stage 1: 20, Stage 2: 100</strong></p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="image-array-single">
+                        <div class="image-card-single">
+                            <img src="df/0/100-20.png" alt="Image 3">
+                            <div class="image-single-info">
+                                <p><strong>Stage 1: 100, Stage 2: 20</strong></p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="image-array-single">
+                        <div class="image-card-single">
+                            <img src="df/0/100-100.png" alt="Image 4">
+                            <div class="image-single-info">
+                                <p><strong>Stage 1: 100, Stage 2: 100</strong></p>
+                            </div>
+                        </div>
+                    </section>
+
                 </section>
                 
                 <!-- Section1 -->
                 <section id="section1" class="subsection">
                     <h2>Part 1: Sampling Loops for inference</h2>
+                    <ul>
+                        <li>The key part of this section is to generate images given a Diffusion model,</li>
+                        <li>Since the model is trained to denoise following a noise shedule</li>
+                        <li>It's hallucination nature would result in inperfect reconstruction of the image from pure noise, which is useful for us to generating new images that also lie on the image manifold.</li>
+                        <li>The key to make the generation work is to construct good sampling procedures that guide the model to denoise on the right image at the right timestep for the desired result.</li>
+                    </ul>
 
                     <section id="section1.1" class="subsubsection">
                         <h3>1.1: Implementing the Forward Process</h3>
+                        <ul>
+                            <li>
+                              <p><b>Steps:</b></p>
+                              <ul>
+                                <li>The forward process in diffusion models: noise is added to a clean image to produce progressively noisier versions.</li>
+                                <li>The formula for adding more noise: \( q(x_t \mid x_0) = \mathcal{N}(x_t; \sqrt{\bar{\alpha}_t} x_0, (1 - \bar{\alpha}_t) \mathbf{I}) \).</li>
+                                <li>We compute it using: \( x_t = \sqrt{\bar{\alpha}_t} x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon, \, \epsilon \sim \mathcal{N}(0, 1) \)</li>
+                                <li>Downloaded the Berkeley Campanile image and resized it to 64x64 pixels as the test input.</li>
+                                <li>Used the <code>alphas_cumprod</code> variable to compute <code>ᾱ_t</code> values at timesteps <code>t = 250, 500, 750</code>.</li>
+                                <li>Implemented the <code>forward(im, t)</code> function to simulate the addition of noise at the specified timesteps.</li>
+                              </ul>
+                            </li>
+                        </ul>
+
+                        <section id="image-array-4">
+                            <div class="image-card-4">
+                                <img src="df/" alt="Image 1">
+                                <div class="image-4-info">
+                                    <p><strong>gaussian_blur_final</strong></p>
+                                </div>
+                            </div>
+
+                            
+
+
+
+
+
+                        </section>
+
+
+
+
+
+
                     </section>
 
                     <section id="section1.2" class="subsubsection">

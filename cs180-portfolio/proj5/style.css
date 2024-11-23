@@ -99,41 +99,48 @@ body {
 .content h1{
     font-size: 1.8rem;
     color: #333;
-    margin-bottom: 15px;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .content h2 {
     font-size: 1.6rem; /* Increase to make main section title larger */
     color: #333;
-    margin-bottom: 15px;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .content h3 {
     font-size: 1.4rem; /* Increase to make main section title larger */
     color: #333;
-    margin-bottom: 15px;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .content h4 {
     font-size: 1.2rem; /* Increase to make main section title larger */
     color: #333;
-    margin-bottom: 15px;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .content h5 {
     font-size: 1.0rem; /* Increase to make main section title larger */
     color: #333;
-    margin-bottom: 15px;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .content h6 {
     font-size: 0.8rem; /* Increase to make main section title larger */
     color: #333;
-    margin-bottom: 15px;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .content p {
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 5px;
     font-size: 1.1rem;
 }
 
