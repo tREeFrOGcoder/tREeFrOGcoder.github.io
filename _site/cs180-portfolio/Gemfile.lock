@@ -93,6 +93,7 @@ DEPENDENCIES
   jekyll (~> 4.2.0)
   logger
   ostruct
+  rexml (>= 3.3.9)
   webrick (>= 1.8.2)
 
 BUNDLED WITH

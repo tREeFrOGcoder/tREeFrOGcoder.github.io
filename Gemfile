@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 gem 'jekyll', '~> 4.2.0'
 # gem 'webrick', '~> 1.7'  # Required for the local server in Ruby 3.x
 gem "webrick", ">= 1.8.2"
+gem "rexml", ">= 3.3.9"
 
 
 # Add missing gems that Ruby 3.x requires explicitly
