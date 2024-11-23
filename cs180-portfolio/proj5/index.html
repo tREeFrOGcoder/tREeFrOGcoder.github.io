@@ -1246,26 +1246,91 @@
                         </ul>
                         <section id="image-array-large">
                             <div class="image-card-large">
-                                <img src="df/1.9/skull_waterfalls_upsampled.png" alt="Image 1">
+                                <img src="b/1.1_unconditional_arch.png" alt="Image 1">
                                 <div class="image-large-info">
-                                    <p><strong>"low_freq=skull; high_freq=waterfalls"</strong></p>
+                                    <p><strong>Unconditional UNet Architecture</strong></p>
                                 </div>
                             </div>
 
+                            <div class="image-card-large">
+                                <img src="b/1.1_atomic_ops_new.png" alt="Image 1">
+                                <div class="image-large-info">
+                                    <p><strong>Atomic Operations</strong></p>
+                                </div>
+                            </div>
                         </section>
-
-
                     </section>
 
                     <section id="sectionb1.2" class="subsubsubsection">
                         <h3>1.2: Using the UNet to Train a Denoiser</h3>
+                        <ul>
+                            <li>Since we want to train a UNet as a denoiser, we need to get the noisy data first.</li>
+                            <li>Here we use MNIST dataset, and add noise manually.</li>
+                            <li>Here we show the noise process with \( \sigma = [0.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0]\).</li>
+                        </ul>
+
+                        <section id="image-array-single">
+                            <div class="image-card-single">
+                                <img src="b/1.2_noise_process.png" alt="Image 1">
+                                <div class="image-single-info">
+                                    <p><strong>Adding Noise</strong></p>
+                                </div>
+                            </div>
+                        </section>
 
                         <section id="sectionb1.2.1" class="subsubsubsection">
                             <h4>1.2.1: Using the UNet to Train a Denoiser</h4>
+                            <ul>
+                                <li>Omitting the training code, here are the parameters we choose:</li>
+                                <li><b>Objective</b>: train denoising with \( \sigma = 0.5\)</li>
+                                <li><b>Loss</b>: Mean Squared Error</li>
+                                <li><b>Epochs</b>: 5</li>
+                                <li><b>Batch Size</b>: 256</li>
+                                <li><b>Hidden Dimensions (D)</b>: 128</li>
+                                <li><b>Optimizer</b>: Adam with learning rate 0.0001</li>
+                            </ul>
+                            <section id="image-array-single">
+                                <div class="image-card-single">
+                                    <img src="b/1.2.1_uncond_loss.png" alt="Image 1">
+                                    <div class="image-single-info">
+                                        <p><strong>Training Loss of Unconditional UNet</strong></p>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <p><b>In-Distribution-Test</b>: Test the model on some images with \( \sigma = 0.5\).</p>
+                            <section id="image-array-large">
+                                <div class="image-card-large">
+                                    <img src="b/1.2.1_uncond_test_1.png" alt="Image 1">
+                                    <div class="image-large-info">
+                                        <p><strong>In-Distribution-Test of Unconditional UNet after Epoch=1</strong></p>
+                                    </div>
+                                </div>
+
+                                <div class="image-card-large">
+                                    <img src="b/1.2.1_uncond_test_5.png" alt="Image 1">
+                                    <div class="image-large-info">
+                                        <p><strong>In-Distribution-Test of Unconditional UNet after Epoch=5</strong></p>
+                                    </div>
+                                </div>
+                            </section>
+
                         </section>
 
                         <section id="sectionb1.2.2" class="subsubsubsection">
                             <h4>1.2.2: Out-of-Distribution Testing</h4>
+                            <ul>
+                                <li>Test the model on some images with unseen noises: \( \sigma = [0.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0]\)</li>
+                                <li>We expect the results to be poorer as the value deviates far from 0.5</li>
+                            </ul>
+                            <section id="image-array-single">
+                                <div class="image-card-single">
+                                    <img src="b/1.2.2_ood_sampling.png" alt="Image 1">
+                                    <div class="image-single-info">
+                                        <p><strong>Out-Distribution-Test of Unconditional UNet after Epoch=5</strong></p>
+                                    </div>
+                                </div>
+                            </section>
                         </section>
                     </section>
                 </section>
@@ -1275,22 +1340,195 @@
                     
                     <section id="sectionb2.1" class="subsubsubsection">
                         <h3>2.1: Time Conditional UNet (TCUNet)</h3>
+                        <ul>
+                            <li>Key is to implement the following architecture. Adding t as a condition injection!</li>
+                            <li>We embed t into the model after normalize it with t/num_ts to get a value between [0, 1] rather than some 300+ integers.</li>
+                            <li>The atomic operation we need to add here is a FCBlock that adds some non-linearity to the time conditioning t.</li>
+                        </ul>
+
+                        <section id="image-array-large">
+                            <div class="image-card-large">
+                                <img src="b/2.1_time_conditional_arch.png" alt="Image 1">
+                                <div class="image-large-info">
+                                    <p><strong>Time-Conditional UNet Architecture (TCUNet)</strong></p>
+                                </div>
+                            </div>
+
+                            <div class="image-card-large">
+                                <img src="b/2.1_fcblock.png" alt="Image 1">
+                                <div class="image-large-info">
+                                    <p><strong>New Atomic Operation: FCBlock</strong></p>
+                                </div>
+                            </div>
+                        </section>
                     </section>
 
                     <section id="sectionb2.2" class="subsubsubsection">
                         <h3>2.2: Training TCUnet</h3>
+                        <ul>
+                            <li>Omitting the training code, here are the parameters we choose:</li>
+                            <li><b>Objective</b>: train TCUnet to predict noise given xt with timestep t.</li>
+                            <li><b>Loss</b>: Mean Squared Error on true noise and noise_pred</li>
+                            <li><b>Epochs</b>: 20 (since the task is way harder than denoising)</li>
+                            <li><b>Batch Size</b>: 128</li>
+                            <li><b>Hidden Dimensions (D)</b>: 64</li>
+                            <li><b>Optimizer</b>: Adam with learning rate 0.001 with an exponential learning rate decay scheduler</li>
+                        </ul>
+
+                        <section id="image-array-large">
+                            <div class="image-card-large">
+                                <img src="b/2.2_algo1_t_only.png" alt="Image 1">
+                                <div class="image-large-info">
+                                    <p><strong>TCUnet Training Algorithm</strong></p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="image-array-single">
+                            <div class="image-card-single">
+                                <img src="b/2.2_tcunet_loss.png" alt="Image 1">
+                                <div class="image-single-info">
+                                    <p><strong>Training Loss of TCUNet</strong></p>
+                                </div>
+                            </div>
+                        </section>
                     </section>
+
 
                     <section id="sectionb2.3" class="subsubsubsection">
                         <h3>2.3: Sampling from TCUNet</h3>
+                        <p>The key is to implement the algorithm, which is similar to what we did in Part A.</p>
+                        <section id="image-array-large">
+                            <div class="image-card-large">
+                                <img src="b/2.3_algo2_t_only.png" alt="Image 1">
+                                <div class="image-large-info">
+                                    <p><strong>TCUnet Samlping Algorithm</strong></p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="image-array-large">
+                            <div class="image-card-large">
+                                <img src="b/2.3_sampling_1.png" alt="Image 1">
+                                <div class="image-large-info">
+                                    <p><strong>TCUnet Samlping After Epoch=1</strong></p>
+                                </div>
+                            </div>
+
+                            <div class="image-card-large">
+                                <img src="b/2.3_sampling_5.png" alt="Image 1">
+                                <div class="image-large-info">
+                                    <p><strong>TCUnet Samlping After Epoch=5</strong></p>
+                                </div>
+                            </div>
+
+                            <div class="image-card-large">
+                                <img src="b/2.3_sampling_10.png" alt="Image 1">
+                                <div class="image-large-info">
+                                    <p><strong>TCUnet Samlping After Epoch=10</strong></p>
+                                </div>
+                            </div>
+
+                            <div class="image-card-large">
+                                <img src="b/2.3_sampling_15.png" alt="Image 1">
+                                <div class="image-large-info">
+                                    <p><strong>TCUnet Samlping After Epoch=15</strong></p>
+                                </div>
+                            </div>
+
+                            <div class="image-card-large">
+                                <img src="b/2.3_sampling_20.png" alt="Image 1">
+                                <div class="image-large-info">
+                                    <p><strong>TCUnet Samlping After Epoch=20</strong></p>
+                                </div>
+                            </div>
+                        </section>
                     </section>
 
                     <section id="sectionb2.4" class="subsubsubsection">
                         <h3>2.4: Class Conditional UNet (CCUNet) + Training CCUNet</h3>
+                        <ul>
+                            <li>We see that the digits generate above looks pretty like human hand-written digits.</li>
+                            <li>But there are still clearly some ghosty results that are not numbers. Also the generation sequence is random!</li>
+                            <li>We can't ask the model to generate a 9 for example!</li>
+                            <li>So we need to add a class condition to the model to guide the generation.</li>
+                        </ul>
+
+                        <section id="image-array-large">
+                            <div class="image-card-large">
+                                <img src="b/2.4_algo3_c.png" alt="Image 1">
+                                <div class="image-large-info">
+                                    <p><strong>Class Conditional UNet (CCUNet) Training Algorithm</strong></p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="image-array-single">
+                            <div class="image-card-single">
+                                <img src="b/2.4_ccunet_loss.png" alt="Image 1">
+                                <div class="image-single-info">
+                                    <p><strong>CCUNet Training Loss</strong></p>
+                                </div>
+                            </div>
+                        </section>
                     </section>
 
                     <section id="sectionb2.5" class="subsubsubsection">
                         <h3>2.5: Sampling from TCUNet</h3>
+                        <p>The key is to implement the algorithm, which is also similar to a CFG.</p>
+                        <section id="image-array-large">
+                            <div class="image-card-large">
+                                <img src="b/2.5_algo4_c.png" alt="Image 1">
+                                <div class="image-large-info">
+                                    <p><strong>CCUNet Sampling Algorithm</strong></p>
+                                </div>
+                            </div>
+                        </section>
+
+
+                        <section id="image-array-large">
+                            <div class="image-card-large">
+                                <img src="b/2.5_ccunet_sampling_1.png" alt="Image 1">
+                                <div class="image-large-info">
+                                    <p><strong>CCUnet Samlping After Epoch=1</strong></p>
+                                </div>
+                            </div>
+
+                            <div class="image-card-large">
+                                <img src="b/2.5_ccunet_sampling_5.png" alt="Image 1">
+                                <div class="image-large-info">
+                                    <p><strong>CCUnet Samlping After Epoch=5</strong></p>
+                                </div>
+                            </div>
+
+                            <div class="image-card-large">
+                                <img src="b/2.5_ccunet_sampling_10.png" alt="Image 1">
+                                <div class="image-large-info">
+                                    <p><strong>CCUnet Samlping After Epoch=10</strong></p>
+                                </div>
+                            </div>
+
+                            <div class="image-card-large">
+                                <img src="b/2.5_ccunet_sampling_15.png" alt="Image 1">
+                                <div class="image-large-info">
+                                    <p><strong>CCUnet Samlping After Epoch=15</strong></p>
+                                </div>
+                            </div>
+
+                            <div class="image-card-large">
+                                <img src="b/2.5_ccunet_sampling_20.png" alt="Image 1">
+                                <div class="image-large-info">
+                                    <p><strong>CCUnet Samlping After Epoch=20</strong></p>
+                                </div>
+                            </div>
+
+                            
+                        </section>
+
+
+
+
+
                     </section>
 
                 </section>
