@@ -91,7 +91,7 @@ body {
     margin-left: 200px;
     /* top: 400px; */
     padding: 40px;
-    padding-top: 60vh; 
+    padding-top: 80vh; 
     background-color: #ffffff;
     flex: 1;
 }
@@ -249,14 +249,14 @@ ul {
 /* Title block overlapping the bottom-left corner */
 .title-block {
     position: relative;
-    top: -30px;
+    top: -100px;
     /* bottom: 20px; */
-    left: 30px;
+    left: 10px;
     /* right: -30px; */
     width: 90%;
     height: 100%;
-    background-color: rgba(8, 8, 8, 0.9); /* Semi-transparent background */
-    color: rgb(238, 233, 255);
+    background-color: rgba(66, 99, 75, 0.9); /* Semi-transparent background */
+    color: rgb(216, 222, 164);
     padding: 20px;
     border-radius: 8px;
     overflow: visible;
@@ -351,6 +351,76 @@ ul {
         width: 100%; /* Responsive 1 column for mobile */
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+/* Image array container */
+#image-array-mid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+/* Each image card */
+.image-card-mid {
+    background-color: #f1fffe;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: calc(66% - 10px); /* Responsive 3 columns */
+    padding: 13px;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Image styling */
+.image-card-mid img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    image-rendering: pixelated; /* Ensures sharp pixel art scaling */
+}
+
+/* Image info (text) styling */
+.image-mid-info p {
+    font-size: 0.9rem;
+    margin: 10px 0;
+    color: #555;
+}
+
+/* Hover effect */
+.image-card-mid:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+@media screen and (max-width: 768px) {
+    #image-array-mid .image-card {
+        width: calc(33% - 10px); /* Responsive 3 columns for tablet */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #image-array-mid .image-card {
+        width: 100%; /* Responsive 1 column for mobile */
+    }
+}
+
+
+
+
+
+
 
 
 
