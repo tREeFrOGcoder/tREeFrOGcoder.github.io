@@ -16,6 +16,18 @@ body {
 
 
 
+
+
+
+/* Main container layout */
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+
+
+
 .custom-line {
     border: 0;
     height: 2.5px;
@@ -26,42 +38,6 @@ body {
 
 
 
-/* Cover Image Section */
-.cover-image {
-    position: absolute;
-    bottom: 180px;
-    left: 10px;
-    height: 80vh; /* Takes up 80% of the viewport height */
-    width: 100%;
-    overflow: hidden;
-}
-
-.cover-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensures the image covers the entire area */
-}
-
-/* Title block overlapping the bottom-left corner */
-.title-block {
-    position: absolute;
-    bottom: 20px;
-    left: 230px;
-    right: 30px;
-    background-color: rgba(0, 0, 0, 0.85); /* Semi-transparent background */
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-}
-
-.title-block h1 {
-    margin-bottom: 10px;
-    font-size: 3rem; /* Large title text */
-}
-
-.title-block h2 {
-    font-size: 2rem; /* Subheading size */
-}
 
 
 
@@ -72,11 +48,13 @@ body {
 
 
 
-/* Main container layout */
-.container {
-    display: flex;
-    min-height: 100vh;
-}
+
+
+
+
+
+
+
 
 /* Sidebar styling */
 .sidebar {
@@ -109,21 +87,61 @@ body {
 
 /* Content styling */
 .content {
-    margin-left: 220px;
+    /* position: relative; */
+    margin-left: 200px;
+    /* top: 400px; */
     padding: 40px;
-    padding-top: 86vh; /* Adjusted to accommodate the cover image */
+    padding-top: 60vh; 
     background-color: #ffffff;
     flex: 1;
 }
 
-.content h1, .content h2, .content h3, .content h4 {
+.content h1{
+    font-size: 1.8rem;
     color: #333;
-    margin-bottom: 15px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.content h2 {
+    font-size: 1.6rem; /* Increase to make main section title larger */
+    color: #333;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.content h3 {
+    font-size: 1.4rem; /* Increase to make main section title larger */
+    color: #333;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.content h4 {
+    font-size: 1.2rem; /* Increase to make main section title larger */
+    color: #333;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.content h5 {
+    font-size: 1.0rem; /* Increase to make main section title larger */
+    color: #333;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.content h6 {
+    font-size: 0.8rem; /* Increase to make main section title larger */
+    color: #333;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .content p {
-    margin-bottom: 20px;
-    font-size: 1.1rem;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 1rem;
 }
 
 ul {
@@ -143,6 +161,30 @@ ul {
     flex-shrink: 1;
 }
 
+
+
+.subsection {
+    margin-left: 20px; /* Indent the subsection */
+    padding-left: 5px; 
+    border-left: 2px solid #ccc;
+}
+
+.subsubsection {
+    margin-left: 20px; /* Indent the subsection */
+    padding-left: 5px; /* Optional padding for alignment */
+    border-left: 2px solid #ccc; 
+}
+
+.subsubsubsection {
+    margin-left: 20px; /* Indent the subsection */
+    padding-left: 5px; /* Optional padding for alignment */
+    border-left: 2px solid #ccc; 
+}
+
+
+
+
+
 .section-image {
     max-width: 48%;
     border-radius: 8px;
@@ -154,13 +196,7 @@ ul {
     border-radius: 8px;
 }
 
-/* Vertical image styling */
-.section-image-vertical {
-    height: 1500px;
-    width: 500px;
-    object-fit: cover;
-    border-radius: 8px;
-}
+
 
 /* Responsive adjustments */
 @media screen and (max-width: 768px) {
@@ -188,13 +224,84 @@ ul {
 
 
 
+
+
+.cover-image {
+    position: absolute;
+    /* bottom: 100px; */
+    top: 0px;
+    left: 220px;
+    /* height: 80hv; Takes up 80% of the viewport height */
+    width: auto;
+    overflow: visible;
+}
+
+.cover-img {
+    position: relative;
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Ensures the image covers the entire area */
+    image-rendering: pixelated; /* Ensures sharp pixel art scaling */
+    overflow: visible;
+
+}
+
+/* Title block overlapping the bottom-left corner */
+.title-block {
+    position: relative;
+    top: -30px;
+    /* bottom: 20px; */
+    left: 30px;
+    /* right: -30px; */
+    width: 90%;
+    height: 100%;
+    background-color: rgba(8, 8, 8, 0.9); /* Semi-transparent background */
+    color: rgb(238, 233, 255);
+    padding: 20px;
+    border-radius: 8px;
+    overflow: visible;
+}
+
+.title-block h1 {
+    margin-bottom: 10px;
+    font-size: 3rem; /* Large title text */
+}
+
+.title-block h2 {
+    font-size: 2rem; /* Subheading size */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Image array container */
 #image-array-large {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 20px;
-    margin-top: 40px;
+    margin-top: 5px;
 }
 
 /* Each image card */
@@ -209,10 +316,15 @@ ul {
     transition: transform 0.2s ease-in-out;
 }
 
+
 /* Image styling */
 .image-card-large img {
-    max-width: 100%;
+    width: 100%; /* Ensures image stretches to fill container width */
+    height: auto; /* Maintains aspect ratio */
     border-radius: 5px;
+    object-fit: contain; /* Ensures images are resized proportionally */
+    image-rendering: pixelated; /* Ensures sharp pixel art scaling */
+    image-rendering: crisp-edges; /* Fallback for older browsers */
 }
 
 /* Image info (text) styling */
@@ -262,7 +374,7 @@ ul {
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 10px;
-    margin-top: 40px;
+    margin-top: 5px;
 }
 
 /* Each image card */
@@ -279,8 +391,10 @@ ul {
 
 /* Image styling */
 .image-card-small img {
-    max-width: 100%;
+    width: 100%;
+    height: auto;
     border-radius: 5px;
+    image-rendering: pixelated; /* Ensures sharp pixel art scaling */
 }
 
 /* Image info (text) styling */
@@ -321,7 +435,7 @@ ul {
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 20px;
-    margin-top: 1px;
+    margin-top: 5px;
 }
 
 /* Each image card */
@@ -338,8 +452,10 @@ ul {
 
 /* Image styling */
 .image-card-single img {
-    max-width: 100%;
+    width: 100%;
+    height: auto;
     border-radius: 5px;
+    image-rendering: pixelated; /* Ensures sharp pixel art scaling */
 }
 
 /* Image info (text) styling */
@@ -351,6 +467,214 @@ ul {
 
 /* Hover effect */
 .image-card-single:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------------image-array-4------------------------------------------ */
+
+/* Image array container */
+#image-array-4 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+/* Each image card */
+.image-card-4 {
+    background-color: #f1fffe;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: calc(25% - 10px); /* Responsive 3 columns */
+    padding: 13px;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Image styling */
+.image-card-4 img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    image-rendering: pixelated; /* Ensures sharp pixel art scaling */
+}
+
+/* Image info (text) styling */
+.image-4-info p {
+    font-size: 0.9rem;
+    margin: 10px 0;
+    color: #555;
+}
+
+/* Hover effect */
+.image-card-4:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+
+
+
+/* ---------------------------------------image-array-5----------------------------------------- */
+
+/* Image array container */
+#image-array-5 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+/* Each image card */
+.image-card-5 {
+    background-color: #f1fffe;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: calc(20% - 10px); /* Responsive 3 columns */
+    padding: 13px;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Image styling */
+.image-card-5 img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    image-rendering: pixelated; /* Ensures sharp pixel art scaling */
+}
+
+/* Image info (text) styling */
+.image-5-info p {
+    font-size: 0.9rem;
+    margin: 10px 0;
+    color: #555;
+}
+
+/* Hover effect */
+.image-card-5:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+
+/* ---------------------------------------image-array-6----------------------------------------- */
+
+/* Image array container */
+#image-array-6 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+/* Each image card */
+.image-card-6 {
+    background-color: #f1fffe;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: calc(16.6% - 10px); /* Responsive 3 columns */
+    padding: 13px;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Image styling */
+.image-card-6 img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    image-rendering: pixelated; /* Ensures sharp pixel art scaling */
+}
+
+/* Image info (text) styling */
+.image-6-info p {
+    font-size: 0.9rem;
+    margin: 10px 0;
+    color: #555;
+}
+
+/* Hover effect */
+.image-card-6:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+
+
+
+
+
+
+/* -------------------------------------------image-array-7------------------------------------- */
+
+
+/* Image array container */
+#image-array-7 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 3px;
+    margin-top: 3px;
+}
+
+/* Each image card */
+.image-card-7 {
+    background-color: #f1fffe;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: calc(14.3% - 10px); /* Responsive 3 columns */
+    padding: 5px;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Image styling */
+.image-card-7 img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    image-rendering: pixelated; /* Ensures sharp pixel art scaling */
+}
+
+/* Image info (text) styling */
+.image-7-info p {
+    font-size: 0.9rem;
+    margin: 6px 0;
+    color: #555;
+}
+
+/* Hover effect */
+.image-card-7:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
