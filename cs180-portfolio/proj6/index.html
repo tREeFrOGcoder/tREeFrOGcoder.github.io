@@ -110,6 +110,12 @@
                                 <p><strong>Chessboard Refocused</strong></p>
                                 <p>Depth=[-1, 3.4], Step Size=0.2</p>
                             </div>
+
+                            <img src="src/truck_refocusing_-2-2_new.gif" alt="">
+                            <div class="image-single-info">
+                                <p><strong>Truck Refocused</strong></p>
+                                <p>Depth=[-2, 2], Step Size=0.2</p>
+                            </div>
                         </div>
                     </section>
                     <p> </p>
@@ -124,35 +130,46 @@
                         <div class="image-card-large">
                             <img src="src/No_GPU.png" alt="">
                             <div class="image-single-info">
-                                <p>Pure CPU: 218 minutes 42.3 s</p>
+                                <p><strong>Pure CPU</strong>: 218 minutes 42.3 s</p>
                             </div>
                         </div>
 
                         <div class="image-card-large">
                             <img src="src/GPU.png" alt="">
                             <div class="image-single-info">
-                                <p><strong>GPU Accelerated: 2 minutes 22.9 s</strong></p>
+                                <p><strong>GPU Accelerated</strong>: 2 minutes 22.9 s</p>
                             </div>
                         </div>
                     </section>
-                    
-
-                    
+                
                 </section>
                 
                 <!-- Section2 -->
                 <section id="section12" class="subsection">
                     <h2>Part 2: Aperture Adjustment</h2>
                     <ul>
-                        <li>The key part of this section is to generate images given a Diffusion model,</li>
-                        <li>Since the model is trained to denoise following a noise shedule</li>
-                        <li>It's hallucination nature would result in inperfect reconstruction of the image from pure noise, which is useful for us to generating new images that also lie on the image manifold.</li>
-                        <li>The key to make the generation work is to construct good sampling procedures that guide the model to denoise on the right image at the right timestep for the desired result.</li>
+                        <li>Changing aperture of a real camera lead to different depth of field.</li>
+                        <li>Larger apertures correspond to more shallow depth of field,</li>
+                        <li>which is more blurry on the pixels that are out-of-focus,</li>
+                        <li>easily emphasizing the objects that are really in focus.</li>
+                        <li>We implement this effect by simply controlling the number of images we use for averaging!</li>
+                        <li>After an aperture value is set, the images far away from the center image will not be taken into account.</li>
+                        <li><strong>Relation goes as:</strong></li>
+                        <li>fewer images averaged, less blurry, mimic smaller aperture</li>
+                        <li>more images averaged, more blurry, mimic larger aperture</li>
                     </ul>
-                </section>
-                
-            </section>
 
+                    <section id="image-array-single">
+                        <div class="image-card-single">
+                            <img src="src/treasure_aperture_0_10.gif" alt="">
+                            <div class="image-single-info">
+                                <p><strong>Treasure Aperture Adjusment</strong></p>
+                                <p>Aperture size: [0, 10]</p>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+            </section>
 
 
 
