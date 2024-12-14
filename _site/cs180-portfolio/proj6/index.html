@@ -383,13 +383,81 @@
                 </section>
 
 
-
+                
                 <!-- Section3 -->
                 <section id="section23" class="subsection">
                     <h2>Bells & Whistles: Mixed Gradients</h2>
                     <ul>
-                        <li>The key part of this section is to generate images given a Diffusion model,</li>
+                        <li>For mixed gradients, we modify the Poisson blending process to only keep large differences in gradient magnitudes.</li>
+                        <li>Instead of directly using the source gradient differences, we take the maximum absolute gradient value between the source and target at each step.</li>
+                        <li>In this way, we can expect the textures inside background image to be preserved and that source object can become somewhat transparent occasiaonlly.</li>
                     </ul>
+
+
+
+                    <p><strong>Cal Logo on a Brick Wall (Fixed!)</strong> </p>
+                    <section id="image-array-small">
+                        <div class="image-card-small">
+                            <img src="p2/ori/cal.png" alt="">
+                            <div class="image-small-info">
+                                <p><strong>Source Object Image</strong></p>
+                            </div>
+                            <img src="p2/ori/wall.png" alt="">
+                            <div class="image-small-info">
+                                <p><strong>Background Image</strong></p>
+                            </div>
+                        </div>
+                        <div class="image-card-mid">
+                            <img src="p2/res/cal_wall_mix.png" alt="">
+                            <div class="image-mid-info">
+                                <p><strong>Poisson Blended</strong></p>
+                            </div>
+                        </div>
+                    </section>
+
+
+
+                    <p><strong>Whale Over Berkeley Campus</strong> </p>
+                    <section id="image-array-small">
+                        <div class="image-card-small">
+                            <img src="p2/ori/whale.png" alt="">
+                            <div class="image-small-info">
+                                <p><strong>Source Object Image</strong></p>
+                            </div>
+                            <img src="p2/ori/bcamp.png" alt="">
+                            <div class="image-small-info">
+                                <p><strong>Background Image</strong></p>
+                            </div>
+                        </div>
+                        <div class="image-card-mid">
+                            <img src="p2/res/whale_bcamp_mix.png" alt="">
+                            <div class="image-mid-info">
+                                <p><strong>Poisson Blended</strong></p>
+                            </div>
+                        </div>
+                    </section>
+
+
+                    <p><strong>Jellyfish In the Mountains</strong> </p>
+                    <section id="image-array-small">
+                        <div class="image-card-small">
+                            <img src="p2/ori/jellyfish.png" alt="">
+                            <div class="image-small-info">
+                                <p><strong>Source Object Image</strong></p>
+                            </div>
+                            <img src="p2/ori/sky.png" alt="">
+                            <div class="image-small-info">
+                                <p><strong>Background Image</strong></p>
+                            </div>
+                        </div>
+                        <div class="image-card-mid">
+                            <img src="p2/res/jellyfish_sky_mix.png" alt="">
+                            <div class="image-mid-info">
+                                <p><strong>Poisson Blended</strong></p>
+                            </div>
+                        </div>
+                    </section>
+
                 </section>
                 
             </section>
