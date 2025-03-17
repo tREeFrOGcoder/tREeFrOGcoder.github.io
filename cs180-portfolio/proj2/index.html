@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Page Draft</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+</head>
+<body>
+    <div class="container">
+
+        <!-- Super large cover image section -->
+        <section class="cover-image">
+            <img src="src/2.1/gru.png" alt="Cover Image" class="cover-img">
+            <div class="title-block">
+                <h1>Fun with Frequencies: </h1>
+                <h2>Sharpening, Hybriding, Blending and more </h2>
+            </div>
+        </section>
+
+
+        <!-- Sidebar with navigation -->
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="#section1">1 Fun Filters</a></li>
+                    <ul>
+                        <li><a href="#section1.1">1.1 FDO</a></li>
+                        <li><a href="#section1.2">1.2 DoG</a></li>
+                    </ul>
+                    <li><a href="#section2">2 Fun Frequencies!</a></li>
+                    <ul>
+                        <li><a href="#section2.1">2.1 Sharpening</a></li>
+                        <li><a href="#section2.2">2.2 Hybriding</a></li>
+                        <li><a href="#section2.3">2.3 G/L Stack</a></li>
+                        <li><a href="#section2.4">2.4 Blending!</a></li>
+                    </ul>
+                
+                </ul>
+            </nav>
+        </aside>
+
+        
+        <!-- Main content section -->
+        <main class="content">
+            
+            <!-- Section 1 -->
+            <section id="section1" class="section">
+                <h1>1 Fun Filters</h1>
+
+
+
+                <section id="section1.1" class="section">
+                    <h3>1.1 FDO: Finite Difference Operator</h3>
+                    <div class="content-flex">
+                        <ul>
+                            <li>In section 1.1, we will derive and test a naive finite difference filter to perform the classic edge detection task.</li>
+                            <li>Finite difference operator is defined as:</li>
+                            <p>
+                                \( \mathbf{D}_x = \begin{bmatrix} 1 & -1 \end{bmatrix}, \quad \mathbf{D}_y = \begin{bmatrix} 1 \\ -1 \end{bmatrix} \)
+                            </p>
+                            <li>Then we convolve the image first with \(\mathbf{D}_x \) obtaining all vertical edges (img: grad_x), then with \(\mathbf{D}_y\) extracting all horizontal edges (img: grad_y).</li>
+                            <li>Then, we compute the gradient magnitude with a simple \(\sqrt{\mathbf{D}_x^2 + \mathbf{D}_y^2}\), which gives the edge image (img: grad_mag).</li>
+                            <li>Finally, choosing a threshold value of 0.28, we take the image with pixel value higher than threshold as the edge image (img: edge_image).</li>
+                        </ul>                
+                        <p>&nbsp;&nbsp;</p>
+
+                        <section id="image-array-single">
+                            <div class="image-card-single">
+                                <img src="src/1.1/original.png" alt="Section 1 Image">
+                                <div class="image-single-info">
+                                    <p><strong>Original: Cameraman</strong></p>
+                                    <p>Shape: (542, 540, 4)</p>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    
+                    <section id="image-array-condense">
+                        <div class="image-card-condense">
+                            <img src="src/1.1/grad_x.png" alt="grad_x">
+                            <div class="image-condense-info">
+                                <p>grad_x</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.1/grad_y.png" alt="grad_y">
+                            <div class="image-condense-info">
+                                <p>grad_y</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.1/grad_mag.png" alt="grad_mag">
+                            <div class="image-condense-info">
+                                <p>grad_mag</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.1/edge_image.png" alt="edge_image">
+                            <div class="image-condense-info">
+                                <p>edge_image</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+                </section>
+
+                <p>&nbsp;&nbsp;</p>
+
+                <section id="section1.2" class="section">
+                    <h3>1.2 DoG: Derivative of Gaussian Filter</h3>
+
+                    <ul>   
+                        <li>To get rid of noise, in section 2.1, we derive two ways:</li>
+                        <li><strong>Method 1:</strong></li>
+                        <ul>   
+                            <li>First get a 2D Gaussian kernel using an outer product between two 1D Gaussian obtained from <code>cv2.getGaussianKernel()</code>.</li>
+                            <li>Then, convolve the image with the Gaussian kernel to get a blurred image.</li>
+                            <li>Next, we compute the gradient magnitude of the blurred image using the same method as in section 1.1.</li>
+                            <li>Finally, we choose a threshold to get the edge image.</li>
+                        </ul>
+                    </ul>
+
+
+                    <section id="image-array-condense">
+                        <div class="image-card-condense">
+                            <img src="src/1.2.1/blurred_image.png" alt="blurred_image">
+                            <div class="image-condense-info">
+                                <p>blurred_image</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.2.1/grad_x_blurred.png" alt="grad_x_blurred">
+                            <div class="image-condense-info">
+                                <p>grad_x from blurred_image</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.2.1/grad_y_blurred.png" alt="grad_y_blurred">
+                            <div class="image-condense-info">
+                                <p>grad_y from blurred_image</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.2.1/grad_mag_blurred.png" alt="grad_mag_blurred">
+                            <div class="image-condense-info">
+                                <p>grad_mag from blurred_image</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.2.1/edge_image_blurred.png" alt="edge_image">
+                            <div class="image-condense-info">
+                                <p>edge_image</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+
+
+
+                    <p>&nbsp;&nbsp;</p>
+
+                    <li><strong>Method 2:</strong></li>
+
+                    <div class="content-flex">
+                        <ul>   
+                            <li>First, we use the Gaussian to convolve with \(\mathbf{D}_x \) and \(\mathbf{D}_y \) to obtain two blurred filters.</li>
+                            <li>Second, we convolve the original image with these two blurred filters respectively to obtain (img: grad_x_DoG) and (img: grad_y_DoG)</li>
+                            <li>Then, we compute the gradient magnitude as in section 1.1 (img: grad_mag_DoG).</li>
+                            <li>Finally, we choose a threshold to get the edge image (img: edge_image_DoG).</li>
+                        </ul>
+
+                        <p>&nbsp;</p>
+
+                        <section id="image-array-single">
+                            <div class="image-card-single">
+                                <img src="src/1.2.2/DoG_x_s.png" alt="DoG_x_s">
+                                <div class="image-single-info">
+                                    <p>DoG_x Filter</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="image-array-single">
+                            <div class="image-card-single">
+                                <img src="src/1.2.2/DoG_y_s.png" alt="DoG_y_s">
+                                <div class="image-single-info">
+                                    <p>DoG_y Filter</p>
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
+
+                    <section id="image-array-condense">
+
+                        <div class="image-card-condense">
+                            <img src="src/1.1/original.png" alt="blurred_x">
+                            <div class="image-condense-info">
+                                <p>blurred_x</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.2.2/grad_x_DoG.png" alt="grad_x_DoG">
+                            <div class="image-condense-info">
+                                <p>grad_x_DoG</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.2.2/grad_y_DoG.png" alt="grad_y_DoG">
+                            <div class="image-condense-info">
+                                <p>grad_y_DoG</p>
+                            </div>
+                        </div>
+                        
+                        <div class="image-card-condense">
+                            <img src="src/1.2.2/grad_mag_DoG.png" alt="grad_mag_DoG">
+                            <div class="image-condense-info">
+                                <p>grad_mag_DoG</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/1.2.2/edge_image_DoG.png" alt="edge_image_DoG">
+                            <div class="image-condense-info">
+                                <p>edge_image_DoG</p>
+                            </div>
+                        </div>  
+
+                    </section>
+                
+                <p></p>
+
+                <li>It's easily observable that edge_image from Method 1 looks almost identical to edge_image_DoG from Method 2, proving that convolution is indeed associative and commutative.</li>
+                
+                </section>
+
+            </section>
+
+            <p>&nbsp;&nbsp;</p>
+
+            <hr class="custom-line">
+
+
+            <!-- Section 2 -->
+            <section id="section2" class="section">
+                <h1>2 Fun with Frequencies!</h1>
+
+                <section id="section2.1" class="section">
+                    <h3>2.1 Image "Sharpening"</h3>
+                    <ul>
+                        <li>How to sharpen an image? The idea is pretty simple in this implementation.</li>
+                        <li>First, we blur the image using a Gaussian filter with a kernel size of 5.</li>
+                        <li>Then, we subtract the blurred image from the original image to get the high frequency features of the image.</li>
+                        <li>Finally, we add the high frequency features back to the original image to get the sharpened image with <strong>fake but convincing</strong> details. The intensity of the weighted high frequency image is gauged by <code>alpha</code>.</li>
+                    </ul>
+
+                    <p></p>
+
+                    <h4><strong>Sample Image: Taj</strong></h4>
+
+                    <section id="image-array-condense">
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/taj.png" alt="taj">
+                            <div class="image-condense-info">
+                                <p>Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/taj_sharpened_1.png" alt="taj_sharpened_1">
+                            <div class="image-condense-info">
+                                <p>alpha = 1</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/taj_sharpened_2.png" alt="taj_sharpened_2">
+                            <div class="image-condense-info">
+                                <p>alpha = 2</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/taj_sharpened_10.png" alt="taj_sharpened_10">
+                            <div class="image-condense-info">
+                                <p>alpha = 10</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <p>&nbsp;&nbsp;</p>
+
+                    <h4><strong>Self Selected: Gru</strong></h4>
+
+                    <section id="image-array-condense">
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/gru.png" alt="gru">
+                            <div class="image-condense-info">
+                                <p>Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/gru_sharpened_1.png" alt="gru_sharpened_1">
+                            <div class="image-condense-info">
+                                <p>alpha = 1</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/gru_sharpened_4.png" alt="gru_sharpened_4">
+                            <div class="image-condense-info">
+                                <p>alpha = 4</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/gru_sharpened_10.png" alt="gru_sharpened_10">
+                            <div class="image-condense-info">
+                                <p>alpha = 10</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <p>&nbsp;&nbsp;</p>
+
+
+
+                    <h4><strong>Self Selected: Crease Pattern of Forest Scorpion 3.0 by Kota Imai</strong></h4>
+
+                    <section id="image-array-condense">
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/cp.png" alt="cp">
+                            <div class="image-condense-info">
+                                <p>Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/cp_sharpened_1.png" alt="cp_sharpened_1">
+                            <div class="image-condense-info">
+                                <p>alpha = 1</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/cp_sharpened_2.png" alt="cp_sharpened_2">
+                            <div class="image-condense-info">
+                                <p>alpha = 2</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/cp_sharpened_10.png" alt="cp_sharpened_10">
+                            <div class="image-condense-info">
+                                <p>alpha = 10</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <p>Notice the color of blue and red seems to disappear after sharpening! This is one typical drawback of this kind of sharpening, with high frequency part still being colored, the "sharpened" part actually becomes darker and darker as alpha goes up.</p>
+
+
+                    <p>&nbsp;&nbsp;</p>
+
+
+                    <h4><strong>Evaluation: Blurred and Resharpened Tomato</strong></h4>
+
+                    <section id="image-array-condense">
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/tomato.png" alt="tomato">
+                            <div class="image-condense-info">
+                                <p>Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/tomato_blurred.png" alt="tomato_blurred">
+                            <div class="image-condense-info">
+                                <p>Blurred</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/tomato_sharpened_5.png" alt="tomato_sharpened_5">
+                            <div class="image-condense-info">
+                                <p>Resharpened: alpha = 2</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.1/tomato_sharpened_20.png" alt="tomato_sharpened_20">
+                            <div class="image-condense-info">
+                                <p>Resharpened: alpha = 20</p>
+                            </div>
+                        </div>
+                    </section>
+                    <p>Observation: most details are recovered but really detailed and good features like the fluff texture on the stem of the tomato is permenantly lost.</p>
+
+                </section>
+
+                <p>&nbsp;&nbsp;</p>
+
+
+                <section id="section2.2" class="section">
+                    <h3>2.2 Image Hybriding</h3>
+                    <ul>
+                        <li>How to make a hybrid image? The idea is also simple. (But the implementation is lot of hard work).</li>
+                        <li>First, we choose img1 as the one to keep high frequency features and img2 as the one to keep low frequency features.</li>
+                        <li>For img1, we blur it with a hand-picked kernel sigma, and keep the high frequency features by subtracting the blurred one from the original, similar to what we did in section 2.1.</li>
+                        <li>For img2, we blur it with a hand-picked kernel sigma, and keep the low frequency directly after the low-pass filtering.</li>
+                        <li>Here are the results:</li>
+                    </ul>
+
+                    <p>&nbsp;&nbsp;</p>
+
+                    <h4><strong>Nutrek (sample images)</strong></h4>
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/nutrek/DerekPicture.jpg" alt="DerekPicture">
+                            <div class="image-small-info">
+                                <p>Derek Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/nutrek/nutmeg.jpg" alt="nutmeg">
+                            <div class="image-small-info">
+                                <p>Nutmeg Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/nutrek/nutmeg_derek_3_5_crop.jpg" alt="nutmeg_derek_3_5_crop">
+                            <div class="image-small-info">
+                                <p>Nutmeg_Derek (both colored)</p>
+                                <p>\(\sigma_1=3, \sigma_2=5\)</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+                    <p>&nbsp;&nbsp;</p>
+
+                    <h4><strong>Bells & Whistles:</strong> Which looks better? Colored or Gray</h4>
+
+                    <section id="image-array-condense">
+
+                        <div class="image-card-condense">
+                            <img src="src/2.2/nutrek/nutmeg_derek_3_5.jpg" alt="nutmeg_derek_3_5">
+                            <div class="image-condense-info">
+                                <p>Nutmeg: Colored</p>
+                                <p>Derek: Colored</p>
+                                <p>\(\sigma_1=3, \sigma_2=5\)</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.2/nutrek/nutmeg_derekG_7_5.jpg" alt="nutmeg_derekG_7_5">
+                            <div class="image-condense-info">
+                                <p>Nutmeg: Colored</p>
+                                <p>Derek: Gray</p>
+                                <p>\(\sigma_1=7, \sigma_2=5\)</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.2/nutrek/nutmegG_derek_7_5.jpg" alt="nutmegG_derek_7_5">
+                            <div class="image-condense-info">
+                                <p>Nutmeg: Gray</p>
+                                <p>Derek: Colored</p>
+                                <p>\(\sigma_1=7, \sigma_2=5\)</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.2/nutrek/nutmegG_derekG_3_5.jpg" alt="nutmegG_derekG_3_5">
+                            <div class="image-condense-info">
+                                <p>Nutmeg: Gray</p>
+                                <p>Derek: Gray</p>
+                                <p>\(\sigma_1=3, \sigma_2=5\)</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.2/nutrek/nutmeg_derekG_21_5.jpg" alt="nutmeg_derekG_21_5">
+                            <div class="image-condense-info">
+                                <p>!Failure Case!</p>
+                                <p>Nutmeg: Colored</p>
+                                <p>Derek: Gray</p>
+                                <p>\(\sigma_1=21, \sigma_2=5\)</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <p>Observation: Generally, when high freqeuncy retains only lines/textures (aka. Gray) and low frequency keeps all the blurry color, things look the best. The first line of 4 exapmles are not very intuitive but the fifth image with the colored cat (high-freq) having lapha=21 really pushes to the extreme case and surely looks bad.</p>
+
+
+                    <p>&nbsp;&nbsp;</p>
+
+                    <h4><strong>Elonaltman (Fav!)</strong></h4>
+                    (Spoiler Alert: This are the images I will perform frequency analysis on.)
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/elonaltman/elon.jpg" alt="elon">
+                            <div class="image-small-info">
+                                <p>Elon Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/elonaltman/altman.jpg" alt="altman">
+                            <div class="image-small-info">
+                                <p>Altman Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/elonaltman/elon_altman_7_5_crop.jpg" alt="elon_altman_7_5_crop">
+                            <div class="image-small-info">
+                                <p>Elon_Altman (both colored)</p>
+                                <p>\(\sigma_1=7, \sigma_2=5\)</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+
+
+                    <p>&nbsp;&nbsp;</p>
+
+                    <h4><strong>Catiger</strong></h4>
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/catiger/cat2.jpg" alt="cat2">
+                            <div class="image-small-info">
+                                <p>Cat Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/catiger/tiger2.jpg" alt="tiger2">
+                            <div class="image-small-info">
+                                <p>Tiger Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/catiger/cat2G_tiger2_7_5_crop.jpg" alt="cat2G_tiger2_7_5_crop">
+                            <div class="image-small-info">
+                                <p>Cat_Tiger (Cat: Gray, Tiger: colored)</p>
+                                <p>\(\sigma_1=7, \sigma_2=5\)</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+                    <p>I also played around using colored Cat and colored Tiger to hybrid, which is not good looking since the color of cat actually enhanced the red-ish and yellow-ish thing. Failed images are omitted.</p>
+
+
+
+                    <p>&nbsp;&nbsp;</p>
+
+                    <h4><strong>Hamelon</strong></h4>
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/hamelon/hamster.jpg" alt="hamster">
+                            <div class="image-small-info">
+                                <p>Hamster Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/hamelon/watermelon.jpg" alt="watermelon">
+                            <div class="image-small-info">
+                                <p>Watermelon Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.2/hamelon/hamster_watermelon_11_13_crop.jpg" alt="hamster_watermelon_11_13_crop">
+                            <div class="image-small-info">
+                                <p>Hamster_Watermelon (both colored)</p>
+                                <p>\(\sigma_1=11, \sigma_2=13\)</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+
+                    <p>&nbsp;&nbsp;</p>
+
+                    <h4><strong>Fav Set: Elonaltman Frequency Analysis</strong></h4>
+
+                    <section id="image-array-condense">
+                        <div class="image-card-condense">
+                            <img src="src/2.2/elonaltman/elon_freq.jpg" alt="elon_freq">
+                            <div class="image-condense-info">
+                                <p>Elon Original Frequency</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.2/elonaltman/elon_high_freq.jpg" alt="elon_high_freq">
+                            <div class="image-condense-info">
+                                <p>Elon High Frequency</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.2/elonaltman/altman_freq.jpg" alt="altman_freq">
+                            <div class="image-condense-info">
+                                <p>Altman Original Frequency</p>
+                            </div>
+                        </div>
+                        
+                        <div class="image-card-condense">
+                            <img src="src/2.2/elonaltman/altman_low_freq.jpg" alt="altman_low_freq">
+                            <div class="image-condense-info">
+                                <p>Altman Low Frequency</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.2/elonaltman/elon_altman_freq.jpg" alt="elon_altman_freq">
+                            <div class="image-condense-info">
+                                <p>Elon_Altman Frequency</p>
+                            </div>
+                        </div>
+                    
+                    </section>
+
+
+
+
+
+
+
+                    <p>&nbsp;&nbsp;</p>
+
+                    <h4>Kiwibara: <strong>A Failure Case!</strong></h4>
+
+                    <section id="image-array-condense">
+
+                        <div class="image-card-condense">
+                            <img src="src/2.2/failure/kiwi.jpg" alt="kiwi">
+                            <div class="image-condense-info">
+                                <p>Kiwi Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.2/failure/capybara.jpg" alt="capybara">
+                            <div class="image-condense-info">
+                                <p>Capybara Original</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.2/failure/kiwibara_1_7.jpg" alt="kiwibara_1_7">
+                            <div class="image-condense-info">
+                                <p>Kiwi_Capybara (both colored)</p>
+                                <p>\(\sigma_1=1, \sigma_2=7\)</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.2/failure/kiwibara_3_5.jpg" alt="kiwibara_3_5">
+                            <div class="image-condense-info">
+                                <p>Kiwi_Capybara (both colored)</p>
+                                <p>\(\sigma_1=3, \sigma_2=5\)</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <p>The key problem with this failure is that: the high frequency image (Kiwi) doesn't really have enough textures/lines for human eyes to identify! So when hybriding these two together, people can see the capybara pretty well, but the Kiwi always looks like a stain or artifact...</p>
+
+                </section>
+
+                <p>&nbsp;&nbsp;</p>
+                <hr class="custom-line">
+
+
+                <section id="section2.3" class="section">
+                    <h3>2.3 Gaussian and Laplacian Stacks</h3>
+                    
+                    <ul>
+                        <li>Below will first display a Gaussian Stack of Apple, then a Laplacian Stack of Apple.</li>
+                        <li>Then, we will display a Gaussian Stack of Orange, then a Laplacian Stack of Orange.</li>
+                        <li>Taking level 0, 1, 2, 4 for each image.</li>
+                    </ul>
+
+                    <section id="image-array-condense">
+
+                        <div class="image-card-condense">
+                            <img src="src/2.3/oraple/apple_gaussian_0.png" alt="apple_gaussian_0">
+                            <div class="image-condense-info">
+                                <p>Gaussian Level: 0</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.3/oraple/apple_gaussian_1.png" alt="apple_gaussian_1">
+                            <div class="image-condense-info">
+                                <p>Gaussian Level: 1</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.3/oraple/apple_gaussian_2.png" alt="apple_gaussian_2">
+                            <div class="image-condense-info">
+                                <p>Gaussian Level: 2</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.3/oraple/apple_gaussian_4.png" alt="apple_gaussian_4">
+                            <div class="image-condense-info">
+                                <p>Gaussian Level: 4</p>
+                            </div>
+                        </div>
+
+                    
+                    </section>
+
+
+
+
+                    <section id="image-array-condense">
+
+                        <div class="image-card-condense">
+                            <img src="src/2.3/oraple/apple_laplacian_0.png" alt="apple_laplacian_0">
+                            <div class="image-condense-info">
+                                <p>Laplacian Level: 0</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.3/oraple/apple_laplacian_1.png" alt="apple_laplacian_1">
+                            <div class="image-condense-info">
+                                <p>Laplacian Level: 1</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.3/oraple/apple_laplacian_2.png" alt="apple_laplacian_2">
+                            <div class="image-condense-info">
+                                <p>Laplacian Level: 2</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.3/oraple/apple_laplacian_4.png" alt="apple_laplacian_4">
+                            <div class="image-condense-info">
+                                <p>Laplacian Level: 4</p>
+                            </div>
+                        </div>
+
+                    
+                    </section>
+
+
+
+
+
+
+                    <section id="image-array-condense">
+
+                        <div class="image-card-condense">
+                            <img src="src/2.3/oraple/orange_gaussian_0.png" alt="orange_gaussian_0">
+                            <div class="image-condense-info">
+                                <p>Gaussian Level: 0</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.3/oraple/orange_gaussian_1.png" alt="orange_gaussian_1">
+                            <div class="image-condense-info">
+                                <p>Gaussian Level: 1</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.3/oraple/orange_gaussian_2.png" alt="orange_gaussian_2">
+                            <div class="image-condense-info">
+                                <p>Gaussian Level: 2</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.3/oraple/orange_gaussian_4.png" alt="orange_gaussian_4">
+                            <div class="image-condense-info">
+                                <p>Gaussian Level: 4</p>
+                            </div>
+                        </div>
+
+                    
+                    </section>
+
+
+
+
+                    <section id="image-array-condense">
+
+                        <div class="image-card-condense">
+                            <img src="src/2.3/oraple/orange_laplacian_0.png" alt="orange_laplacian_0">
+                            <div class="image-condense-info">
+                                <p>Laplacian Level: 0</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.3/oraple/orange_laplacian_1.png" alt="orange_laplacian_1">
+                            <div class="image-condense-info">
+                                <p>Laplacian Level: 1</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.3/oraple/orange_laplacian_2.png" alt="orange_laplacian_2">
+                            <div class="image-condense-info">
+                                <p>Laplacian Level: 2</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-condense">
+                            <img src="src/2.3/oraple/orange_laplacian_4.png" alt="orange_laplacian_4">
+                            <div class="image-condense-info">
+                                <p>Laplacian Level: 4</p>
+                            </div>
+                        </div>
+
+                    
+                    </section>
+
+
+
+
+
+
+
+
+
+
+
+                    <p>&nbsp;&nbsp;</p>
+
+
+                    <ul>
+                        <li>Here is the recreation of the classic figure:</li>
+                    </ul>
+
+
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple/left_laplacian_scaled_masked_0.png" alt="left_laplacian_scaled_masked_0">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 0</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple/right_laplacian_scaled_masked_0.png" alt="right_laplacian_scaled_masked_0">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 0</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple/blended_laplacian_scaled_masked_0.png" alt="blended_laplacian_scaled_masked_0">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 0</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple/left_laplacian_scaled_masked_1.png" alt="left_laplacian_scaled_masked_1">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 1</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple/right_laplacian_scaled_masked_1.png" alt="right_laplacian_scaled_masked_1">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 1</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple/blended_laplacian_scaled_masked_1.png" alt="blended_laplacian_scaled_masked_1">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 1</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+
+
+
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple/left_laplacian_scaled_masked_2.png" alt="left_laplacian_scaled_masked_2">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 2</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple/right_laplacian_scaled_masked_2.png" alt="right_laplacian_scaled_masked_2">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 2</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple/blended_laplacian_scaled_masked_2.png" alt="blended_laplacian_scaled_masked_2">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 2</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+
+
+
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple/left_laplacian_scaled_masked_3.png" alt="left_laplacian_scaled_masked_3">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 3</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple/right_laplacian_scaled_masked_3.png" alt="right_laplacian_scaled_masked_3">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 3</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple/blended_laplacian_scaled_masked_3.png" alt="blended_laplacian_scaled_masked_3">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 3</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple/left_laplacian_scaled_masked_4.png" alt="left_laplacian_scaled_masked_4">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 4</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple/right_laplacian_scaled_masked_4.png" alt="right_laplacian_scaled_masked_4">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 4</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple/blended_laplacian_scaled_masked_4.png" alt="blended_laplacian_scaled_masked_4">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 4</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+
+
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple/left_reconstructed.png" alt="left_reconstructed">
+                            <div class="image-small-info">
+                                <p>Reconstructed</p>
+                            </div>
+                        </div>
+                        
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple/right_reconstructed.png" alt="right_reconstructed">
+                            <div class="image-small-info">
+                                <p>Reconstructed</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple/blended_reconstructed.png" alt="blended_reconstructed">
+                            <div class="image-small-info">
+                                <p>Reconstructed</p>
+                            </div>
+                        </div>
+                        
+                    </section>
+
+                    <p>&nbsp;&nbsp;</p>
+
+                    <h3>Addition Bells & Whistles included!!! Cheat the seaming line.</h3>
+                    <p>However parameter tuning I tried, there is always a seam line that is somewhat visible. So, to overcome the isseu, I found a way to cheat a little bit by replacing the mask for level 0 laplacian stack! The noticeable seam line in the reconstructed image mainly comes from the 0-th level of the Laplacian stack because the mask on that level has a hard edge! So a very cheap way to overcome that is simply using a Gaussian blurred mask in the 0-th level and keeps blurring away! This cheating method turns out to be quite good. Check out the images below. First row is new cheated level 0 from three masked Laplacian stacks. Second row is the reconstructed. All other parameters remain the same, aka. kernel = 7, sigma = 3.</p>
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple_cheat/left_laplacian_scaled_masked_0.png" alt="left_laplacian_scaled_masked_0">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 0</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple_cheat/right_laplacian_scaled_masked_0.png" alt="right_laplacian_scaled_masked_0">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 0</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple_cheat/blended_laplacian_scaled_masked_0.png" alt="blended_laplacian_scaled_masked_0">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 0</p>
+                            </div>
+                        </div>
+         
+                    </section>
+
+
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple_cheat/left_reconstructed.png" alt="left_reconstructed">
+                            <div class="image-small-info">
+                                <p>Reconstructed</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple_cheat/right_reconstructed.png" alt="right_reconstructed">
+                            <div class="image-small-info">
+                                <p>Reconstructed</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/oraple_cheat/blended_reconstructed.png" alt="blended_reconstructed">
+                            <div class="image-small-info">
+                                <p>Reconstructed</p>
+                            </div>
+                        </div>
+         
+                    </section>
+
+                </section>
+
+                <p>&nbsp;&nbsp;</p>
+
+
+
+                <section id="section2.4" class="section">
+                    <h3>2.4 Multiresolution Blending</h3>
+                    <p>Nothing to say here, just interesting applications.</p>
+
+                    <p><strong>BananaSage</strong></p>
+                    <p>Alert: this is what sausage will look like when it's radioactive!</p>
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/bananasage/banana_adjusted.png" alt="banana_adjusted">
+                            <div class="image-small-info">
+                                <p>Banana</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/bananasage/sausage_adjusted.png" alt="sausage_adjusted">
+                            <div class="image-small-info">
+                                <p>Sausage</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/bananasage/bananasage_mask.png" alt="bananasage_mask">
+                            <div class="image-small-info">
+                                <p>Bananasage Mask</p>
+                            </div>
+                        </div>
+                    </section>
+
+
+
+                    <section id="image-array-single">
+                        <div class="image-card-single">
+                            <img src="src/2.3/bananasage/blended_reconstructed.png" alt="blended_reconstructed">
+                            <div class="image-single-info">
+                                <p><strong>BananaSage</strong></p>
+                            </div>
+                        </div>
+                    </section>
+
+
+
+
+                    <p>&nbsp;&nbsp;</p>
+                    <p><strong>DoplerCream (Fav!)</strong></p>
+                    <p>Looks like another episode of Cloudy with a Chance of Meatballs has just arrived.</p>
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/dopler_adjusted.png" alt="dopler_adjusted">
+                            <div class="image-small-info">
+                                <p>Dopler</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/icecream_adjusted.png" alt="icecream_adjusted">
+                            <div class="image-small-info">
+                                <p>Icecream</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/doplercream_mask.png" alt="doplercream_mask">
+                            <div class="image-small-info">
+                                <p>Doplercream Mask</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+                    <section id="image-array-single">
+                        <div class="image-card-single">
+                            <img src="src/2.3/doplercream/blended_reconstructed.png" alt="blended_reconstructed">
+                            <div class="image-single-info">
+                                <p><strong>DoplerCream</strong></p>
+                            </div>
+                        </div>
+                    </section>
+
+
+
+
+                    <p>&nbsp;&nbsp;</p>
+                    <p><strong>Huh?</strong></p>
+                    <p>This one doesn't look good...the edges are too clear...I already used the cheating method mentioned before...</p>
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/huh_cheat/black_adjusted.png" alt="black_adjusted">
+                            <div class="image-small-info">
+                                <p>Dude Confused meme</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/huh_cheat/butterfly_adjusted.png" alt="butterfly_adjusted">
+                            <div class="image-small-info">
+                                <p>Is this hell? meme</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/huh_cheat/huh_mask.png" alt="huh_mask">
+                            <div class="image-small-info">
+                                <p>The Face Mask</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+                    <section id="image-array-single">
+                        <div class="image-card-single">
+                            <img src="src/2.3/huh_cheat/blended_reconstructed.png" alt="blended_reconstructed">
+                            <div class="image-single-info">
+                                <p><strong>Triple Confused</strong></p>
+                            </div>
+                        </div>
+                    </section>
+
+
+
+
+                    <p>&nbsp;&nbsp;</p>
+
+                    <p>Analysis of my favorite DoplerCream result</p>
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/left_laplacian_scaled_masked_0.png" alt="left_laplacian_scaled_masked_0">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 0</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/right_laplacian_scaled_masked_0.png" alt="right_laplacian_scaled_masked_0">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 0</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/blended_laplacian_scaled_masked_0.png" alt="blended_laplacian_scaled_masked_0">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 0</p>
+                            </div>
+                        </div>
+         
+                    </section>
+
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/left_laplacian_scaled_masked_1.png" alt="left_laplacian_scaled_masked_1">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 1</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/right_laplacian_scaled_masked_1.png" alt="right_laplacian_scaled_masked_1">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 1</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/blended_laplacian_scaled_masked_1.png" alt="blended_laplacian_scaled_masked_1">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 1</p>
+                            </div>
+                        </div>
+         
+                    </section>
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/left_laplacian_scaled_masked_2.png" alt="left_laplacian_scaled_masked_2">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 2</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/right_laplacian_scaled_masked_2.png" alt="right_laplacian_scaled_masked_2">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 2</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/blended_laplacian_scaled_masked_2.png" alt="blended_laplacian_scaled_masked_2">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 2</p>
+                            </div>
+                        </div>
+         
+                    </section>
+
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/left_laplacian_scaled_masked_3.png" alt="left_laplacian_scaled_masked_3">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 3</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/right_laplacian_scaled_masked_3.png" alt="right_laplacian_scaled_masked_3">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 3</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/blended_laplacian_scaled_masked_3.png" alt="blended_laplacian_scaled_masked_3">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 3</p>
+                            </div>
+                        </div>
+         
+                    </section>
+
+
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/left_laplacian_scaled_masked_4.png" alt="left_laplacian_scaled_masked_4">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 4</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/right_laplacian_scaled_masked_4.png" alt="right_laplacian_scaled_masked_4">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 4</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/blended_laplacian_scaled_masked_4.png" alt="blended_laplacian_scaled_masked_4">
+                            <div class="image-small-info">
+                                <p>Laplacian Level: 4</p>
+                            </div>
+                        </div>
+         
+                    </section>
+
+
+
+
+
+                    <section id="image-array-small">
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/left_reconstructed.png" alt="left_reconstructed">
+                            <div class="image-small-info">
+                                <p>Reconstructed</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/right_reconstructed.png" alt="right_reconstructed">
+                            <div class="image-small-info">
+                                <p>Reconstructed</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-small">
+                            <img src="src/2.3/doplercream/blended_reconstructed.png" alt="blended_reconstructed">
+                            <div class="image-small-info">
+                                <p>Reconstructed</p>
+                            </div>
+                        </div>
+         
+                    </section>
+
+                    
+
+
+
+
+
+
+                    
+
+
+
+
+                    
+
+                    
+                </section>
+                
+            </section>
+            
+        </main>
+    </div>
+</body>
+</html>
