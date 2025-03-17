@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archer's Projects</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="src/me/head.png">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="http://127.0.0.1:5676">Homepage</a>
+        </nav>
+        <button class="dark-switch" id="darkSwitch" aria-label="Toggle Dark Mode">☾</button>
+    </header>
+
+    <script>
+        // Get the button and the document body
+        const darkSwitch = document.getElementById("darkSwitch");
+        const body = document.body;
+    
+        // Check for previously saved theme preference
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+            body.classList.toggle("dark", savedTheme === "dark");
+            darkSwitch.textContent = savedTheme === "dark" ? "☼" : "☾";
+        }
+    
+        // Add event listener to toggle dark mode
+        darkSwitch.addEventListener("click", () => {
+            const isDark = body.classList.toggle("dark");
+            darkSwitch.textContent = isDark ? "☼" : "☾";
+            localStorage.setItem("theme", isDark ? "dark" : "light"); // Save theme preference
+        });
+    </script>
+
+    <div class="container">
+        <aside>
+            <div class="profile-picture">
+                <img src="project_pic.png" alt="Profile Photo">
+            </div>
+
+        </aside>
+        <main>
+            <section id="about">
+                <h1>Welcome!!!</h1>
+                <p>You've found my stash of some interesting projects~</p>
+            </section>
+
+            <section id="research">
+                <h2>List</h2>
+                <ul>
+                    <li><a href="https://treefrogcoder.github.io/cs180-portfolio/" target="_blank">CS180 Intro to CV/CP: Portfolio</a></li>
+                    <li><a href="https://github.com/tREeFrOGcoder/RoadSimLight" target="_blank">INDENG174: RoadLight Sim</a></li>
+                    <li><a href="https://github.com/tREeFrOGcoder/TEDD-Ranker" target="_blank">TEDD-Ranker (NAACL2025)</li>
+                </ul>
+                
+
+            </section>
+
+        </main>
+    </div>
+
+    <button id="go-to-top" class="go-to-top">↑ <strong>Top</strong></button>
+
+    <script>
+        // Get the Go to Top button
+        const goToTopButton = document.getElementById("go-to-top");
+    
+        // Show/Hide button based on scroll position
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 200) {
+                goToTopButton.classList.add("show");
+            } else {
+                goToTopButton.classList.remove("show");
+            }
+        });
+    
+        // Scroll to the top when button is clicked
+        goToTopButton.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    </script>
+    
+
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ziche Liu's Personal Page</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="../src/me/head.png">
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="../">Homepage</a>
+    </nav>
+    <button class="dark-switch" id="darkSwitch" aria-label="Toggle Dark Mode">☾</button>
+  </header>
+
+  <main>
+    <section id="gallery">
+      <h1> </h1>
+      <h1>Photography Gallery</h1>
+
+      <div class="photo-grid invisible">
+        <!-- Each photo now only needs one definition of title/timestamp in data-* attributes.
+             The inner .photo-info markup has been removed to avoid duplication.
+             (You may add a hover overlay via JS or CSS if desired using the data attributes.) -->
+        <div class="photo"
+             data-title="Addison Street View"
+             data-timestamp="2025-01-19">
+          <img src="photos/AddisonStreet.png" alt="AddisonStreet">
+        </div>
+
+        <div class="photo"
+             data-title="Bald Cypress"
+             data-timestamp="2024-01-03">
+          <img src="photos/BaldCypress.png" alt="BaldCypress">
+        </div>
+
+        <div class="photo"
+             data-title="Carpenter Bee"
+             data-timestamp="2024-05-03">
+          <img src="photos/CarpenterBee.png" alt="CarpenterBee">
+        </div>
+
+        <div class="photo"
+             data-title="Tiger Beetle"
+             data-timestamp="2023-06-10">
+          <img src="photos/tigerbeetle.png" alt="tigerbeetle">
+        </div>
+
+
+        <div class="photo"
+             data-title="Damselfly"
+             data-timestamp="2024-08-16">
+          <img src="photos/Damselfy.png" alt="Damselfly">
+        </div>
+
+
+        <div class="photo"
+             data-title="Nymphalidae"
+             data-timestamp="2023-06-10">
+          <img src="photos/Nymphalidae.png" alt="Nymphalidae">
+        </div>
+
+        
+
+        <div class="photo"
+             data-title="European Mantis"
+             data-timestamp="2024-08-15">
+          <img src="photos/Mantis.png" alt="Mantis">
+        </div>
+
+        <div class="photo"
+             data-title="Church at Yosemite"
+             data-timestamp="2024-08-15">
+          <img src="photos/Church.png" alt="Church">
+        </div>
+
+
+        <div class="photo"
+             data-title="Half Moon Bay"
+             data-timestamp="2025-01-12">
+          <img src="photos/HalfMoonBay.png" alt="HalfMoonBay">
+        </div>
+
+
+        <div class="photo"
+             data-title="Mural"
+             data-timestamp="2025-01-09">
+          <img src="photos/Mural.png" alt="Mural">
+        </div>
+
+        
+
+        <div class="photo"
+             data-title="Pur"
+             data-timestamp="2024-06-21">
+          <img src="photos/Pur.png" alt="Pur">
+        </div>
+
+        <!-- <div class="photo"
+             data-title="Steller's jay"
+             data-timestamp="2025-01-20">
+          <img src="photos/StellerJay.PNG" alt="StellerJay">
+        </div> -->
+
+    
+        <div class="photo"
+            data-title="Blakiston's Fish Owl (designed by Katsuta Kyohei)"
+            data-timestamp="2024-10-12">
+          <img src="photos/Owl.png" alt="Owl">
+        </div>
+
+        <!-- <div class="photo"
+             data-title=""
+             data-timestamp="2025-01-19">
+          <img src="photos/" alt="">
+        </div> -->
+
+       
+      </div>
+    </section>
+  </main>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox">
+    <span class="close-lightbox">&times;</span>
+    <img id="lightbox-img" src="" alt="Enlarged photo">
+    <div class="lightbox-info">
+      <div id="lightbox-title" class="lightbox-title"></div>
+      <div id="lightbox-timestamp" class="lightbox-timestamp"></div>
+    </div>
+  </div>
+
+  <!-- Toggle Dark Mode Script -->
+  <script>
+    // Get the button and the document body
+    const darkSwitch = document.getElementById("darkSwitch");
+    const body = document.body;
+
+    // Check for previously saved theme preference
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      body.classList.toggle("dark", savedTheme === "dark");
+      darkSwitch.textContent = savedTheme === "dark" ? "☼" : "☾";
+    }
+
+    // Add event listener to toggle dark mode
+    darkSwitch.addEventListener("click", () => {
+      const isDark = body.classList.toggle("dark");
+      darkSwitch.textContent = isDark ? "☼" : "☾";
+      localStorage.setItem("theme", isDark ? "dark" : "light"); // Save theme preference
+    });
+  </script>
+
+  <!-- Go to top button -->
+  <button id="go-to-top" class="go-to-top">↑ <strong>Top</strong></button>
+
+  <!-- Scripts -->
+  <script>
+    // Show/hide Go to Top button
+    const goToTopButton = document.getElementById("go-to-top");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 200) {
+        goToTopButton.classList.add("show");
+      } else {
+        goToTopButton.classList.remove("show");
+      }
+    });
+    // Scroll to top
+    goToTopButton.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+
+    
+
+    // Lightbox functionality
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightbox-img");
+    const lightboxTitle = document.getElementById("lightbox-title");
+    const lightboxTimestamp = document.getElementById("lightbox-timestamp");
+    const closeLightbox = document.querySelector(".close-lightbox");
+
+    document.querySelectorAll(".photo").forEach(photo => {
+      photo.addEventListener("click", () => {
+        const img = photo.querySelector("img");
+        // Set lightbox info
+        lightboxImg.src = img.src;
+        lightboxTitle.textContent = photo.dataset.title;
+        lightboxTimestamp.textContent = photo.dataset.timestamp;
+        // Show lightbox
+        lightbox.style.display = "flex";
+      });
+    });
+
+    closeLightbox.addEventListener("click", () => {
+      lightbox.style.display = "none";
+    });
+
+
+  </script>
+  <!-- Gallery Layout Script -->
+  <script src="gallery-layout.js"></script>
+
+</body>
+</html>

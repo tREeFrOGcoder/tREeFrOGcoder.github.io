@@ -1,0 +1,682 @@
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Dark Mode */
+body.dark {
+    background-color: #0f172a; /* Dark background */
+    color: #bac0c8; /* Light text color */
+}
+
+body.dark .profile-picture img {
+    filter: brightness(92%); /* Reduce brightness and slightly lower contrast */
+    opacity: 0.9; /*Add subtle transparency*/
+    /* transition: filter 0.1s ease, opacity 0.1s ease; Smooth transition effect */
+}
+
+body.dark .profile-picture img:hover {
+    filter: brightness(100%); /* Restore some brightness on hover for emphasis */
+    opacity: 1; /* Remove transparency on hover */
+    transition: filter 0.2s ease, opacity 0.2s ease; /* Smooth transition effect */
+}
+
+body.dark a {
+    color: #508dd7; /* Links in dark mode */
+}
+
+body.dark a:hover {
+    color: #6399da; /* Hover color for links in dark mode */
+}
+
+body.dark header {
+    background-color: #1e293b; /* Header background */
+}
+
+body.dark .venue-block {
+    background-color: #334155; /* Venue block background */
+    color: #bac0c8; /* Text color for venue block in dark mode */
+}
+
+body.dark .profile-picture img {
+    border-color: #334155; /* Dark border for profile picture */
+}
+
+body.dark .email-link .tooltip {
+    background-color: #1e293b; /* Tooltip dark background */
+    color: #bac0c8; /* Tooltip text color */
+}
+
+body.dark nav a {
+    color: #508dd7; /* Navigation links in dark mode */
+}
+
+body.dark nav a:hover {
+    color: #5da0f2; /* Navigation hover color */
+}
+
+
+body.dark .publication .authors {
+    color: #bac0c8; /* Authors text color */
+}
+
+body.dark .publication .tldr {
+    font-size: 0.9em;
+    color: #bac0c8;
+}
+
+body.dark .go-to-top {
+    background-color: #334155; /* Button background */
+    color: #bac0c8; /* Button text */
+}
+
+body.dark .go-to-top:hover {
+    background-color: #3d6db8; /* Button hover background */
+}
+
+
+
+
+
+/* Default icon styling for light mode */
+svg.icon path {
+    /* stroke: var(--cool-a); Default text color */
+    fill: var(--cool-a);
+    transition: stroke 0.5s ease; /* Smooth transition effect */
+}
+
+/* Icon styling for dark mode */
+body.dark svg.icon path {
+    fill: #508dd7; /* Bright color for dark mode */
+    transition: stroke 0.5s ease; /* Smooth transition effect */
+}
+
+
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* General Reset */
+body, h1, h2, h3, p, a, nav, section, aside {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #edf7f9; /* Cool light background */
+    color: #1a2930; /* Deep bluish text color */
+    line-height: 1.5;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Hyperlink Styling */
+
+/* General Hyperlink Styling */
+a {
+    color: #336b87; /* Cool accent color for hyperlinks */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.5s ease;
+    /* transition: color 0.2s ease, background-color 0.2s ease; */
+    /* background-color: rgba(51, 107, 135, 0.3); Subtle background highlight */
+    /* padding: 0 0.1em; Slight padding for better visibility */
+    /* border-radius: 3px; Rounded edges for subtle distinction */
+}
+
+/* Hover Effect */
+a:hover {
+    color: #264d59; /* Darker accent color for hover state */
+    text-decoration: underline; /* Underline effect on hover */
+    /* background-color: rgba(51, 107, 135, 0.6); More prominent background highlight */
+}
+
+/* Visited Links */
+a:visited {
+    color: #336b87; /* Keep visited links consistent with unvisited links */
+    /* opacity: 0.85; Slightly subdued opacity for visited links */
+}
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Header Navigation */
+header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    background-color: #b0dfe6; /* Cool soft blue background */
+    padding: 1em 2em;
+    transition: background-color 0.5s ease;
+    z-index: 500;
+}
+
+nav {
+    display: flex;
+    gap: 4em;
+    /* margin-right: 8em; */
+}
+
+nav a {
+    text-decoration: none;
+    color: #336b87;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #264d59;
+}
+
+
+/* Toggle Button */
+.dark-switch {
+    /* position: fixed; */
+    /* margin-right: 1em; */
+    /* top: 0.5em; */
+    padding-left: 3em;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #5da0f2;
+    outline: none;
+    transition: color 0.5s ease;
+}
+
+.dark-switch:hover {
+    color: #3d6db8;
+}
+
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Layout */
+.container {
+    display: flex;
+    flex-direction: row;
+    gap: 2em;
+    padding: 2em;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+aside {
+    flex: 1;
+    max-width: 250px;
+    margin-left: 2em;
+    margin-right: 2em;
+}
+
+
+main {
+    flex: 3;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    max-width: 1200px; /* Limit line width for better readability */
+    margin-right: auto; /* Add margin to the right */
+    margin-left: auto; /* Center the content for balance */
+    padding: 0 1em; /* Add some padding on the left and right for spacing */
+}
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Sidebar */
+
+/* .profile-picture img {
+    width: 100%;
+    border-radius: 8px;
+    border: 2px solid #edf7f9;
+} */
+
+.profile-picture img {
+    width: 100%;
+    max-width: 200px; /* Ensure the photo doesn't get too large */
+    aspect-ratio: 1 / 1; /* Force a square aspect ratio */
+    border-radius: 50%;
+    /* border-radius: 10%; */
+    border: 4px solid #cbeaf1; /* Optional: Add a border for aesthetics */
+    box-shadow: 0 4px 6px #1a293030; /* Optional: Add a subtle shadow */
+    transition: filter 0.5s ease, opacity 0.5s ease, border-color 0.5s ease; /* Smooth transition effect */
+}
+
+.external-links {
+    margin-left: 0.5em;
+    margin-top: 1em;
+    transition: filter 0.5s ease;
+}
+
+.external-links a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #336b87;
+    margin-bottom: 0.5em;
+    transition: color 0.5s ease;
+}
+
+.external-links img {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.5em;
+}
+
+.external-links a:hover {
+    color: #264d59;
+    text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Email Link Tooltip */
+.email-link {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.email-link .tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 100%; /* Position the tooltip below the link */
+    left: 50%; /* Center align the tooltip */
+    transform: translateX(-50%);
+    background-color: #b0dfe6; /* Cool tooltip background */
+    color: #1a2930; /* Tooltip text color */
+    padding: 0.5em;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 0.9em;
+    box-shadow: 0 4px 6px #1a293030;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 10; /* Ensure it appears above other content */
+}
+
+.email-link:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Main Content */
+section {
+    padding: 1em 0;
+    border-bottom: 1px solid #d3e5ea;
+    scroll-margin-top: 56px; /* Adjust this value to match the height of your sticky navbar */
+}
+
+section:last-child {
+    border-bottom: none;
+}
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Publications Section */
+#publications .publication {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5em;
+    /* transition: color 0.5s ease; */
+}
+
+.venue-and-title {
+    display: flex; /* Display the venue block and title side by side */
+    align-items: center; /* Vertically align the venue block and title */
+    gap: 0.5em; /* Add some space between the venue block and the title */
+    /* transition: color 0.5s ease; */
+}
+
+.venue-block {
+    background-color: #b0dfe6; /* Cool venue block background */
+    color: #1a2930;
+    font-size: 0.7em;
+    padding: 0.2em 0.6em;
+    border-radius: 4px;
+    font-weight: bold;
+    flex-shrink: 0; /* Prevents the block from resizing */
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.publication h3 {
+    font-size: 1.0em;
+    font-weight: bold;
+    margin: 0;
+    /* line-height: 1.3; */
+}
+
+
+.publication .authors {
+    font-size: 0.9em;
+    color: #1a2930;
+    margin-top: 0.2em;
+    transition: color 0.5s ease;
+}
+
+.publication a {
+    font-size: 0.9em;
+    color: #336b87;
+    text-decoration: none;
+    font-weight: bold;
+    /* margin-right: 0.5em; */
+    transition: color 0.5s ease;
+}
+
+.publication a:hover {
+    color: #264d59;
+    text-decoration: underline;
+}
+
+.publication .tldr {
+    font-size: 0.9em;
+    color: #1a2930;
+    /* margin-top: 0.5em; */
+    /* line-height: 1.2; */
+    transition: color 0.5s ease;
+}
+
+/* Ensure a clean look for all publication items */
+.publication:last-child {
+    margin-bottom: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Go to Top Button */
+.go-to-top {
+    position: fixed;
+    bottom: 2em; /* Distance from the bottom of the page */
+    right: 2em; /* Distance from the right side of the page */
+    aspect-ratio: 1 / 1;
+    background-color: var(--cool-a);
+    color: var(--cool-bg);
+    border: none;
+    /* padding: 0.2em 0.2em; */
+    border-radius: 50%; /* Circular button */
+    font-size: 0.9em;
+    box-shadow: 0 4px 6px #1a293030;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.5s ease, transform 0.5s ease, background-color 0.5s ease, color 0.5s ease;
+    visibility: hidden; /* Hidden by default */
+    z-index: 1000; /* Ensure it floats above all content */
+}
+
+.go-to-top:hover {
+    opacity: 1; /* Fully visible when hovered */
+    transform: scale(1.1); /* Slightly larger when hovered */
+}
+
+.go-to-top.show {
+    visibility: visible; /* Show when scrolled down */
+    opacity: 0.4; /* Reset opacity when shown */
+}
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* ========== Gallery Section ========== */
+/* ========== Gallery Section ========== */
+#gallery {
+    width: 100%; /* Full-width section */
+    max-width: none; /* No maximum width constraint */
+    margin: 0 auto; /* Center if needed */
+    padding: 0; /* Adjust padding as necessary */
+  }
+  
+  #gallery h1 {
+    text-align: center;
+    margin-bottom: 1em;
+  }
+  
+  /* Photo Grid Container */
+  .photo-grid {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 0;
+    margin: 0 auto;
+    box-sizing: border-box; /* Include padding and borders in width */
+  }
+  
+  /* Individual Photo Container */
+  .photo {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    /* Width and height are set dynamically via JavaScript */
+    transition: width 0.5s ease, height 0.5s ease;
+  }
+  
+  /* Photo Image Styling */
+  .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  
+  /* Optional zoom effect on hover (uncomment if desired) */
+  /*
+  .photo:hover img {
+    transform: scale(1.03);
+  }
+  */
+  
+  /* 
+   * Removed the old gradient pseudo-element to avoid conflicts.
+   * The new overlay element (.photo-overlay) will handle the hover effect.
+   *
+   * .photo::before {
+   *   content: "";
+   *   position: absolute;
+   *   left: 0;
+   *   right: 0;
+   *   bottom: 0;
+   *   height: 50%;
+   *   background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+   *   transform: translateY(100%);
+   *   transition: transform 0.3s ease;
+   *   pointer-events: none;
+   *   z-index: 1;
+   * }
+   * .photo:hover::before {
+   *   transform: translateY(0);
+   * }
+   */
+  
+  /* Hover Overlay using Data Attributes */
+  .photo-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    color: #fff;
+    padding: 0.5em;
+    font-size: 1em;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none; /* Allows hover events to pass through to .photo if needed */
+    z-index: 3; /* Ensure overlay appears above the image */
+  }
+  
+  .photo:hover .photo-overlay {
+    opacity: 1;
+  }
+  
+  .photo-overlay .overlay-title {
+    font-weight: bold;
+    margin-bottom: 0.2em;
+  }
+  
+  .photo-overlay .overlay-timestamp {
+    font-size: 0.9em;
+  }
+  
+
+
+
+
+
+
+
+
+
+
+  
+  /* ========== Lightbox ========== */
+.lightbox {
+    display: none;
+    flex-direction: column; /* stack top to bottom */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 70%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Close button in the top-right corner. */
+.lightbox .close-lightbox {
+    position: absolute;
+    top: 1em;
+    right: 2em;
+    font-size: 2em;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Info below the enlarged image. */
+.lightbox-info {
+    margin-top: 1em;
+    text-align: center;
+    color: #fff;
+}
+
+/* A bit bigger text for the title. */
+.lightbox-title {
+    font-size: 1.4em;
+    margin-bottom: 0.3em;
+}
+
+/* Lightbox timestamp slightly smaller. */
+.lightbox-timestamp {
+    font-size: 1.1em;
+}
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* New: Initially hide the photo grid to prevent unarranged photos from showing */
+.invisible {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+
+
+
+
+  
+
+
+  
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Color Customization */
+:root {
+    --cool-a: #336b87; /* Accent color */
+    --cool-bg: #edf7f9; /* Background color */
+    --cool-text: #1a2930; /* Text color */
+    --cool-hover: #264d59; /* Hover state color */
+}
+

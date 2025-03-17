@@ -1,0 +1,360 @@
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* General Reset */
+body, h1, h2, h3, p, a, nav, section, aside {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #fdf9f3;
+    color: #1c1412;
+    line-height: 1.5;
+}
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Hyperlink Styling */
+
+/* General Hyperlink Styling */
+a {
+    color: #8a4a32; /* Warm accent color for hyperlinks */
+    text-decoration: none;
+    font-weight: bold;
+    /* transition: color 0.2s ease, background-color 0.2s ease; */
+    /* background-color: rgba(255, 220, 193, 0.3); Subtle background highlight */
+    /* padding: 0 0.1em; Slight padding for better visibility */
+    /* border-radius: 3px; Rounded edges for subtle distinction */
+}
+
+/* Hover Effect */
+a:hover {
+    color: #5f3225; /* Darker accent color for hover state */
+    text-decoration: underline; /* Underline effect on hover */
+    /* background-color: rgba(255, 220, 193, 0.6); More prominent background highlight */
+}
+
+/* Visited Links */
+a:visited {
+    color: #8a4a32; /* Keep visited links consistent with unvisited links */
+    /* opacity: 0.85; Slightly subdued opacity for visited links */
+}
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Header Navigation */
+header {
+    background-color: #ffdcc1;
+    padding: 1em 0;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 3em;
+}
+
+nav a {
+    text-decoration: none;
+    color: #8a4a32;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #5f3225;
+}
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Layout */
+.container {
+    display: flex;
+    flex-direction: row;
+    padding: 2em;
+}
+
+aside {
+    flex: 1;
+    max-width: 250px;
+    margin-left: 2em;
+    margin-right: 2em;
+}
+
+
+main {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    max-width: 750px; /* Limit line width for better readability */
+    margin-right: auto; /* Add margin to the right */
+    margin-left: auto; /* Center the content for balance */
+    padding: 0 1em; /* Add some padding on the left and right for spacing */
+}
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Sidebar */
+
+/* .profile-picture img {
+    width: 100%;
+    border-radius: 8px;
+    border: 2px solid #faf5ec;
+} */
+
+.profile-picture img {
+    width: 100%;
+    max-width: 200px; /* Ensure the photo doesn't get too large */
+    aspect-ratio: 1 / 1; /* Force a square aspect ratio */
+    border-radius: 50%;
+    /* border-radius: 10%; */
+    border: 4px solid #feeada; /* Optional: Add a border for aesthetics */
+    box-shadow: 0 4px 6px #211d191c; /* Optional: Add a subtle shadow */
+}
+
+.external-links {
+    /* margin-left: 1.5em; */
+    margin-top: 1em;
+}
+
+.external-links a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #8a4a32;
+    margin-bottom: 0.5em;
+}
+
+.external-links img {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.5em;
+}
+
+.external-links a:hover {
+    color: #5f3225;
+    text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Email Link Tooltip */
+.email-link {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.email-link .tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 100%; /* Position the tooltip below the link */
+    left: 50%; /* Center align the tooltip */
+    transform: translateX(-50%);
+    background-color: #ffdcc1;
+    color: 1c1412;
+    padding: 0.5em;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 0.9em;
+    box-shadow: 0 4px 6px #211d191c;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 10; /* Ensure it appears above other content */
+}
+
+.email-link:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Main Content */
+section {
+    padding: 1em 0;
+    border-bottom: 1px solid #ccc;
+}
+
+section:last-child {
+    border-bottom: none;
+}
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Publications Section */
+#publications .publication {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5em;
+}
+
+.venue-and-title {
+    display: flex; /* Display the venue block and title side by side */
+    align-items: center; /* Vertically align the venue block and title */
+    gap: 0.5em; /* Add some space between the venue block and the title */
+}
+
+.venue-block {
+    background-color: #ffdcc1;
+    color: #1c1412;
+    font-size: 0.7em;
+    padding: 0.2em 0.6em;
+    border-radius: 4px;
+    font-weight: bold;
+    flex-shrink: 0; /* Prevents the block from resizing */
+}
+
+.publication h3 {
+    font-size: 1.0em;
+    font-weight: bold;
+    margin: 0;
+    /* line-height: 1.3; */
+}
+
+
+.publication .authors {
+    font-size: 0.9em;
+    color: #1c1412;
+    margin-top: 0.2em;
+}
+
+.publication a {
+    font-size: 0.9em;
+    color: #8a4a32;
+    text-decoration: none;
+    font-weight: bold;
+    /* margin-right: 0.5em; */
+}
+
+.publication a:hover {
+    color: #5f3225;
+    text-decoration: underline;
+}
+
+.publication .tldr {
+    font-size: 0.9em;
+    color: #1c1412;
+    /* margin-top: 0.5em; */
+    /* line-height: 1.2; */
+}
+
+/* Ensure a clean look for all publication items */
+.publication:last-child {
+    margin-bottom: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Go to Top Button */
+.go-to-top {
+    position: fixed;
+    bottom: 2em; /* Distance from the bottom of the page */
+    right: 2em; /* Distance from the right side of the page */
+    aspect-ratio: 1 / 1;
+    background-color: var(--warm-a);
+    color: var(--warm-bg);
+    border: none;
+    /* padding: 0.2em 0.2em; */
+    border-radius: 50%; /* Circular button */
+    font-size: 0.9em;
+    box-shadow: 0 4px 6px #211d191c;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    visibility: hidden; /* Hidden by default */
+    z-index: 1000; /* Ensure it floats above all content */
+}
+
+.go-to-top:hover {
+    opacity: 1; /* Fully visible when hovered */
+    transform: scale(1.1); /* Slightly larger when hovered */
+}
+
+.go-to-top.show {
+    visibility: visible; /* Show when scrolled down */
+    opacity: 0.4; /* Reset opacity when shown */
+}
+
+
+
+
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Color Customization */
+:root {
+    --warm-a: #8a4a32;
+    --warm-bg: #fdf9f3;
+    --warm-text: #1c1412;
+    --warm-hover: #5f3225;
+}

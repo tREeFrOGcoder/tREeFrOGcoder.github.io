@@ -1,66 +1,128 @@
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Dark Mode */
+body.dark {
+    background-color: #0f172a; /* Dark background */
+    color: #bac0c8; /* Light text color */
+}
+
+body.dark .profile-picture img {
+    filter: brightness(92%); /* Reduce brightness and slightly lower contrast */
+    opacity: 0.9; /*Add subtle transparency*/
+    /* transition: filter 0.1s ease, opacity 0.1s ease; Smooth transition effect */
+}
+
+body.dark .profile-picture img:hover {
+    filter: brightness(100%); /* Restore some brightness on hover for emphasis */
+    opacity: 1; /* Remove transparency on hover */
+    transition: filter 0.2s ease, opacity 0.2s ease; /* Smooth transition effect */
+}
+
+body.dark a {
+    color: #508dd7; /* Links in dark mode */
+}
+
+body.dark a:hover {
+    color: #6399da; /* Hover color for links in dark mode */
+}
+
+body.dark header {
+    background-color: #1e293b; /* Header background */
+}
+
+body.dark .venue-block {
+    background-color: #334155; /* Venue block background */
+    color: #bac0c8; /* Text color for venue block in dark mode */
+}
+
+body.dark .profile-picture img {
+    border-color: #334155; /* Dark border for profile picture */
+}
+
+body.dark .email-link .tooltip {
+    background-color: #1e293b; /* Tooltip dark background */
+    color: #bac0c8; /* Tooltip text color */
+}
+
+body.dark nav a {
+    color: #508dd7; /* Navigation links in dark mode */
+}
+
+body.dark nav a:hover {
+    color: #5da0f2; /* Navigation hover color */
+}
+
+
+body.dark .publication .authors {
+    color: #bac0c8; /* Authors text color */
+}
+
+body.dark .publication .tldr {
+    font-size: 0.9em;
+    color: #bac0c8;
+}
+
+body.dark .go-to-top {
+    background-color: #334155; /* Button background */
+    color: #bac0c8; /* Button text */
+}
+
+body.dark .go-to-top:hover {
+    background-color: #3d6db8; /* Button hover background */
+}
+
+
+
+
+
+/* Default icon styling for light mode */
+svg.icon path {
+    /* stroke: var(--cool-a); Default text color */
+    fill: var(--cool-a);
+    transition: stroke 0.5s ease; /* Smooth transition effect */
+}
+
+/* Icon styling for dark mode */
+body.dark svg.icon path {
+    fill: #508dd7; /* Bright color for dark mode */
+    transition: stroke 0.5s ease; /* Smooth transition effect */
+}
+
+
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
 /* General Reset */
-* {
+body, h1, h2, h3, p, a, nav, section, aside {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+
 body {
-    font-family: Georgia, serif;
-    font-size: 16px;
-    background-color: #ffffff;
-    color: #333;
-    line-height: 1.6;
-}
-
-
-
-
-.custom-line {
-    border: 0;
-    height: 2.5px;
-    background-image: linear-gradient(90deg, rgb(0, 0, 0), rgb(78, 132, 86) 40%, rgb(207, 255, 185));
-    margin: 15px;
-  }
-
-
-
-
-/* Cover Image Section */
-.cover-image {
-    position: absolute;
-    bottom: 180px;
-    left: 10px;
-    height: 80vh; /* Takes up 80% of the viewport height */
-    width: 100%;
-    overflow: hidden;
-}
-
-.cover-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensures the image covers the entire area */
-}
-
-/* Title block overlapping the bottom-left corner */
-.title-block {
-    position: absolute;
-    bottom: 20px;
-    left: 230px;
-    right: 30px;
-    background-color: rgba(0, 0, 0, 0.85); /* Semi-transparent background */
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-}
-
-.title-block h1 {
-    margin-bottom: 10px;
-    font-size: 3rem; /* Large title text */
-}
-
-.title-block h2 {
-    font-size: 2rem; /* Subheading size */
+    font-family: 'Arial', sans-serif;
+    background-color: #edf7f9; /* Cool light background */
+    color: #1a2930; /* Deep bluish text color */
+    line-height: 1.5;
+    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 
@@ -68,176 +130,179 @@ body {
 
 
 
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Hyperlink Styling */
+
+/* General Hyperlink Styling */
+a {
+    color: #336b87; /* Cool accent color for hyperlinks */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.5s ease;
+    /* transition: color 0.2s ease, background-color 0.2s ease; */
+    /* background-color: rgba(51, 107, 135, 0.3); Subtle background highlight */
+    /* padding: 0 0.1em; Slight padding for better visibility */
+    /* border-radius: 3px; Rounded edges for subtle distinction */
+}
+
+/* Hover Effect */
+a:hover {
+    color: #264d59; /* Darker accent color for hover state */
+    text-decoration: underline; /* Underline effect on hover */
+    /* background-color: rgba(51, 107, 135, 0.6); More prominent background highlight */
+}
+
+/* Visited Links */
+a:visited {
+    color: #336b87; /* Keep visited links consistent with unvisited links */
+    /* opacity: 0.85; Slightly subdued opacity for visited links */
+}
 
 
 
 
-/* Main container layout */
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Header Navigation */
+header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    background-color: #b0dfe6; /* Cool soft blue background */
+    padding: 1em 2em;
+    transition: background-color 0.5s ease;
+    z-index: 500;
+}
+
+nav {
+    display: flex;
+    gap: 4em;
+    /* margin-right: 8em; */
+}
+
+nav a {
+    text-decoration: none;
+    color: #336b87;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #264d59;
+}
+
+
+/* Toggle Button */
+.dark-switch {
+    /* position: fixed; */
+    /* margin-right: 1em; */
+    /* top: 0.5em; */
+    padding-left: 3em;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #5da0f2;
+    outline: none;
+    transition: color 0.5s ease;
+}
+
+.dark-switch:hover {
+    color: #3d6db8;
+}
+
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Layout */
 .container {
     display: flex;
-    min-height: 100vh;
+    flex-direction: row;
+    gap: 2em;
+    padding: 2em;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* Sidebar styling */
-.sidebar {
-    background-color: #eeeeee;
-    padding: 20px;
-    width: 220px;
-    border-right: 1px solid #ccc;
-    position: fixed;
-    height: 100%;
-    overflow-y: auto;
-}
-
-.sidebar nav ul {
-    list-style-type: none;
-}
-
-.sidebar nav ul li {
-    margin: 20px 0;
-}
-
-.sidebar nav ul li a {
-    text-decoration: none;
-    color: #333;
-    font-size: 1.1rem;
-}
-
-.sidebar nav ul li a:hover {
-    color: #007acc;
-}
-
-/* Content styling */
-.content {
-    margin-left: 220px;
-    padding: 40px;
-    padding-top: 86vh; /* Adjusted to accommodate the cover image */
-    background-color: #ffffff;
+aside {
     flex: 1;
+    max-width: 250px;
+    margin-left: 2em;
+    margin-right: 2em;
 }
 
-.content h1, .content h2, .content h3, .content h4 {
-    color: #333;
-    margin-bottom: 15px;
-}
 
-.content p {
-    margin-bottom: 20px;
-    font-size: 1.1rem;
-}
+main {
+    flex: 3;
 
-ul {
-    list-style-type: disc;
-    padding-left: 20px;
-}
-
-/* Layout for text and image in sections */
-.content-flex {
     display: flex;
-    justify-content: space-between;
-    align-items: start;
-    margin-bottom: 10px;
+    flex-direction: column;
+    gap: 2em;
+    max-width: 750px; /* Limit line width for better readability */
+    margin-right: auto; /* Add margin to the right */
+    margin-left: auto; /* Center the content for balance */
+    padding: 0 1em; /* Add some padding on the left and right for spacing */
 }
 
-.content-flex img {
-    flex-shrink: 1;
-}
 
-.section-image {
-    max-width: 48%;
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Sidebar */
+
+/* .profile-picture img {
+    width: 100%;
     border-radius: 8px;
-    
+    border: 2px solid #edf7f9;
+} */
+
+.profile-picture img {
+    width: 100%;
+    max-width: 200px; /* Ensure the photo doesn't get too large */
+    aspect-ratio: 1 / 1; /* Force a square aspect ratio */
+    border-radius: 50%;
+    /* border-radius: 10%; */
+    border: 4px solid #cbeaf1; /* Optional: Add a border for aesthetics */
+    box-shadow: 0 4px 6px #1a293030; /* Optional: Add a subtle shadow */
+    transition: filter 0.5s ease, opacity 0.5s ease, border-color 0.5s ease; /* Smooth transition effect */
 }
 
-.section-image-single {
-    max-width: 85%;
-    border-radius: 8px;
+.external-links {
+    margin-left: 0.5em;
+    margin-top: 1em;
+    transition: filter 0.5s ease;
 }
 
-/* Vertical image styling */
-.section-image-vertical {
-    height: 1500px;
-    width: 500px;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 768px) {
-    .content-flex {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .section-image, .section-image-vertical {
-        max-width: 100%;
-        height: auto;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .content {
-        padding: 20px;
-    }
-}
-
-
-
-
-
-
-
-
-/* Image array container */
-#image-array-large {
+.external-links a {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 20px;
-    margin-top: 40px;
+    align-items: center;
+    text-decoration: none;
+    color: #336b87;
+    margin-bottom: 0.5em;
+    transition: color 0.5s ease;
 }
 
-/* Each image card */
-.image-card-large {
-    background-color: #f1fffe;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: calc(50% - 20px); /* Responsive 2 columns */
-    padding: 13px;
-    text-align: center;
-    transition: transform 0.2s ease-in-out;
+.external-links img {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.5em;
 }
 
-/* Image styling */
-.image-card-large img {
-    max-width: 100%;
-    border-radius: 5px;
-}
-
-/* Image info (text) styling */
-.image-large-info p {
-    font-size: 1rem;
-    margin: 10px 0;
-    color: #555;
-}
-
-/* Hover effect */
-.image-card-large:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-}
-
-@media screen and (max-width: 768px) {
-    #image-array-large .image-card {
-        width: calc(50% - 10px); /* Responsive 2 columns for tablet */
-    }
-}
-
-@media screen and (max-width: 480px) {
-    #image-array-large .image-card {
-        width: 100%; /* Responsive 1 column for mobile */
-    }
+.external-links a:hover {
+    color: #264d59;
+    text-decoration: underline;
 }
 
 
@@ -247,6 +312,40 @@ ul {
 
 
 
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Email Link Tooltip */
+.email-link {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.email-link .tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 100%; /* Position the tooltip below the link */
+    left: 50%; /* Center align the tooltip */
+    transform: translateX(-50%);
+    background-color: #b0dfe6; /* Cool tooltip background */
+    color: #1a2930; /* Tooltip text color */
+    padding: 0.5em;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 0.9em;
+    box-shadow: 0 4px 6px #1a293030;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 10; /* Ensure it appears above other content */
+}
+
+.email-link:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
 
 
 
@@ -254,103 +353,215 @@ ul {
 
 
 
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Main Content */
+section {
+    padding: 1em 0;
+    border-bottom: 1px solid #d3e5ea;
+    scroll-margin-top: 56px; /* Adjust this value to match the height of your sticky navbar */
+}
+
+section:last-child {
+    border-bottom: none;
+}
 
 
-/* Image array container */
-#image-array-small {
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Publications Section */
+#publications .publication {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 40px;
+    flex-direction: column;
+    margin-bottom: 1.5em;
+    /* transition: color 0.5s ease; */
 }
 
-/* Each image card */
-.image-card-small {
-    background-color: #f1fffe;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: calc(33% - 10px); /* Responsive 3 columns */
-    padding: 13px;
-    text-align: center;
-    transition: transform 0.2s ease-in-out;
+/* Explicitly override the flex-direction for publications with images */
+#publications .publication.publication-with-image {
+    flex-direction: row;
 }
 
-/* Image styling */
-.image-card-small img {
-    max-width: 100%;
-    border-radius: 5px;
-}
-
-/* Image info (text) styling */
-.image-small-info p {
-    font-size: 0.9rem;
-    margin: 10px 0;
-    color: #555;
-}
-
-/* Hover effect */
-.image-card-small:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-}
-
-@media screen and (max-width: 768px) {
-    #image-array-small .image-card {
-        width: calc(33% - 10px); /* Responsive 3 columns for tablet */
-    }
-}
-
-@media screen and (max-width: 480px) {
-    #image-array-small .image-card {
-        width: 100%; /* Responsive 1 column for mobile */
-    }
-}
-
-
-
-
-
-
-
-
-/* Image array container */
-#image-array-single {
+/* Publication with image styling */
+.publication-with-image {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 20px;
-    margin-top: 1px;
+    flex-direction: row-reverse; /* Reverse order to put image on right */
+    gap: 1em;
+    margin-bottom: 1.5em;
+    align-items: flex-start;
+    width: 100%;
+    /* Enforce horizontal layout with nowrap */
+    flex-wrap: nowrap;
 }
 
-/* Each image card */
-.image-card-single {
-    background-color: #f1fffe;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: calc(100%); /* Responsive 1 columns */
-    padding: 13px;
-    text-align: center;
-    transition: transform 0.2s ease-in-out;
+/* Override any potential inherited column styles */
+.publication.publication-with-image {
+    flex-direction: row-reverse !important;
 }
 
-/* Image styling */
-.image-card-single img {
-    max-width: 100%;
-    border-radius: 5px;
+.publication-image {
+    margin-top: 0.2em;
+    flex: 0 0 30%; /* Fixed width of 1/6 */
+    max-width: 30%;
+    display: block; /* Ensure proper display */
 }
 
-/* Image info (text) styling */
-.image-single-info p {
-    font-size: 1rem;
-    margin: 10px 0;
-    color: #555;
+.publication-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(26, 41, 48, 0.1);
+    display: block;
 }
 
-/* Hover effect */
-.image-card-single:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+.publication-content {
+    flex: 1; /* Takes the remaining space */
+    display: flex;
+    flex-direction: column;
+    /* Remove width calculation that might be causing issues */
 }
+
+.publication-content h3 {
+    margin-top: 0; /* Remove any top margin for better alignment */
+    margin-bottom: 0.3em; /* Add space below the title */
+}
+
+.venue-and-title {
+    display: flex; /* Display the venue block and title side by side */
+    align-items: center; /* Vertically align the venue block and title */
+    gap: 0.5em; /* Add some space between the venue block and the title */
+    /* transition: color 0.5s ease; */
+}
+
+.venue-block {
+    background-color: #b0dfe6; /* Cool venue block background */
+    color: #1a2930;
+    font-size: 0.7em;
+    padding: 0.2em 0.6em;
+    border-radius: 4px;
+    font-weight: bold;
+    flex-shrink: 0; /* Prevents the block from resizing */
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.publication h3 {
+    font-size: 1.0em;
+    font-weight: bold;
+    margin: 0;
+    /* line-height: 1.3; */
+}
+
+
+.publication .authors {
+    font-size: 0.9em;
+    color: #1a2930;
+    margin-top: 0.2em;
+    transition: color 0.5s ease;
+}
+
+.publication a {
+    font-size: 0.9em;
+    color: #336b87;
+    text-decoration: none;
+    font-weight: bold;
+    /* margin-right: 0.5em; */
+    transition: color 0.5s ease;
+}
+
+.publication a:hover {
+    color: #264d59;
+    text-decoration: underline;
+}
+
+.publication .tldr {
+    font-size: 0.9em;
+    color: #1a2930;
+    /* margin-top: 0.5em; */
+    /* line-height: 1.2; */
+    transition: color 0.5s ease;
+}
+
+/* Dark mode adjustments for publication with image */
+body.dark .publication-image img {
+    filter: brightness(92%); 
+    opacity: 0.9;
+}
+
+body.dark .publication-image img:hover {
+    filter: brightness(100%);
+    opacity: 1;
+    transition: filter 0.2s ease, opacity 0.2s ease;
+}
+
+/* Ensure a clean look for all publication items */
+.publication:last-child {
+    margin-bottom: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Go to Top Button */
+.go-to-top {
+    position: fixed;
+    bottom: 2em; /* Distance from the bottom of the page */
+    right: 2em; /* Distance from the right side of the page */
+    aspect-ratio: 1 / 1;
+    background-color: var(--cool-a);
+    color: var(--cool-bg);
+    border: none;
+    /* padding: 0.2em 0.2em; */
+    border-radius: 50%; /* Circular button */
+    font-size: 0.9em;
+    box-shadow: 0 4px 6px #1a293030;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.5s ease, transform 0.5s ease, background-color 0.5s ease, color 0.5s ease;
+    visibility: hidden; /* Hidden by default */
+    z-index: 1000; /* Ensure it floats above all content */
+}
+
+.go-to-top:hover {
+    opacity: 1; /* Fully visible when hovered */
+    transform: scale(1.1); /* Slightly larger when hovered */
+}
+
+.go-to-top.show {
+    visibility: visible; /* Show when scrolled down */
+    opacity: 0.4; /* Reset opacity when shown */
+}
+
+
+
+
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Color Customization */
+:root {
+    --cool-a: #336b87; /* Accent color */
+    --cool-bg: #edf7f9; /* Background color */
+    --cool-text: #1a2930; /* Text color */
+    --cool-hover: #264d59; /* Hover state color */
+}
+

@@ -3,68 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Page Draft</title>
+    <title>Ziche Liu's Personal Page</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"
-    onload="renderMathInElement(document.body);"></script>
-
+    <link rel="icon" type="image/png" href="src/misc/dark3.PNG">
 </head>
 <body>
+    <header>
+        <nav>
+            <a href="#about">About</a>
+            <a href="#research">Research</a>
+            <a href="#publications">Publications</a>
+            <a href="#education">Edu & Honors</a>
+            <!-- <a href="http://127.0.0.1:5676/gallery/">Fun</a> -->
+            <a href="#fun">Fun</a>
+            <a href="http://zicheliu.com/projects/">Projects</a>
+        </nav>
+        <button class="dark-switch" id="darkSwitch" aria-label="Toggle Dark Mode">☾</button>
+    </header>
+
+    <script>
+        // Get the button and the document body
+        const darkSwitch = document.getElementById("darkSwitch");
+        const body = document.body;
+    
+        // Check for previously saved theme preference
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+            body.classList.toggle("dark", savedTheme === "dark");
+            darkSwitch.textContent = savedTheme === "dark" ? "☼" : "☾";
+        }
+    
+        // Add event listener to toggle dark mode
+        darkSwitch.addEventListener("click", () => {
+            const isDark = body.classList.toggle("dark");
+            darkSwitch.textContent = isDark ? "☼" : "☾";
+            localStorage.setItem("theme", isDark ? "dark" : "light"); // Save theme preference
+        });
+    </script>
+
     <div class="container">
-
-        <!-- Super large cover image section -->
-        <section class="cover-image">
-            <img src="DSC11654.JPG" alt="Cover Image" class="cover-img">
-            <div class="title-block">
-                <h1>Welcome!</h1>
-                <h2>This is Archer Liu's Personal Space</h2>
+        <aside>
+            <div class="profile-picture">
+                <img src="src/me/me8.png" alt="Profile Photo">
             </div>
-        </section>
 
 
-        <!-- Sidebar with navigation -->
-        <aside class="sidebar">
-            <nav>
-                <ul>
-                    <li><a href="#cs180-portfolio">CS180 Portfolio</a></li>
-                    <li><a href="#other">Other</a></li>
-                </ul>
-            </nav>
+            <div class="external-links">
+                <a href="https://scholar.google.com/citations?user=cQ0xpOkAAAAJ&hl=en&authuser=1" target="_blank">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="-8 -4 42 42" width="32" height="32">
+                        <path stroke="null" d="m16.07824,1.90458c-7.66251,0 -13.8874,6.2249 -13.8874,13.8874c0,7.66251 6.2249,13.8874 13.8874,13.8874c7.66251,0 13.8874,-6.2249 13.8874,-13.8874c0,-7.66251 -6.2249,-13.8874 -13.8874,-13.8874zm0,1.2076c7.00984,0 12.6798,5.66997 12.6798,12.6798c0,7.00984 -5.66997,12.6798 -12.6798,12.6798c-7.00984,0 -12.6798,-5.66997 -12.6798,-12.6798c0,-7.00984 5.66997,-12.6798 12.6798,-12.6798zm-2.4152,4.2266l-6.038,5.4342l4.09452,0c0.01208,1.71902 1.32008,3.46006 3.61572,3.46006c0.21737,0 0.45898,-0.0242 0.7005,-0.04835c-0.10868,0.27171 -0.22289,0.49493 -0.22289,0.86325c0,0.69437 0.35011,1.11099 0.65805,1.5095c-0.98419,0.06642 -2.81408,0.18081 -4.16056,1.02009c-1.28609,0.7789 -1.67814,1.90829 -1.67814,2.70531c0,1.64234 1.52158,3.16995 4.67945,3.16995c3.74356,0 5.7302,-2.10693 5.7302,-4.19004c0,-1.52761 -0.87023,-2.28275 -1.83027,-3.10391l-0.77833,-0.62149c-0.24152,-0.19322 -0.57432,-0.46512 -0.57432,-0.94816c0,-0.48908 0.33298,-0.80338 0.61677,-1.0932c0.91174,-0.72456 1.82909,-1.53941 1.82909,-3.18175c0,-0.62976 -0.14721,-1.14229 -0.35733,-1.56375l2.16873,-1.85975l0,2.23831c-0.35926,0.20891 -0.6038,0.59393 -0.6038,1.04014l0,3.6228c0,0.6666 0.541,1.2076 1.2076,1.2076c0.6666,0 1.2076,-0.541 1.2076,-1.2076l0,-3.6228c0,-0.4456 -0.24454,-0.83062 -0.6038,-1.04014l0,-3.18646c0,-0.02596 -0.01171,-0.04775 -0.01533,-0.07311l0.61913,-0.53069l-10.2646,0zm1.97414,1.95645c1.8114,0 2.74776,2.48148 2.74776,4.08155c0,0.39247 -0.04854,1.09887 -0.54366,1.6121c-0.3502,0.35624 -0.93527,0.62149 -1.48473,0.62149c-1.86574,0 -2.72418,-2.46294 -2.72418,-3.94829c0,-0.57361 0.11519,-1.1709 0.48351,-1.62979c0.3502,-0.45285 0.95976,-0.73706 1.52129,-0.73706zm1.06844,9.8837c0.22341,0 0.33318,0.00061 0.50828,0.02476c1.65441,1.19552 2.36685,1.79319 2.36685,2.9223c0,1.37063 -1.10543,2.39752 -3.20061,2.39752c-2.33067,0 -3.828,-1.12939 -3.828,-2.70531c0,-1.57592 1.3885,-2.10198 1.87155,-2.28312c0.91174,-0.31398 2.08872,-0.35615 2.28194,-0.35615z" id="svg_1"/>
+                    </svg>
+                    &nbsp;Scholar
+                </a>
+                <a href="https://github.com/tREeFrOGcoder" target="_blank">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="-8 -4 42 42" width="32" height="32">
+                        <path stroke="null" d="m15.70258,3.58548c-6.627,0 -12,5.373 -12,12c0,5.623 3.872,10.328 9.092,11.63c-0.056,-0.162 -0.092,-0.35 -0.092,-0.583l0,-2.051c-0.487,0 -1.303,0 -1.508,0c-0.821,0 -1.551,-0.353 -1.905,-1.009c-0.393,-0.729 -0.461,-1.844 -1.435,-2.526c-0.289,-0.227 -0.069,-0.486 0.264,-0.451c0.615,0.174 1.125,0.596 1.605,1.222c0.478,0.627 0.703,0.769 1.596,0.769c0.433,0 1.081,-0.025 1.691,-0.121c0.328,-0.833 0.895,-1.6 1.588,-1.962c-3.996,-0.411 -5.903,-2.399 -5.903,-5.098c0,-1.162 0.495,-2.286 1.336,-3.233c-0.276,-0.94 -0.623,-2.857 0.106,-3.587c1.798,0 2.885,1.166 3.146,1.481c0.896,-0.307 1.88,-0.481 2.914,-0.481c1.036,0 2.024,0.174 2.922,0.483c0.258,-0.313 1.346,-1.483 3.148,-1.483c0.732,0.731 0.381,2.656 0.102,3.594c0.836,0.945 1.328,2.066 1.328,3.226c0,2.697 -1.904,4.684 -5.894,5.097c1.098,0.573 1.899,2.183 1.899,3.396l0,2.734c0,0.104 -0.023,0.179 -0.035,0.268c4.676,-1.639 8.035,-6.079 8.035,-11.315c0,-6.627 -5.373,-12 -12,-12z" id="svg_1"/>
+
+                    </svg>
+                    &nbsp;GitHub
+                </a>
+                <a href="mailto:archerliu@berkeley.edu" class="email-link">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="-8 -4 42 42" width="32" height="32">
+                        <path stroke="null" d="m26.15719,7.11037l-19.91304,0a2.29766,2.30184 0 0 0 -2.29766,2.30184l0,13.81104a2.29766,2.30184 0 0 0 2.29766,2.30184l19.91304,0a2.29766,2.30184 0 0 0 2.29766,-2.30184l0,-13.81104a2.29766,2.30184 0 0 0 -2.29766,-2.30184zm-0.55144,1.53456l-9.40508,6.72904l-9.40508,-6.72904l18.81017,0zm1.31732,14.57832a0.76589,0.76728 0 0 1 -0.76589,0.76728l-19.91304,0a0.76589,0.76728 0 0 1 -0.76589,-0.76728l0,-13.63456l10.27819,7.35054a0.76589,0.76728 0 0 0 0.88843,0l10.27819,-7.35054l0,13.63456z"/>
+
+                    </svg>
+                    &nbsp;Email
+                    <span class="tooltip">archerliu@berkeley.edu</span>
+                </a>
+            </div>
+            
         </aside>
-
-        
-        <!-- Main content section -->
-        <main class="content">
-            
-            <!-- cs180-portfolio -->
-            <section id="cs180-portfolio" class="section">
-                <ul>
-                    <li><h1><a href="/cs180-portfolio/">CS180 Portfolio</a></h1></li>
-                </ul>
-            
+        <main>
+            <section id="about">
+                <h1>About</h1>
+                <p>Hi! I'm Ziche Liu, a junior undergrad at the Chinese University of Hong Kong, Shenzhen, supervised by <a href="https://www.colips.org/~eleliha/" target="_blank">Prof. Haizhou Li</a> and closely working with <a href="https://fjiangai.github.io/" target="_blank">Dr. Feng Jiang</a> with a focus on data selection techniques for LLM fine-tuning.</p>
+                <!-- <p>&nbsp;</p> -->
+                <p>Previously, I was also supervised by <a href="https://wabyking.github.io/old.html" target="_blank">Prof. Benyou Wang</a> and worked on some exicting projects about low-resource language grounding and bias analysis in LLM-as-a-judge.</p>
+                <p>&nbsp;</p>
+                <p>Currently, I'm a visiting student at UC Berkeley. [Cal sunshine certificate]</p>
             </section>
 
-            <!-- Other -->
-            <section id="other" class="section">
-                <ul>
-                    <li><h1><a href="/other/">Other</a></h1></li>
-                </ul>
-
-
-
-
-
-
-
-
-
-
-
+            <section id="research">
+                <h2>Research</h2>
+                <p>Generally, I have a broad interest in large language and vision models, old-school CV and NLP tricks and reinforcment learning. Practically, I've been exploring high-efficiency training methods in fine-tuning LLMs. Lately, I'm especially fascinated by LLM reasoning capabilities and model-based RL.</p>
+                <p>&nbsp;</p>
+                <p>I am also intrigued by any topics related to human consciousness, memory system and intelligence. Feel free to catch me for a chat!</p>
+            </section>
 
             
+            <section id="publications">
+                <h2>Publications</h2>
+                <!-- Updated Publication Example with Image -->
+                <div class="publication publication-with-image">
+                    <div class="publication-image">
+                        <img src="src/paper/data_selection_onepic2.png" alt="Paper Thumbnail">
+                        <!-- <img src="src/paper/data_selection_scheme2.png" alt="Paper Thumbnail"> -->
+                    </div>
+                    <div class="publication-content">
+                        <div class="venue-and-title">
+                            <div class="venue-block">NAACL 2025</div>
+                            <h3>Take the essence and discard the dross: A Rethinking on Data Selection for Fine-Tuning Large Language Models</h3>
+                        </div>
+                        <p class="authors"><strong>Ziche Liu*</strong>, Rui Ke*, Feng Jiang, Haizhou Li (*=Equal Contribution)</p>
+                        <p>
+                            <a href="https://arxiv.org/abs/2406.14115" target="_blank">Paper</a> / <a href="https://github.com/tREeFrOGcoder/TEDD-Ranker" target="_blank">Code</a> / <a href="https://zicheliu.com/TEDD-Ranker/" target="_blank">Demo</a>
+                        </p>
+                        <p class="tldr">TL;DR: We propose a three-stage scheme to standardize data selection methods and develop two metrics (efficiency and flexibility) to evaluate the effectiveness of a data selector.</p>
+                    </div>
+                </div>
+
+
+                <div class="publication publication-with-image">
+                    <div class="publication-image">
+                        <img src="src/paper/llm-as-a-judge.png" alt="Paper Thumbnail">
+                        <!-- <img src="src/paper/data_selection_scheme2.png" alt="Paper Thumbnail"> -->
+                    </div>
+                    <div class="publication-content">
+                        <div class="venue-and-title">
+                            <div class="venue-block">EMNLP 2024</div>
+                            <h3>Humans or llms as the judge? a study on judgement biases</h3>
+                        </div>
+                        <p class="authors">Guiming Chen*, Shunian Chen*, <strong>Ziche Liu</strong>, Feng Jiang, Benyou Wang (*=Equal Contribution)</p>
+                        <p>
+                            <a href="https://aclanthology.org/2024.emnlp-main.474/" target="_blank">Paper</a> / <a href="https://github.com/FreedomIntelligence/Humans_LLMs_Judgement_Bias?tab=readme-ov-file" target="_blank">Data</a>
+                        </p>
+                        <p class="tldr">TL;DR: We investigate judgment biases in human and LLM judges, demonstrating their vulnerability through experiments with a curated dataset based on Bloom's Taxonomy.</p>
+                    </div>
+                </div>
+
+
+
+
+                <div class="publication publication-with-image">
+                    <div class="publication-image">
+                        <img src="src/paper/logo.svg" alt="Paper Thumbnail">
+                        <!-- <img src="src/paper/data_selection_scheme2.png" alt="Paper Thumbnail"> -->
+                    </div>
+                    <div class="publication-content">
+                        <div class="venue-and-title">
+                            <div class="venue-block">NAACL 2024</div>
+                            <h3>AceGPT, Localizing Large Language Models in Arabic</h3>
+                        </div>
+                        <p class="authors">Huang Huang*, Fei Yu*, Jianqing Zhu*, Xuening Sun, Hao Cheng, Song Dingjie, Zhihong Chen, Mosen Alharthi, Bang An, Juncai He, <strong>Ziche Liu</strong>, Junying Chen, Jianquan Li, Benyou Wang, Lian Zhang, Ruoyu Sun, Xiang Wan, Haizhou Li, Jinchao Xu</p>
+                        <p>
+                            <a href="https://aclanthology.org/2024.naacl-long.450/" target="_blank">Paper</a> / <a href="https://github.com/FreedomIntelligence/AceGPT" target="_blank">Code</a> / <a href="https://www.acegpt.org/" target="_blank">Demo</a>
+                        </p>
+                        <p class="tldr">TL;DR: We leverage high-quality SFT data and culturally-aware RLAIF to effectively localize LLM for Arabic, addressing cultural sensitivity and local values.</p>
+                    </div>
+                </div>
+
+
+                <!-- <div class="publication">
+                    <div class="venue-and-title">
+                        <div class="venue-block">submitted</div>
+                        <h3>Take the essence and discard the dross: A Rethinking on Data Selection for Fine-Tuning Large Language Models</h3>
+                    </div>
+                    <p class="authors"><strong>Ziche Liu</strong>, Rui Ke, Feng Jiang, Haizhou Li</p>
+                    <p>
+                        <a href="https://arxiv.org/abs/2406.14115" target="_blank">Preprint</a> / <a href="#">Code</a> / <a href="#">Demo</a>
+                    </p>
+                    <p class="tldr">TL;DR: We propose a three-stage scheme and two metrics to evaluate the effectiveness of a data selector.</p>
+                </div> -->
+
+            </section>
+
+
+
+            <section id="education">
+                <h1>Education & Honors</h1>
+                <p><b><i>2024.08 - now:</i></b> Visiting Student at UC Berkeley</p>
+                <ul>
+                    <li>BGA Scholarship (10 among all 600 Berkeley Global Access participants)</li>
+                </ul>
+                <p>&nbsp;</p>
+                <p><b><i>2022.09 - now:</i></b> Bachelor at the Chinese University of Hong Kong, Shenzhen</p>
+                <ul>
+                    <li>Undergraduate Research Awards (22nd, 23rd, 24th)</li>
+                    <li>Dean's List, Academic Performance Scholarship (AY2022, AY2023)</li>
+                    <li>Member of the Nobel Class (Full Scholarship, Top 0.4% among all cohorts)</li>
+                    <li>Undergraduate Student Teaching Fellow for PHY1001: Mechanics (AY2024)</li>
+                </ul>
+                <p>&nbsp;</p>
+            </section>
+
+
+
+            <section id="fun">
+                <h1>Fun</h1>
+
+                <p>When I'm not <a href="http://zicheliu.com/projects/">coding</a>, you'll probably find me:</p>
+                <ul>
+                    <li><a href="http://zicheliu.com/gallery/">photographing</a> outdoors (insects are truly tiny wonders!)</li> 
+                    <li>getting lost in sci-fi (Time Debt is my excuse for pulling all-nighters)</li> 
+                    <li>locked in super cool <a href="http://zicheliu.com/gallery/">modern origami</a> (<i>Hold Infinity in the palm of your hand</i>)</li>
+                </ul>
+            </section>
+
+            
+
+
+
         </main>
     </div>
+
+    <button id="go-to-top" class="go-to-top">↑ <strong>Top</strong></button>
+
+    <script>
+        // Get the Go to Top button
+        const goToTopButton = document.getElementById("go-to-top");
+    
+        // Show/Hide button based on scroll position
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 200) {
+                goToTopButton.classList.add("show");
+            } else {
+                goToTopButton.classList.remove("show");
+            }
+        });
+    
+        // Scroll to the top when button is clicked
+        goToTopButton.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    </script>
+    
+
 </body>
 </html>

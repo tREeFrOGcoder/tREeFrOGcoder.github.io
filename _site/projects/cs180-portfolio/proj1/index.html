@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Page Draft</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+</head>
+<body>
+    <div class="container">
+
+        <!-- Super large cover image section -->
+        <section class="cover-image">
+            <img src="src/gallery/5_crop.jpg" alt="Cover Image" class="cover-img">
+            <div class="title-block">
+                <h1>Reviving the Past: </h1>
+                <h2>Automatic Colorization of Prokudin-Gorskii's Russia</h2>
+            </div>
+        </section>
+
+
+        <!-- Sidebar with navigation -->
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="#section1">1 Overview</a></li>
+                    <li><a href="#section2">2 Naive Way</a></li>
+                    <li><a href="#section3">3 Starting Small</a></li>
+                    <ul>
+                        <li><a href="#section3.1">3.1 Approach</a></li>
+                        <li><a href="#section3.2">3.2 Result</a></li>
+                    </ul>
+                    <li><a href="#section4">4 Going Big</a></li>
+                    <ul>
+                        <li><a href="#section4.1">4.1 Approach</a></li>
+                        <li><a href="#section4.2">4.2 Result</a></li>
+                    </ul>
+                    <li><a href="#section5">5 Bells and Whistles</a></li>
+                    <ul>
+                        <li><a href="#section5.1">5.1 Gradient</a></li>
+                    </ul>
+                    <li><a href="#section6">6 Gallery</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        
+        <!-- Main content section -->
+        <main class="content">
+            
+            <!-- Section 1 -->
+            <section id="section1" class="section">
+                <h1>1 Overview</h1>
+                <div class="content-flex">
+                    <ul>
+                        <li>Step back in time with Sergei Prokudin-Gorskii, a visionary photographer who captured the vast Russian Empire in vibrant color over a century ago! His innovatively captured three separate grey-scale images (red, green, and blue) on glass plates but no equipment was available to recreate that colorful world until over 40 years later.</li>
+                        <li><b>Our mission?</b> To develop algorithms that automatically align and combine the three glass plates, breathing life back into these historical snapshots!</li>
+                    </ul>                
+                    <p>&nbsp;&nbsp;</p>
+                    <!-- <section id="image-array-single">
+                        <div class="image-card-single">
+                            <img src="self-port-h.jpg" alt="Section 1 Image">
+                            <div class="image-single-info">
+                                <p><strong>Channel Displacement:</strong> (x: 2, y: 3)</p>
+                                <p><strong>Run-time:</strong> 1.45s</p>
+                            </div>
+                        </div>
+                    </section> -->
+                    <img src="src/misc/self-port-h.jpg" alt="Section 1 Image" class="section-image">
+                </div>
+            </section>
+
+            <!-- <p>&nbsp;</p> -->
+            <hr class="custom-line">
+
+            <!-- Section 2 -->
+            <section id="section2" class="section">
+                <h1>2 Naive Way: A First Glimpse</h1>
+                <ul>
+                    <li><b>Cutting and Stacking: The Naive Approach</b></li>
+                    <li>We begin by simply dividing each glass plate into three equal vertical sections, representing the red, green, and blue channels.</li>
+                    <li>Stacking these sections directly results in a misaligned, blurry mess - a far cry from the vivid scenes Prokudin-Gorskii intended to capture...</li>
+                    <li>Clearly, we need a smarter approach to align these channels!</li>
+                </ul>
+                <img src="src/misc/sec2-naive-steps.jpg" alt="Section 2 Image" class="section-image-single">
+            </section>
+            
+            <hr class="custom-line">
+
+
+
+
+            <!-- Section 3 -->
+            <section id="section3" class="section">
+                <h1>3 Starting Small: Alignment on Low-Resolution Images</h1>
+                
+                <!-- Section 3.1 -->
+                <section id="section3.1" class="section">
+                    <h3>3.1 Approach: Single-Scale Exhaustive Search</h3>
+                    <ul>
+                        <li>We start with the smaller <code>.jpg</code> images (like <code>monastery.jpg</code> and <code>cathedral.jpg</code>) to test our alignment algorithms.</li>
+                        <li>Our initial strategy is an exhaustive search: we systematically shift the green and red channels relative to the blue channel, evaluating the alignment at each step.</li>
+                        <li>To measure the goodness of alignment, we experiment with two metrics:<ul>
+                        <li><strong>Euclidean Distance</strong> (L2 Norm): \(\sum \sum ( A - B )^2 \), where A matrix = Img_1 and B matrix = Img_2.
+                            This is an equivalent formula since the optimization result won't change.
+                        </li>
+                        <li><strong>Normalized Cross-Correlation</strong> (NCC): \(\frac{\vec{a} \cdot \vec{b}}{\|\vec{a}\| \|\vec{b}\|} \), where a = Img_1 and b = Img_2.
+                            This is just a dot product between normalized image vectors to calculate the similarity.
+                        </li>
+                    </ul>
+                        <li><strong>Key Implementation Detail:</strong> 
+                            <ul>
+                                <li>We crop the images to focus on the central regions, avoiding potential misalignment at the edges.</li>
+                                <li>We always perform <code>np.roll</code> on the original image, not the cropped one; otherwise, the obvious misaligned edges would appear due to the roll function.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <p></p>
+
+                <!-- Section 3.2 -->
+                <section id="section3.2" class="section">
+                    <h3>3.2 Result: Promising Beginnings!</h3>
+                    <ul>
+                        <li>First row of images use L2 metric. Second row uses NCC. </li>
+                        <li>Coordinates mean displacement (x, y).</li>
+                        <li>+x means the image is rolled from left to right for x pixels. +y means from top to bottom.</li>
+                        <li>We achieve near-perfect alignment, laying a solid foundation for tackling the larger, high-resolution plates.</li>
+                    </ul>
+
+
+
+                    <section id="image-array-small">
+                        <div class="image-card-small">
+                            <img src="src/small/cathedral_L2.jpg" alt="cathedral_L2">
+                            <div class="image-small-info">
+                                <p><strong>Cathedral L2</strong></p>
+                                <p>Green Channel: (2, 5)</p>
+                                <p>Red Channel: (3, 12)</p>
+                                <p>Run-time: 0.4s</p>
+                            </div>
+                        </div>
+        
+                        <div class="image-card-small">
+                            <img src="src//small/monastery_L2.jpg" alt="monastery_L2">
+                            <div class="image-small-info">
+                                <p><strong>Monastery L2</strong></p>
+                                <p>Green Channel: (2, -3)</p>
+                                <p>Red Channel: (2, 3)</p>
+                                <p>Run-time: 0.4s</p>
+                            </div>
+                        </div>
+        
+                        <div class="image-card-small">
+                            <img src="src/small/tobolsk_L2.jpg" alt="tobolsk_L2">
+                            <div class="image-small-info">
+                                <p><strong>Tobolsk L2</strong></p>
+                                <p>Green Channel: (3, 3)</p>
+                                <p>Red Channel: (3, 7)</p>
+                                <p>Run-time: 0.4s</p>
+                            </div>
+                        </div>
+                        <div class="image-card-small">
+                            <img src="src/small/cathedral_NCC.jpg" alt="cathedral_NCC">
+                            <div class="image-small-info">
+                                <p><strong>Cathedral NCC</strong></p>
+                                <p>Green Channel: (2, 5)</p>
+                                <p>Red Channel: (3, 12)</p>
+                                <p>Run-time: 0.3s</p>
+                            </div>
+                        </div>
+        
+                        <div class="image-card-small">
+                            <img src="src//small/monastery_NCC.jpg" alt="monastery_NCC">
+                            <div class="image-small-info">
+                                <p><strong>Monastery NCC</strong></p>
+                                <p>Green Channel: (2, -3)</p>
+                                <p>Red Channel: (2, 3)</p>
+                                <p>Run-time: 0.3s</p>
+                            </div>
+                        </div>
+        
+                        <div class="image-card-small">
+                            <img src="src/small/tobolsk_NCC.jpg" alt="tobolsk_NCC">
+                            <div class="image-small-info">
+                                <p><strong>Tobolsk NCC</strong></p>
+                                <p>Green Channel: (3, 3)</p>
+                                <p>Red Channel: (3, 7)</p>
+                                <p>Run-time: 0.3s</p>
+                            </div>
+                        </div>
+                    </section> 
+            </section>
+            </section>
+
+
+
+
+            <hr class="custom-line">
+
+            <!-- Section 4 -->
+            <section id="section4" class="section">
+                <h1>4 Going Big: Scaling Up with Image Pyramids</h1>
+                
+                <!-- Section 4.1 -->
+                <section id="section4.1" class="section">
+                    <h3>4.1 Approach: Efficient Pyramid Algorithm</h3>
+                    <ul>
+                        <li>The full-resolution <code>.tif</code> images are massive (around 3600x3600 pixels)! A simple exhaustive search would be incredibly slow if we want the search window to be big enough eg.[-200, 200].</li>
+                        <li>Enter the image pyramid: we create a series of downsampled versions of the original image, starting with a very coarse representation (around 400x400 px).</li>
+                        <li>We align the coarsest images first (using a large search window like [-15, 15] without loss of efficiency), then progressively refine the alignment as we move to finer scales (with a smaller search window like [-3, 3])</li>
+                        <li>In this way, we create a total search window of around: \(30\times8 + 30\times4 + 30\times2 + 6\times1 = 426\), which is generally enough for all the images we test here! (30 is the length of [-15, 15], 8/4/2/1 are the scaling factors.)</li>
+                        <li><strong>Intuitive Analogy:</strong> This is much like manually aligning two large images - you start with big, rough adjustments, then fine-tune as you get closer. This is also similar to how the learning rate is auto-adjusted in neural network training.</li>
+                    </ul>
+                </section>
+                <p></p>
+
+                <!-- Section 4.2 -->
+                <section id="section4.2" class="section">
+                    <h3>4.2 Result: Near-Perfect Alignment on High-Resolution Images</h3>
+                    <ul>
+                        <li>All images here use NCC metric.</li>
+                        <li>Our pyramid approach successfully aligns even the largest images, bringing Prokudin-Gorskii's scenes to life in stunning detail.</li>
+                        <li>Except for the Emir.jpg! Clear red misalignment can be detected. So we still need to work on that.</li>
+                    </ul>
+
+                    <section id="image-array-large">
+                        <div class="image-card-large">
+                            <img src="src/large/church_NCC.jpg" alt="church_NCC">
+                            <div class="image-large-info">
+                                <p><strong>Church</strong></p>
+                                <p>Green Channel: (4, 25)</p>
+                                <p>Red Channel: (-4, 58)</p>
+                                <p>Run-time: 15.3s</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-large">
+                            <img src="src/large/harvesters_NCC.jpg" alt="harvesters_NCC">
+                            <div class="image-large-info">
+                                <p><strong>Harvesters</strong></p>
+                                <p>Green Channel: (17, 59)</p>
+                                <p>Red Channel: (15, 123)</p>
+                                <p>Run-time: 15.8s</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-large">
+                            <img src="src/large/icon_NCC.jpg" alt="icon_NCC">
+                            <div class="image-large-info">
+                                <p><strong>Icon</strong></p>
+                                <p>Green Channel: (18, 41)</p>
+                                <p>Red Channel: (23, 90)</p>
+                                <p>Run-time: 15.9s</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-large">
+                            <img src="src/large/lady_NCC.jpg" alt="lady_NCC">
+                            <div class="image-large-info">
+                                <p><strong>Lady</strong></p>
+                                <p>Green Channel: (8, 54)</p>
+                                <p>Red Channel: (11, 115)</p>
+                                <p>Run-time: 15.6s</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-large">
+                            <img src="src/large/melons_NCC.jpg" alt="melons_NCC">
+                            <div class="image-large-info">
+                                <p><strong>Melons</strong></p>
+                                <p>Green Channel: (10, 82)</p>
+                                <p>Red Channel: (13, 179)</p>
+                                <p>Run-time: 16.7s</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-large">
+                            <img src="src/large/onion_church_NCC.jpg" alt="onion_church_NCC">
+                            <div class="image-large-info">
+                                <p><strong>Onion Church</strong></p>
+                                <p>Green Channel: (27, 51)</p>
+                                <p>Red Channel: (37, 108)</p>
+                                <p>Run-time: 15.9s</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-large">
+                            <img src="src/large/sculpture_NCC.jpg" alt="sculpture_NCC">
+                            <div class="image-large-info">
+                                <p><strong>Sculpture</strong></p>
+                                <p>Green Channel: (-11, 33)</p>
+                                <p>Red Channel: (-27, 140)</p>
+                                <p>Run-time: 16.1s</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-large">
+                            <img src="src/large/self_portrait_NCC.jpg" alt="self_portrait_NCC">
+                            <div class="image-large-info">
+                                <p><strong>Self Portrait</strong></p>
+                                <p>Green Channel: (29, 78)</p>
+                                <p>Red Channel: (37, 175)</p>
+                                <p>Run-time: 15.8s</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-large">
+                            <img src="src/large/three_generations_NCC.jpg" alt="three_generations_NCC">
+                            <div class="image-large-info">
+                                <p><strong>Three Generations</strong></p>
+                                <p>Green Channel: (14, 51)</p>
+                                <p>Red Channel: (12, 110)</p>
+                                <p>Run-time: 15.0s</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-large">
+                            <img src="src/large/train_NCC.jpg" alt="train_NCC">
+                            <div class="image-large-info">
+                                <p><strong>Train</strong></p>
+                                <p>Green Channel: (6, 42)</p>
+                                <p>Red Channel: (32, 86)</p>
+                                <p>Run-time: 16.7s</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card-large">
+                            <img src="src/large/emir_NCC.jpg" alt="emir_NCC">
+                            <div class="image-large-info">
+                                <p><strong>Emir</strong></p>
+                                <p>Green Channel: (24, 48)</p>
+                                <p>Red Channel: (70, 117)</p>
+                                <p>Run-time: 15.6s</p>
+                            </div>
+                        </div>
+                        
+                    </section>
+                </section>
+            </section>   
+
+
+        
+            <hr class="custom-line">
+
+            <!-- Section 5 -->
+            <section id="section5" class="section">
+
+                <h1>5 Bells and Whistles</h1>
+
+                    <section id="section5.1" class="section">
+                        <h3>5.1 Better Features: Gradient Edge Detection</h3>
+                        <ul>
+                            <li>Due to different brightness in the orginal glass plates, L2 and NCC metrics are not effective anymore.</li>
+                            <li>Therefore, we choose to not use the raw pixel data for alignment, instead, we choose to detect edges since this feature is less affected by brightness.</li>
+                            <li>So, we choose to use <strong>Sobel Filter</strong> that convolve the original image with a sobel kernel to generate a gradient graph.</li>
+                            $$ \text{sobel\_x} = \begin{bmatrix} 1 & 0 & -1 \\ 2 & 0 & -2 \\ 1 & 0 & -1 \end{bmatrix} \quad \text{sobel\_y} = \begin{bmatrix} 1 & 2 & 1 \\ 0 & 0 & 0 \\ -1 & -2 & -1 \end{bmatrix} $$
+                            $$ $$
+                            <li>Then, we use the same pyramid algorithm to align the gradient images to get the total displacement values.</li>
+                            <li>Finally, we apply the total displacement values to the original images to get the final aligned images!</li>
+                        </ul>
+                        <p></p>
+
+                        <img src="src/misc/sec4-sobel-steps.jpg" alt="Edge Detection" class="section-image-single">
+                    
+                        <p></p>
+                        <p>And, here is the final result!</p>
+
+                        <section id="image-array-large">
+                            <div class="image-card-large">
+                                <img src="src/large/emir_NCC.jpg" alt="emir_NCC">
+                                <div class="image-large-info">
+                                    <p><strong>Emir (w/o edge detection)</strong></p>
+                                    <p>Green Channel: (24, 48)</p>
+                                    <p>Red Channel: (70, 117)</p>
+                                    <p>Run-time: 15.6s</p>
+                                </div>
+                            </div>
+
+                            <div class="image-card-large">
+                                <img src="src/large/emir_NCC_grad.jpg" alt="emir_NCC_grad">
+                                <div class="image-large-info">
+                                    <p><strong>Emir (w/ edge detection)</strong></p>
+                                    <p>Green Channel: (24, 49)</p>
+                                    <p>Red Channel: (41, 107)</p>
+                                    <p>Run-time: 17.5s</p>
+                                </div>
+                            </div>
+                        </section>
+                    </section>
+            </section>
+
+
+
+
+
+
+
+
+
+            
+            <hr class="custom-line">
+
+            <section id="section6" class="section"></section>
+                <h1>6 Gallery</h1>
+                <ul>
+                    <li>All source images from <a href="https://www.loc.gov/collections/prokudin-gorskii/?fa=original-format:photo,+print,+drawing&sp=1&st=grid" target="_blank">Library Of Congress</a></li>
+                    <li>No special sricks spplied: just normal cutting, edge-detecting, aligning, stacking and cropping!</li>
+                    <li>Prudkin was really a genius. Just enjoy!</li>
+                </ul>
+                <section id="image-array-large">
+                    <div class="image-card-large">
+                        <img src="src/large/church_NCC_crop.jpg" alt="church_NCC">
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/gallery/1_crop.jpg" alt="1">
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/gallery/2_crop.jpg" alt="2">
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/gallery/3_crop.jpg" alt="3">
+                    </div>
+                    
+                    <div class="image-card-large">
+                        <img src="src/gallery/4_crop.jpg" alt="1">
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/gallery/5_crop.jpg" alt="2">
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/gallery/6_crop.jpg" alt="3">
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/gallery/7_crop.jpg" alt="1">
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/gallery/8_crop.jpg" alt="2">
+                    </div>
+
+                    <div class="image-card-large">
+                        <img src="src/gallery/9_crop.jpg" alt="3">
+                    </div>
+
+                    
+
+
+
+
+
+                </section>
+
+                
+                    
+
+            </section>
+
+                
+
+
+
+
+
+
+
+
+        </main>
+    </div>
+</body>
+</html>
