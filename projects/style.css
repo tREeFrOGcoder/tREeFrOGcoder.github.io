@@ -486,24 +486,6 @@ section:last-child {
 
 
 
-
-
-
-
-
-
-
-
-/* -------------------------------------------------------------------- */
-/* -------------------------------------------------------------------- */
-/* Color Customization */
-:root {
-    --cool-a: #336b87; /* Accent color */
-    --cool-bg: #edf7f9; /* Background color */
-    --cool-text: #1a2930; /* Text color */
-    --cool-hover: #264d59; /* Hover state color */
-}
-
 /* -------------------------------------------------------------------- */
 /* -------------------------------------------------------------------- */
 /* Copyright Footer */
@@ -535,3 +517,21 @@ body.dark .copyright-footer {
     color: #5a6978;
     border-top-color: #334155;
 }
+
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Color Customization */
+:root {
+    --cool-a: #336b87; /* Accent color */
+    --cool-bg: #edf7f9; /* Background color */
+    --cool-text: #1a2930; /* Text color */
+    --cool-hover: #264d59; /* Hover state color */
+}
+
