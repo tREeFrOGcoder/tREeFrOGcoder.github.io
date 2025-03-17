@@ -680,3 +680,36 @@ section:last-child {
     --cool-hover: #264d59; /* Hover state color */
 }
 
+
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Copyright Footer */
+.copyright-footer {
+    margin-top: 2em;
+    padding: 1em 0;
+    text-align: center;
+    font-size: 0.8em;
+    color: #6c7a82; /* Subtle gray color */
+    border-top: 1px solid #d3e5ea;
+    transition: color 0.5s ease, border-color 0.5s ease;
+}
+
+.copyright-text {
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.4;
+}
+
+.attribution-notice {
+    display: block;
+    margin-top: 0.3em;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+/* Dark mode adjustments for copyright footer */
+body.dark .copyright-footer {
+    color: #5a6978;
+    border-top-color: #334155;
+}
