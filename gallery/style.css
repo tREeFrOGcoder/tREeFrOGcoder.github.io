@@ -713,3 +713,141 @@ body.dark .copyright-footer {
     color: #5a6978;
     border-top-color: #334155;
 }
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* Responsive Design - Tablets and Mobile */
+/* Tablets (768px and below) */
+@media (max-width: 768px) {
+    /* Layout adjustments */
+    .container {
+        flex-direction: column;
+        padding: 1.5em 1em;
+    }
+    
+    aside {
+        max-width: 100%;
+        margin: 0 auto 2em auto;
+        text-align: center;
+    }
+    
+    .profile-picture img {
+        max-width: 150px;
+    }
+    
+    main {
+        max-width: 100%;
+        padding: 0;
+    }
+    
+    /* Navigation */
+    header {
+        padding: 0.8em 1em;
+    }
+    
+    nav {
+        gap: 2em;
+    }
+    
+    /* Gallery specific */
+    .photo-grid {
+        justify-content: center;
+    }
+    
+    .photo {
+        /* Adjust photo size for tablets */
+        width: calc(33.333% - 10px) !important; /* Force 3 photos per row */
+        height: auto !important;
+        margin: 5px !important;
+    }
+    
+    /* Lightbox adjustments */
+    .lightbox img {
+        max-height: 60%;
+    }
+    
+    .lightbox-title {
+        font-size: 1.2em;
+    }
+    
+    /* External links */
+    .external-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1em;
+    }
+    
+    /* Go to top button */
+    .go-to-top {
+        bottom: 1em;
+        right: 1em;
+    }
+}
+
+/* Mobile Phones (480px and below) */
+@media (max-width: 480px) {
+    /* Layout */
+    .container {
+        padding: 1em 0.5em;
+    }
+    
+    /* Typography */
+    h1 {
+        font-size: 1.5em;
+    }
+    
+    h2 {
+        font-size: 1.3em;
+    }
+    
+    /* Navigation */
+    header {
+        justify-content: center;
+    }
+    
+    nav {
+        gap: 1em;
+        font-size: 0.9em;
+    }
+    
+    .dark-switch {
+        padding-left: 1em;
+    }
+    
+    /* Gallery specific adjustments */
+    .photo {
+        width: calc(50% - 10px) !important; /* Force 2 photos per row */
+        height: auto !important;
+        margin: 5px !important;
+    }
+    
+    .photo-overlay {
+        font-size: 0.8em;
+        padding: 0.3em;
+    }
+    
+    /* Lightbox adjustments */
+    .lightbox img {
+        max-width: 95%;
+        max-height: 50%;
+    }
+    
+    .lightbox .close-lightbox {
+        top: 0.5em;
+        right: 0.5em;
+    }
+    
+    .lightbox-title {
+        font-size: 1.1em;
+    }
+    
+    .lightbox-timestamp {
+        font-size: 0.9em;
+    }
+    
+    /* Go to top button */
+    .go-to-top {
+        font-size: 0.8em;
+    }
+}

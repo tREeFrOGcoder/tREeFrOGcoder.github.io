@@ -588,6 +588,121 @@ body.dark .copyright-footer {
 
 /* -------------------------------------------------------------------- */
 /* -------------------------------------------------------------------- */
+/* Responsive Design - Tablets and Mobile */
+/* Tablets (768px and below) */
+@media (max-width: 768px) {
+    /* Layout adjustments */
+    .container {
+        flex-direction: column;
+        padding: 1.5em 1em;
+    }
+    
+    aside {
+        max-width: 100%;
+        margin: 0 auto 2em auto;
+        text-align: center;
+    }
+    
+    .profile-picture img {
+        max-width: 150px;
+    }
+    
+    main {
+        max-width: 100%;
+        padding: 0;
+    }
+    
+    /* Navigation */
+    header {
+        padding: 0.8em 1em;
+    }
+    
+    nav {
+        gap: 2em;
+    }
+    
+    /* Publication adjustments */
+    .publication-with-image {
+        flex-direction: column !important;
+    }
+    
+    .publication-image {
+        max-width: 100%;
+        margin-bottom: 1em;
+    }
+    
+    /* Go to top button */
+    .go-to-top {
+        bottom: 1em;
+        right: 1em;
+    }
+    
+    /* External links */
+    .external-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1em;
+    }
+}
+
+/* Mobile Phones (480px and below) */
+@media (max-width: 480px) {
+    /* Layout */
+    .container {
+        padding: 1em 0.5em;
+    }
+    
+    /* Typography */
+    h1 {
+        font-size: 1.5em;
+    }
+    
+    h2 {
+        font-size: 1.3em;
+    }
+    
+    /* Navigation */
+    header {
+        justify-content: center;
+    }
+    
+    nav {
+        gap: 1em;
+        font-size: 0.9em;
+    }
+    
+    .dark-switch {
+        padding-left: 1em;
+    }
+    
+    /* Publications */
+    .publication h3 {
+        font-size: 0.95em;
+    }
+    
+    .publication .authors,
+    .publication .tldr,
+    .publication a {
+        font-size: 0.85em;
+    }
+    
+    /* Email tooltip */
+    .email-link .tooltip {
+        width: 90%;
+        left: 0;
+        transform: none;
+        font-size: 0.8em;
+    }
+    
+    /* Go to top button */
+    .go-to-top {
+        font-size: 0.8em;
+    }
+}
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
 /* Color Customization */
 :root {
     --cool-a: #336b87; /* Accent color */
