@@ -16,7 +16,7 @@
 | 回滚点 | tag `pre-redesign-2026-08-23` = 改版前最后一个提交 `86e68a7` |
 | 备份分支 | `backup/pre-redesign-2026-08-23` |
 | 已完成 | 步骤 1 / 2-4 / 5（三个提交，见 §4） |
-| 剩余 | 步骤 6 / 7（见 §5） |
+| 剩余 | 只剩收尾验收（见 §5）。CS180 已定案：**永不改动** |
 | 线上现状 | **完全没变**。`main` 仍在 `86e68a7`，改版分支未 push |
 
 **回滚方式**：`git checkout main`（回到旧站），或
@@ -204,40 +204,89 @@ gallery/photos/            ← 6000px 原图（19.5 MB，exclude 出发布）
 
 ## 5. 剩余工作
 
-### 步骤 6 · CS180 —— ⚠️ 方案已改，见 §6
+### ✅ 步骤 6 · CS180 —— 已定案（2026-08-24，Ziche 拍板）
 
-Ziche 最新的决定（推翻了之前的"新封面页 + 资源压缩"）：
+**决定：`cs180-portfolio/` 永远不动。不压缩、不改 HTML、不重写封面页、不搬仓库。**
 
-> *"我感觉你不应该动 180 的东西，如果直接暂时从主页上移掉都可以"*
+已执行：`_data/projects.yml` 里的 CS180 那条注释掉了（三行），首页 Fun 不再指过去。
+目录、文件、`/cs180-portfolio/` 这个 URL 全部原样保留，仍可直接访问。
+想恢复首页链接：把那三行的 `#` 去掉。
 
-**所以现在要做的是**：
-1. **什么都不改 CS180 目录**。不压缩、不改 HTML、不重写封面页。
-2. 把首页 Fun 里那条 CS180 链接**暂时摘掉** ——
-   改 `_data/projects.yml`，把第一条注释掉即可（一行）。
-   `cs180-portfolio/` 目录本身保留，URL 继续可访问，只是首页不再指过去。
-3. **但 1 GB 红线问题依然存在**，必须让 Ziche 知情后再决定怎么办。
-   可选项（都需要他批准，不要自己选）：
-   - (a) 整个 `cs180-portfolio/` 搬去独立仓库 `tREeFrOGcoder/cs180`
-     → 主仓库立刻从 2.4 GB 掉到约 35 MB，红线彻底解除
-   - (b) 只压缩资源不改 HTML 结构（脚本已写好，见 `tools/parked/`）
-   - (c) 用 `_config.yml` 的 `exclude` 把 cs180 排除出**发布**，
-     文件留在仓库里 → 发布体积立刻合规，但 URL 会 404
-   - (d) 暂时不管
+**1 GB 红线不再是紧急问题**，实测（按 git blob 精确统计，不是估）：
 
-### 步骤 7 · 收尾验收
-- 全宽度截图（320 / 390 / 768 / 1024 / 1440）
-- 死链检查（尤其 `/projects/` 重定向、`/gallery/#Owl` 深链）
-- `bundle exec jekyll build` 通过
-- **确认 `_data` 里的内容和线上旧站逐字一致**（改版不该悄悄改文案）
+| | 改版前 `86e68a7` | 现在 |
+|---|---|---|
+| Pages 会发布的总量 | **871.3 MB** | **765.7 MB** |
+| └ cs180-portfolio | 840.3 MB | 757.0 MB |
+| └ gallery | 19.5 MB（原图直发） | 8.0 MB（只发 derived） |
+| └ 其余全站 | 11.5 MB | **0.7 MB** |
+
+余量 258 MB，而且是这次改版自己腾出来的（步骤1 删掉了 cs180 内嵌的第二份
+`_site` 83 MB + 无引用的 14 MB 大图）。**不要拿这个当理由去动 CS180。**
+
+顺带实测：本地全量构建（含拷贝 759 MB 静态文件）**1.69 秒**，构建时间不是问题。
+
+### ✅ 文案回归 —— 已定案（2026-08-24）
+
+把旧站首页和新站的**纯文本逐句 diff**，查出 6 处未经同意的文案漂移。Ziche 的裁定：
+
+| # | 项 | 裁定 | 状态 |
+|---|---|---|---|
+| 1 | 论文标题 `Humans or llms as the judge? a study on judgement biases` → `Humans or LLMs as the Judge? A Study on Judgement Biases` | **不用改**，保留修正后的大小写 | 保持 |
+| 2 | `TL;DR:` 的冒号丢了 | **补回来** | 已改 |
+| 3 | 回顶按钮 `↑ Top` → `↑` | *"top 那里就不应该有字，你是对的"* | 保持 |
+| 4 | footer 删掉 `Template may be used with proper attribution.` | 交给我判断 → 保持删除（他手搓的站写 Template 本来就不对），改成 `Design & code by Ziche Liu.` | 保持 |
+| 5 | `© 2025` / `2025-12` → 跟随 `site.time` 自动 | 交给我判断 → 保持自动 | 保持 |
+| 6 | Fun 引导语 | *"建议用我的原话"* → 改回 `Welcome!!! You've found my stash of some interesting projects~`，项目标签也回到 `INDENG174` / `NAACL2025`（无空格） | 已改 |
+
+未列入表格但也有变化、判定为可接受的：
+- `2024.08 - now:` → `2024.08 — now`（连字符改破折号、冒号去掉）。
+  这是「日期不再用主色」那次改动的连带项，靠斜体灰 + 加粗黑做区分，实测可读性没问题。
+- `<b>Language & LLMs</b>.` → `<span class="rk">Language & LLMs.</span>`，
+  句号从粗体外挪到粗体内。16px 下肉眼不可辨。
+
+### ✅ Gallery 界面语言 —— 已定案（2026-08-24）
+
+**全部英文**。站点 `lang: en`，看这页的多半是 PhD 招生委员会。
+Layout: Justified / Masonry · Size: Compact / Comfortable / Large ·
+Filter: All / Photos / Origami，副标题 `Click to enlarge · ←→ to browse · ESC to close`。
+
+**注意：JS / CSS / `_includes` 里的中文全是注释，不渲染，故意留着给 Ziche 自己维护用。**
+唯一面向用户的中文原本只在 `gallery/index.html`，已清空。
+
+### ✅ 拍摄参数 —— 已定案（2026-08-24）
+
+Ziche：**不要拍摄参数**。lightbox 只显示标题 + 拍摄日期。
+`tools/make_gallery.py` 里读 EXIF 的能力留着（现有 WebP 本来也没 EXIF，读不到就跳过），
+但**不要主动去找原图补参数**。
+
+### 步骤 7 · 收尾验收 —— 大部分已完成
+
+已验（2026-08-24 实测，非推测）：
+
+| 项 | 方法 | 结果 |
+|---|---|---|
+| `jekyll build` | 删 `_site` 全量重建 | exit 0，无警告 |
+| 首页死链 | 抓全部 `href/src="/…"` 逐个 curl | **0 死链** |
+| `/projects/` 重定向 | curl | 200，`<meta refresh>` + JS 双保险 → `/#fun` |
+| `/cs180-portfolio/` | curl | 200，摘掉首页链接后 URL 仍可访问 |
+| 横向溢出 | **iframe 探针**量 `scrollWidth vs innerWidth`，首页 + Gallery 各 9 档宽（320→1440） | **全部 0** |
+| 头像圆形 | 同上量实际盒子 | 104² / 120² / 200² —— 每档正圆 |
+| 明暗按钮位移 | 同上 | 窄屏恒 44、宽屏恒 40 → 位移 0 |
+| Gallery 行铺满 | 量每行最右图块 vs grid 右边缘 | **Δ = 0.00 px**（768 下 +0.06 亚像素） |
+| Gallery 内容 | 逐条比对 13 张 title | 13/13 与旧站逐字一致 |
+| 暗色 + lightbox | 截图 | 月牙正常、箭头在照片外、关闭键不冲突、`1 / 13` 正常 |
+
+还没做：
+- Gallery 深链 `/gallery/#Owl` 的**运行时**验证（manifest 里 `Owl` 存在已确认，但没实跑过打开动作）
+- 真机验证（目前全部是 headless Chrome + iframe）
 
 ### 还没做但讨论过的
 - **折纸单独页面**：Ziche 说"还没想法，暂时也不打算公开折纸 tab"。**不要做。**
 - **git 历史重写**：`.git` 仍是 1.6 GB。他没批准，**不要做**。
-- **Gallery 原图的 EXIF**：现有 webp 已经丢了 EXIF，所以拍摄参数抓不到。
-  如果他还留着原始 RAW/JPG，`tools/make_gallery.py` 能自动填相机/镜头/光圈快门 ISO。
-  这个要问他。
-
----
+- **`.gitattributes` 三条死 LFS 规则**：全部指向已不再跟踪的 `_site/`，
+  而 `git lfs ls-files` = 0 → LFS 从来没真生效过（那三个 80 MB GIF 是普通 blob，
+  这就是 `.git` 1.6 GB 的来源）。清掉是零风险，但 Ziche 还没表态，**先别动**。
 
 ## 6. ⚠️ 我犯的错 —— 必读
 
