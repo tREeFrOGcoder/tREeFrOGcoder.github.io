@@ -1,6 +1,7 @@
 # 交接文档 · 个人主页改版 2026-08
 
 **给接手的 agent：先完整读这一份，再动任何代码。**
+**给 Ziche：日常改内容看 [MAINTAIN.md](MAINTAIN.md)，那份是操作手册，不用读本文。**
 本文件记录了与 Ziche 的全部讨论、已定的决策、已完成的部分、剩余工作，
 以及一批只有实测才知道的坑。
 
@@ -15,7 +16,7 @@
 | 工作分支 | `redesign-2026-08`（**尚未 push**） |
 | 回滚点 | tag `pre-redesign-2026-08-23` = 改版前最后一个提交 `86e68a7` |
 | 备份分支 | `backup/pre-redesign-2026-08-23` |
-| 已完成 | 步骤 1 / 2-4 / 5（三个提交，见 §4） |
+| 已完成 | 全部步骤（7 个提交，见 §4 和 §10） |
 | 剩余 | 只剩收尾验收（见 §5）。CS180 已定案：**永不改动** |
 | 线上现状 | **完全没变**。`main` 仍在 `86e68a7`，改版分支未 push |
 
@@ -158,7 +159,7 @@ scholar 66%×66%、github 57%×56%、mail 58%×**44%**。
 
 ---
 
-## 4. 已完成的部分（三个提交）
+## 4. 已完成的部分
 
 ### `aa6835a` 步骤1 · 仓库瘦身
 - 删 `_site/`（804 MB）、`cs180-portfolio/proj1/_site/`
@@ -199,6 +200,18 @@ gallery/photos/            ← 6000px 原图（19.5 MB，exclude 出发布）
 5 份 Gemfile 收敛成 1 份、删 `src/`（7.9 MB）、`projects/` 改成重定向到 `/#fun`。
 
 **验收状态**：`bundle exec jekyll build` 通过，首页与 Gallery 都已截图确认渲染正确。
+
+### 之后的四个提交（2026-08-24）
+
+| 提交 | 内容 |
+|---|---|
+| `c92b100` | 交接文档 + 撤回 CS180 改动 |
+| `5e46729` | CS180 定案摘链接 + 文案回归 + Gallery 英文化 |
+| `3f7ca9c` | Gallery 收起调参按钮 + 修键盘翻页的整窗焦点环 |
+| `6d94eb4` | 修关闭热区 + 撤掉冗余翻页键 + CSS/JS 加版本号 |
+| `8091d5f` | 换图改成双层交叉淡入，根治切换闪动/形变 |
+
+细节全部记在 **§10**。
 
 ---
 
@@ -390,17 +403,9 @@ if (grid.clientWidth === lastW) return;   // ← 不要这样
 
 ## 8. 以后 Ziche 怎么自己更新（无 AI）
 
-| 要做的事 | 怎么做 |
-|---|---|
-| 加一篇论文 | `_data/publications.yml` 加一段（约 6 行 YAML） |
-| 换配色 / 调字号间距 | `assets/css/tokens.css`，全站生效 |
-| 加照片 | 丢进 `gallery/photos/` → `python3 tools/make_gallery.py` |
-| 改照片标题 | `gallery/photos.meta.json`（脚本永不覆盖手写字段） |
-| 加获奖 / 学历 | `_data/education.yml` |
-| 改导航 | `index.html` 的 front-matter `nav:` |
-| 本地预览 | `bundle exec jekyll serve` |
-
----
+**已经单独写成 [MAINTAIN.md](MAINTAIN.md)** —— 换头像、改正文、加论文、加照片、
+换配色、改导航、上线、回滚，每一项都有可直接复制的命令和踩坑提示。
+本节不再重复，改动请同步更新那一份。
 
 ## 9. 环境
 
@@ -416,3 +421,152 @@ Chrome 在 /Applications/Google Chrome.app/... （截图验收用）
 `/private/tmp/claude-501/-Users-archerliu/<session>/scratchpad/lab/`
 里面有三个视觉方向的完整 demo、字体对照页、字重梯度页。
 如果需要重新给他看对比，这些文件是现成的。
+
+---
+
+## 10. Gallery / Lightbox 的返修记录（2026-08-24）
+
+> Ziche 试用后逐条反馈，来回改了三轮。记在这里是为了**下次他再提起时能立刻接上**，
+> 不用重新推一遍。每条的格式是：他的原话 → 根因 → 改法 → 怎么验的。
+
+### 10.1 「不需要 layout/size/filter 那些按钮」
+
+**改法**：参数搬到 `gallery/index.html` 的 front-matter（`tune` / `mode` / `size` / `filter`），
+渲染成 `#grid` 的 `data-*`，`gallery.js` 从那里读默认值。
+`tune: true` → 按钮回来，调完写回值再改 `false`。按钮的选中态跟着值走，不会对不上。
+
+顺带：分隔线从 `.ctl` 挪到 `.ghead` —— 控件条平时不渲染，线不能挂在它身上。
+
+### 10.2 「键盘翻页会留下全 window 蓝色边框」
+
+**根因**：`#light` 是 `position:fixed;inset:0`，打开时被 `.focus()` 拿走焦点。
+鼠标点开时不画环，**一旦按方向键 `:focus-visible` 就命中它**，
+浏览器于是沿着整个窗口画了一圈默认焦点环。
+
+**改法**：`#light:focus,#light:focus-visible{outline:none}`。
+模态框已占满屏幕，本来就不需要焦点环；里面按钮各自的白色焦点环不受影响。
+
+**⚠️ 第一次报"已修"但他仍然看得到** —— 两个原因叠在一起：
+1. 我用**合成** `KeyboardEvent` 验证，而浏览器的 `:focus-visible` 判定**只认真实按键**，
+   所以我根本没复现出他的场景。必须用 CDP 的 `Input.dispatchKeyEvent`。
+2. 他的浏览器缓存了旧 CSS —— `<link>` 上没有版本号。
+
+**因此加了 `?v={{ site.time | date: '%s' }}`** 到所有 CSS/JS。
+同一次部署内不变（缓存正常生效），一 build 就换。这类"改了却看不到"以后不会再有。
+
+### 10.3 「不是所有暗色区域都能点击关闭，很反常识」
+
+他的原话很关键，是个设计原则：
+> *"左右的翻页键区域，鼠标一进去就有高亮显示，这是合理的，这是有提示的……
+> 但是其他空间并没有提示，我也不希望有，大家也会默认是空白区域，点击即关闭"*
+
+**根因**：关闭判定写成了**白名单** ——
+`if (e.target === box || e.target.id === "light-stage" || e.target.id === "light-fig")`。
+底部信息栏 `#light-bar` 是独立元素，占满宽、93 px 高，不在名单里 → 看着是暗处却点不动。
+
+**改法**：反过来写成黑名单 ——「除了照片本身和有自己行为的控件，点哪都关」。
+
+### 10.4 「底部那个 2/13 的翻页键冗余」
+
+**改法**：删掉底部 `‹ n/N ›` 胶囊，进度改成**左上角**小徽标，和右上角的 × 对称，
+`pointer-events:none` 所以它下面的暗处照样点得着。
+
+同时 `.edge` 的 `bottom` 从写死的 `4.5rem` 改成 `0`，
+由 `#light-bar` 用更高的 `z-index` 盖住 —— 标题换行时热区自动让位，不用维护魔法数。
+
+**⚠️ 留下的副作用（他还没反馈）**：窄屏（≤640px）下 `.edge` 本来就 `display:none`，
+底部胶囊删掉后**手机上只剩左右滑动翻页**。已用 390×844 触摸模拟验过滑动正常，
+而且这也是 iOS 相册/Instagram 的通用手势。如果他之后说手机上少提示，
+注意**不能加隐形热区** —— 那正好违反 10.3 里他讲的原则。
+
+### 10.5 「点开和翻页有奇怪的闪动放大，横竖切换尤其明显，切入切出还不一样」
+
+**这条最值得记。** 根因是 `render()` 里有三处「先改可见元素 → 再等加载 → 再改一次」，
+等待时间接近 0 时这三步就挤成了闪烁：
+
+1. **`figure.style.aspectRatio = p.ar` 立刻生效，但图还没换** ——
+   旧照片被强行塞进新比例的盒子里重新排版。横↔竖形状突变最大。
+   **这也解释了为什么切入和切出效果不一样**：横→竖是盒子突然变窄变高，
+   竖→横是突然变宽变矮，两种形变方向相反。
+2. **`img.src = pre.src` 是硬切像素**，而 opacity 还在 300 ms 淡出途中
+   → 「旧图 → 硬切 → 淡入」，看起来像闪过别的照片。
+3. **快速连翻没有竞态保护**，几次加载争着上屏。
+
+**改法**：舞台尺寸只由窗口决定、**永不随照片比例变**；两层 `<img>` 各自
+`object-fit:contain` 居中；新图在背面层装好并栅格化后才交叉淡入；
+加竞态令牌 `seq`，连翻时只有最后一次允许上屏，`close()` 也 `seq++` 作废在飞的加载。
+
+配套三处：
+
+| 改动 | 为什么必须一起改 |
+|---|---|
+| `box-shadow` → `filter:drop-shadow` | 图层盒子现在比照片大，`box-shadow` 会画在盒子上；`drop-shadow` 贴着照片真实边缘 |
+| 关闭命中测试改成按 `object-fit:contain` 反算照片矩形 | 黑边现在属于 `<img>` 元素，不能再靠 `e.target` 判断 |
+| 光标随位置变 | 压在照片上是普通箭头，落到黑边才 `zoom-out` |
+
+**验收**：`fig` 盒子在 横→竖→横→横→竖 五次切换中恒为 `902x512`（零形变）；
+每次切换后 `in` 类都在新图上；竖幅 2400×4265 → 显示 288×512 居中；
+命中扫描确认 `I` 精确覆盖 288 px 宽的照片、四周黑边全部可关闭。
+
+### 10.6 还没验的 / 可能还会回来找的
+
+- **真机**：全部验证都是 headless Chrome + CDP。他手机上实际手感没反馈过。
+- **Safari**：一次都没测过。`:focus-visible`、`filter:drop-shadow`、
+  `object-fit` 在 Safari 上行为都可能有差异。
+- **手机端翻页提示**：见 10.4 的副作用。
+- **暗色下的 drop-shadow**：`rgba(0,0,0,.55)` 在深色背景上几乎看不见，
+  目前是有意为之（暗色本来也不需要投影），但他没明确表态。
+
+---
+
+## 11. 调试这个站的工具与陷阱（省得下次重踩）
+
+这一节全是**实测**，不查证根本想不到。
+
+### 11.1 合成事件测不出 `:focus-visible`
+
+`new KeyboardEvent(...)` + `dispatchEvent` **不会**让浏览器把"最近一次交互"
+标记成键盘，所以 `:focus-visible` 的判定测不出来。
+必须走 CDP 的 `Input.dispatchKeyEvent`（真实事件）。
+本次调试用的最小 WebSocket + CDP 客户端在
+`<scratchpad>/cdp.py`（会随 session 清掉，但只有 40 行，重写很快）。
+
+### 11.2 headless 无 GPU 时，CSS transition 只在产生帧时推进
+
+`getComputedStyle(el).opacity` 会读到**起始值或中间值**，看起来像"过渡没跑"。
+**测量前先 `Page.captureScreenshot` 逼它产一帧**，或者干脆连拍十几帧再读。
+本次差点因此误判交叉淡入是坏的。
+
+### 11.3 `requestAnimationFrame` 在后台标签页/headless 里可能不推进
+
+只靠 rAF 排下一步会把图卡在 `opacity:0`。
+本次给 `nextFrame()` 加了 60 ms `setTimeout` 兜底，谁先到算谁 ——
+和 `site.js` 里 `ready()` 同一个思路（见坑 #7）。
+
+### 11.4 macOS 上 Chrome 窗口有最小宽度（约 500 px）
+
+`--window-size=390` 会被**静默夹到 500**，截出来的图不是 390 的布局。
+量真手机宽度必须用 CDP 的 `Emulation.setDeviceMetricsOverride`。
+（这条是坑 #11 的延伸 —— 之前只知道 `--dump-dom` 有问题，
+现在确认 `--screenshot` 也一样不可信。）
+
+### 11.5 `Page.startScreencast` 在 `--disable-gpu` 下不吐帧
+
+想逐帧看动画会直接卡死。改用「连续 `captureScreenshot` + 每次读一遍状态」。
+
+### 11.6 macOS 没有 `setsid`
+
+想让本地服务器脱离进程组不被回收，用 Python 双 fork：
+
+```python
+if os.fork()==0:
+    os.setsid()
+    if os.fork()==0:
+        os.execv(sys.executable,[sys.executable,'-m','http.server','4323','--bind','0.0.0.0'])
+    os._exit(0)
+```
+
+### 11.7 判断"改了却看不到"的第一件事
+
+看 `<link>` 有没有 `?v=`。现在有了（`_includes/head.html` / `_layouts/default.html`），
+但如果以后加了新的 CSS/JS 文件，**记得也带上 `?v={{ v }}`**。

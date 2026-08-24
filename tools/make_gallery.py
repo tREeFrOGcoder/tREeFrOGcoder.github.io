@@ -1,17 +1,23 @@
 #!/usr/bin/env python3
 """
-Gallery 资产流水线（原型）。上线版会放在 tools/make_gallery.py。
+Gallery 资产流水线。
 
-用法:  python3 make_manifest.py [SRC_DIR] [OUT_DIR]
+用法（必须在 gallery/ 目录里跑）:
+    cd gallery && python3 ../tools/make_gallery.py
 
-对 SRC_DIR 里每张原图:
+对 photos/ 里每张原图:
   1. 读尺寸 + EXIF（拍摄时间 / 相机 / 镜头 / 光圈快门ISO / 焦距）
-  2. 生成多档 WebP:  400w / 800w / 1600w / 2400w  → OUT_DIR/derived/
-  3. 生成 LQIP —— 24px 宽的 base64 缩略图，直接内联进 manifest 做模糊占位
-  4. 输出 photos.json（含 w/h/ar，前端无需等图片加载就能算布局）
+  2. 生成多档 WebP:  400w / 800w / 1600w / 2400w  → derived/
+     （只降不升：原图不够宽的档位会跳过，例如 Owl 2048px 只有 3 档）
+  3. 生成 LQIP —— 24px 宽的 base64 缩略图，内联进 manifest 做模糊占位
+  4. 输出 photos.json（含 w/h/ar，前端不用等图片加载就能算布局）
 
-以后你加照片:  丢进 photos/ → 跑一次这个脚本 → 完事。
-标题/说明写在同名 .txt 或 photos.meta.json 里，脚本会保留你已有的。
+加照片:  丢进 gallery/photos/ → 跑一次这个脚本 → 完事。
+标题/日期/分类写在 gallery/photos.meta.json 里，**脚本永远不会覆盖你手写的字段**。
+脚本幂等：同样的输入跑多少次，photos.json 都一模一样。
+
+注意：现有 photos/ 里是已经转过的 WebP，EXIF 早就丢了，所以拍摄参数抓不到。
+Ziche 已明确表示不要拍摄参数，lightbox 只显示标题 + 日期。
 """
 import base64, io, json, os, sys
 from PIL import Image, ExifTags
