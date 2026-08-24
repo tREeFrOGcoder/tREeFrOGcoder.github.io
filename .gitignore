@@ -1,0 +1,16 @@
+# Jekyll 构建产物 —— 每次 serve/build 都会重新生成，绝不能提交
+_site/
+.jekyll-cache/
+.jekyll-metadata
+
+# macOS
+.DS_Store
+._*
+
+# Ruby
+.bundle/
+vendor/
+
+# 编辑器
+.vscode/
+.idea/
