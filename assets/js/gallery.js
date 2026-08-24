@@ -207,42 +207,104 @@ const Gallery = (() => {
   /* ─────────────────── 4. Lightbox ─────────────────── */
 
   const Light = (() => {
-    const box = $("#light"), figure = $("#light-fig"), img = $("#light-img");
+    const box = $("#light"), figure = $("#light-fig");
+    const layers = [...figure.querySelectorAll(".lb-img")];
     const cap = $("#light-cap"), cnt = $("#light-cnt");
     let idx = -1, open = false, lastFocus = null;
+    let front = 0;     // 当前在前面的那一层
+    let seq = 0;       // 竞态令牌：连着快翻时，只有最后一次允许上屏
+
+    /* 不用 img.decode()：见 site.js 里同名注释，它在某些状态下永不 settle。
+       统一走 load 事件 + 兜底超时 —— 任何情况下都往下走，不会把弹窗卡死。 */
+    const ready = im => (im.complete && im.naturalWidth)
+      ? Promise.resolve()
+      : new Promise(res => {
+          const done = () => res();
+          im.addEventListener("load", done, { once: true });
+          im.addEventListener("error", done, { once: true });
+          setTimeout(done, 2500);
+        });
+
+    /* 等新图真的栅格化完再开始过渡。正常走双 rAF（约一两帧）；
+       但 rAF 在后台标签页/无头浏览器里可能根本不推进，会把图卡在 opacity:0，
+       所以加一条 60ms 的兜底，谁先到算谁 —— 和 site.js 里 ready() 同一个思路。 */
+    const nextFrame = fn => {
+      let done = false;
+      const run = () => { if (done) return; done = true; fn(); };
+      requestAnimationFrame(() => requestAnimationFrame(run));
+      setTimeout(run, 60);
+    };
+
+    const pick = p => {
+      const t = Object.keys(p.src).map(Number).sort((a, b) => a - b);
+      const best = t[t.length - 1];
+      return { url: p.src[String(Math.min(best, 1600))], best };
+    };
+
+    /* 交叉淡入淡出。新图先在背面层装好、等它真正栅格化（双 rAF），
+       才同时开始"新的淡入 / 旧的淡出"。全程没有任何一次硬切 src。 */
+    function swap(url, alt, dir, after) {
+      const cur = layers[front], next = layers[1 - front];
+      next.src = url;
+      next.alt = alt;
+      next.classList.remove("in");
+      next.style.transform = dir ? `translateX(${dir * 26}px)` : "";
+      nextFrame(() => {
+        next.style.transform = "";
+        next.classList.add("in");
+        cur.classList.remove("in");
+        cur.style.transform = dir ? `translateX(${-dir * 26}px)` : "";
+        cur.setAttribute("aria-hidden", "true");
+        next.removeAttribute("aria-hidden");
+        front = 1 - front;
+        after && after();
+      });
+    }
 
     function render(i, dir = 0) {
       const it = items[i]; if (!it) return;
       const p = it.photo;
-      const tiers = Object.keys(p.src).map(Number).sort((a, b) => a - b);
-      const best = tiers[tiers.length - 1];
+      const token = ++seq;
+      idx = i;
 
-      figure.style.aspectRatio = p.ar;
-      img.classList.remove("in");
-      if (dir) { figure.style.transform = `translateX(${dir * 26}px)`; figure.style.opacity = ".35"; }
-
-      const pre = new Image();
-      pre.decoding = "async";
-      pre.src = p.src[String(Math.min(best, 1600))];
-      pre.decode().catch(() => {}).then(() => {
-        img.src = pre.src;
-        img.classList.add("in");
-        figure.style.transform = "";
-        figure.style.opacity = "";
-        // 再悄悄换上最高档
-        if (best > 1600) { const hi = new Image(); hi.src = p.src[String(best)];
-          hi.decode().catch(()=>{}).then(() => { if (idx === i) img.src = hi.src; }); }
-      });
-
+      /* 文字不参与动画，立刻更新，不会闪 */
       cap.innerHTML = `<span class="t">${p.title || p.id}</span>` +
         (p.shot ? `<span class="d">${p.shot}</span>` : "") +
         (p.settings ? `<span class="s">${p.settings}</span>` : "");
       cnt.textContent = `${i + 1} / ${items.length}`;
-      idx = i;
-      // 预取左右邻居
-      [i - 1, i + 1].forEach(n => { const t = items[(n + items.length) % items.length];
-        if (t) new Image().src = t.photo.src[String(Math.min(best, 1600))]; });
       history.replaceState(null, "", "#" + encodeURIComponent(p.id));
+
+      const { url, best } = pick(p);
+      const pre = new Image();
+      pre.decoding = "async";
+      pre.src = url;
+      ready(pre).then(() => {
+        if (token !== seq) return;                 // 已经被更新的一次取代
+        swap(url, p.title || p.id, dir, () => {
+          if (best <= 1600) return;
+          const hi = new Image();                  // 上屏之后再悄悄换最高档
+          hi.src = p.src[String(best)];
+          ready(hi).then(() => { if (token === seq) layers[front].src = hi.src; });
+        });
+      });
+
+      /* 预取左右邻居 */
+      [i - 1, i + 1].forEach(n => {
+        const t = items[(n + items.length) % items.length];
+        if (t) new Image().src = pick(t.photo).url;
+      });
+    }
+
+    /* 命中测试：图层填满整个舞台，照片周围的透明黑边也属于 <img> 元素，
+       所以不能再靠 e.target 判断"点没点到照片"。按 object-fit:contain
+       的规则把照片的真实矩形算出来。 */
+    function onPhoto(e) {
+      const im = layers[front];
+      if (!im || !im.naturalWidth) return false;
+      const r = im.getBoundingClientRect();
+      const s = Math.min(r.width / im.naturalWidth, r.height / im.naturalHeight);
+      return Math.abs(e.clientX - (r.left + r.width / 2)) <= im.naturalWidth * s / 2
+          && Math.abs(e.clientY - (r.top + r.height / 2)) <= im.naturalHeight * s / 2;
     }
 
     return {
@@ -257,13 +319,22 @@ const Gallery = (() => {
       },
       close() {
         open = false;
+        seq++;                     // 作废还在飞的加载，免得关了之后又闪一下
         box.classList.remove("on");
-        setTimeout(() => { box.hidden = true; img.removeAttribute("src"); }, 260);
+        setTimeout(() => {
+          box.hidden = true;
+          layers.forEach(l => {
+            l.classList.remove("in");
+            l.style.transform = "";
+            l.removeAttribute("src");
+          });
+        }, 300);
         document.body.style.overflow = "";
         history.replaceState(null, "", location.pathname + location.search);
         lastFocus?.focus();
       },
       go(d) { if (!open) return; render((idx + d + items.length) % items.length, d); },
+      onPhoto,
       get isOpen() { return open; }
     };
   })();
@@ -320,9 +391,14 @@ const Gallery = (() => {
          那一整条占满宽、上百 px 高，却不在名单里 —— 看起来就是"暗处点了没反应"。
          左右翻页热区是 <button>，会被 closest 拦住，所以照旧翻页不关闭；
          它们 hover 有高亮，用户看得出那是控件。 */
-      if (e.target.closest("button, a, #light-img")) return;
+      if (e.target.closest("button, a") || Light.onPhoto(e)) return;
       Light.close();
     });
+    /* 光标要说实话：压在照片上时是普通箭头，落到四周黑边才变 zoom-out */
+    $("#light-stage").addEventListener("mousemove", e => {
+      e.currentTarget.style.cursor = Light.onPhoto(e) ? "default" : "zoom-out";
+    }, { passive: true });
+
     $("#light-x").onclick = e => { e.stopPropagation(); Light.close(); };
     // 边缘热区和底部控件用同一组 class，行为完全一致
     document.querySelectorAll(".nav-prev").forEach(b => b.onclick = e => { e.stopPropagation(); Light.go(-1); });

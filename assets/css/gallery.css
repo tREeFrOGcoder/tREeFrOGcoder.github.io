@@ -72,14 +72,18 @@
 #light[hidden]{display:none}
 
 /* 舞台的左右内边距 == 翻页区宽度 ⇒ 照片和箭头井水不犯河水 */
-#light-stage{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;
-  padding:var(--lb-top) var(--lb-side) .5rem}
-#light-fig{margin:0;max-width:100%;max-height:100%;display:flex;position:relative;
-  transition:transform .3s var(--ease),opacity .22s var(--ease)}
-#light-img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;
-  border-radius:2px;box-shadow:0 24px 70px #000a;
-  opacity:0;transform:scale(.985);transition:opacity .3s var(--ease),transform .4s var(--ease)}
-#light-img.in{opacity:1;transform:none}
+/* 舞台尺寸只由窗口决定，永远不随照片比例变 —— 这是不闪的关键。
+   两层图各自 object-fit:contain 居中，比例由图自己负责。 */
+#light-stage{flex:1;display:flex;min-height:0;
+  padding:var(--lb-top) var(--lb-side) .5rem;cursor:zoom-out}
+#light-fig{position:relative;flex:1;min-width:0;min-height:0;margin:0}
+/* 阴影用 drop-shadow 不用 box-shadow：前者贴着照片的真实边缘走，
+   后者会画在整个图层盒子上（盒子现在比照片大，黑边也算盒子）。 */
+.lb-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;
+  filter:drop-shadow(0 18px 44px rgba(0,0,0,.55));
+  opacity:0;transform:scale(.985);
+  transition:opacity .3s var(--ease),transform .42s var(--ease)}
+.lb-img.in{opacity:1;transform:none}
 
 /* ── 底部信息栏：只放标题/日期。翻页交给左右热区和键盘，这里不再放按钮 ── */
 #light-bar{flex:0 0 auto;padding:1rem 1.2rem 1.6rem;text-align:center;color:#fff;

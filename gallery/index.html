@@ -58,7 +58,12 @@ filter: all         # all | photo | origami
     <svg viewBox="0 0 24 24"><polyline points="9 5 16 12 9 19"/></svg></button>
 
   <div id="light-stage">
-    <figure id="light-fig"><img id="light-img" alt=""></figure>
+    <!-- 两层图交替使用：新图在背面装好、栅格化完成后才交叉淡入。
+         全程不改舞台形状，所以横竖照片互切也不会重新排版。 -->
+    <figure id="light-fig">
+      <img class="lb-img" alt="">
+      <img class="lb-img" alt="" aria-hidden="true">
+    </figure>
   </div>
 
   <div id="light-bar">
