@@ -5,11 +5,17 @@
 <link rel="icon" type="image/png" href="{{ '/assets/img/favicon.png' | relative_url }}">
 <link rel="canonical" href="{{ page.url | absolute_url }}">
 
-<link rel="stylesheet" href="{{ '/assets/css/tokens.css'     | relative_url }}">
-<link rel="stylesheet" href="{{ '/assets/css/base.css'       | relative_url }}">
-<link rel="stylesheet" href="{{ '/assets/css/layout.css'     | relative_url }}">
-<link rel="stylesheet" href="{{ '/assets/css/components.css' | relative_url }}">
-{% if page.gallery %}<link rel="stylesheet" href="{{ '/assets/css/gallery.css' | relative_url }}">{% endif %}
+{%- comment -%}
+  ?v=构建时间戳。同一次部署里所有页面共用一个值（缓存正常生效），
+  一 push 就变（浏览器立刻拿到新样式）。本地开发同理，改完 build 一下就见效，
+  不用再教人 hard refresh。
+{%- endcomment -%}
+{%- assign v = site.time | date: '%s' -%}
+<link rel="stylesheet" href="{{ '/assets/css/tokens.css'     | relative_url }}?v={{ v }}">
+<link rel="stylesheet" href="{{ '/assets/css/base.css'       | relative_url }}?v={{ v }}">
+<link rel="stylesheet" href="{{ '/assets/css/layout.css'     | relative_url }}?v={{ v }}">
+<link rel="stylesheet" href="{{ '/assets/css/components.css' | relative_url }}?v={{ v }}">
+{% if page.gallery %}<link rel="stylesheet" href="{{ '/assets/css/gallery.css' | relative_url }}?v={{ v }}">{% endif %}
 
 <!-- 主题必须在首帧渲染前定好，否则刷新时会先闪一帧亮色再变暗。
      改版前这段脚本在 <body> 里，所以每次刷新都闪。 -->

@@ -48,6 +48,8 @@ filter: all         # all | photo | origami
 
 <!-- Lightbox -->
 <div id="light" hidden tabindex="-1" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <!-- 左上角进度，和右上角的关闭键对称。只显示，不可点。 -->
+  <span id="light-cnt" aria-live="polite"></span>
   <button id="light-x" aria-label="Close">&times;</button>
 
   <button class="edge nav-prev" id="light-prev" aria-label="Previous photo">
@@ -61,10 +63,5 @@ filter: all         # all | photo | origami
 
   <div id="light-bar">
     <div id="light-cap"></div>
-    <div id="light-nav">
-      <button class="nav-prev" aria-label="Previous photo">&lsaquo;</button>
-      <span id="light-cnt"></span>
-      <button class="nav-next" aria-label="Next photo">&rsaquo;</button>
-    </div>
   </div>
 </div>

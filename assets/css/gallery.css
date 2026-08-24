@@ -81,21 +81,20 @@
   opacity:0;transform:scale(.985);transition:opacity .3s var(--ease),transform .4s var(--ease)}
 #light-img.in{opacity:1;transform:none}
 
-/* ── 底部信息 + always-on 翻页控件 ── */
-#light-bar{flex:0 0 auto;padding:1rem 1.2rem 1.8rem;text-align:center;color:#fff}
+/* ── 底部信息栏：只放标题/日期。翻页交给左右热区和键盘，这里不再放按钮 ── */
+#light-bar{flex:0 0 auto;padding:1rem 1.2rem 1.6rem;text-align:center;color:#fff;
+  cursor:zoom-out;              /* 整条都能点关闭，光标要说出来 */
+  position:relative;z-index:11} /* 盖在翻页热区(z=10)之上，热区就不用写死 bottom 了 */
 #light-cap .t{display:block;font-size:1.05rem;font-weight:600;letter-spacing:-.005em}
 #light-cap .d{display:block;font-size:.83rem;opacity:.62;margin-top:.22rem}
 #light-cap .s{display:block;font-size:.76rem;opacity:.5;margin-top:.3rem;
   font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.02em}
-#light-nav{display:inline-flex;align-items:center;gap:.35rem;margin-top:.9rem;
-  padding:.15rem;border-radius:99px;background:#ffffff12}
-#light-nav button{width:36px;height:32px;border:0;background:none;color:#fff;opacity:.6;
-  font-size:1.25rem;line-height:1;cursor:pointer;border-radius:99px;
-  transition:opacity .18s var(--ease),background-color .18s var(--ease)}
-#light-nav button:hover{opacity:1;background:#ffffff1c}
-#light-nav button:focus-visible{outline:2px solid #fff;outline-offset:2px;opacity:1}
-#light-cnt{font:600 .8rem/1 ui-monospace,Menlo,monospace;letter-spacing:.06em;opacity:.65;
-  min-width:4.2em;text-align:center}
+/* 进度徽标：左上角，和右上角的关闭键对称。纯显示，不接受点击 ——
+   pointer-events:none 让它下面的暗处照样能点关闭。 */
+#light-cnt{position:absolute;top:.7rem;left:1.2rem;z-index:20;pointer-events:none;
+  height:44px;display:grid;place-items:center;color:#fff;opacity:.42;
+  font:600 .78rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;
+  text-shadow:0 1px 3px #0009}
 
 /* ── 关闭键：必须盖在翻页热区之上，否则右上角点不中 ── */
 #light-x{position:absolute;top:.7rem;right:1rem;z-index:20;
@@ -106,7 +105,9 @@
 #light-x:focus-visible{outline:2px solid #fff;outline-offset:2px;opacity:1}
 
 /* ── 左右翻页热区：只占用照片外的留白，且顶部让出关闭键 ── */
-.edge{position:absolute;top:var(--lb-top);bottom:5.5rem;width:var(--lb-side);z-index:10;
+/* bottom:0 —— 下沿由 #light-bar 用更高的 z-index 盖住，
+   所以标题换行、信息栏变高时热区会自动跟着让位，不用维护魔法数字 */
+.edge{position:absolute;top:var(--lb-top);bottom:0;width:var(--lb-side);z-index:10;
   border:0;background:none;color:#fff;cursor:pointer;
   display:grid;place-items:center;padding:0;opacity:.38;
   transition:opacity .2s var(--ease)}
@@ -125,9 +126,9 @@
   :root{--lb-side:8px;--lb-top:52px}
   .edge{display:none}            /* 窄屏靠底部的 ‹ n/N › 和滑动，边缘箭头反而难懂 */
   #light-stage{padding:var(--lb-top) 8px .25rem}
-  #light-bar{padding:.7rem 1rem 1.4rem}
+  #light-bar{padding:.7rem 1rem 1.3rem}
   #light-cap .t{font-size:.95rem}
-  #light-nav button{width:44px;height:38px}
+  #light-cnt{left:.8rem;top:.5rem;font-size:.72rem}
   .ghead h1{font-size:1.4rem}
 }
 @media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}

@@ -315,8 +315,13 @@ const Gallery = (() => {
       else if (e.key === "ArrowLeft") Light.go(-1);
     });
     box.addEventListener("click", e => {
-      // 点背景 / 舞台留白 / 图片周围的空白都算关闭；点按钮和图片本身不算
-      if (e.target === box || e.target.id === "light-stage" || e.target.id === "light-fig") Light.close();
+      /* 反过来写成黑名单：除了「照片本身」和「有自己行为的控件」，点哪都关。
+         原来是白名单（只认 #light / #light-stage / #light-fig），底部信息栏
+         那一整条占满宽、上百 px 高，却不在名单里 —— 看起来就是"暗处点了没反应"。
+         左右翻页热区是 <button>，会被 closest 拦住，所以照旧翻页不关闭；
+         它们 hover 有高亮，用户看得出那是控件。 */
+      if (e.target.closest("button, a, #light-img")) return;
+      Light.close();
     });
     $("#light-x").onclick = e => { e.stopPropagation(); Light.close(); };
     // 边缘热区和底部控件用同一组 class，行为完全一致
