@@ -1,0 +1,36 @@
+# 加一篇论文 = 在最上面加一段。字段说明：
+#   image  相对 /assets/img/paper/ 的文件名
+#   links  [显示文字, 网址] 的列表，按顺序排
+#   note   作者行末尾的小字（可省略）
+- title: "Take the essence and discard the dross: A Rethinking on Data Selection for Fine-Tuning Large Language Models"
+  authors: "**Ziche Liu\\***, Rui Ke\\*, Feng Jiang, Haizhou Li"
+  note: "*=Equal Contribution"
+  venue: NAACL 2025
+  image: data_selection_onepic2.webp
+  links:
+    - [Paper, "https://aclanthology.org/2025.naacl-long.336/"]
+    - [Code, "https://github.com/tREeFrOGcoder/TEDD-Ranker"]
+    - [Demo, "https://zicheliu.com/TEDD-Ranker/"]
+    - [Talk, "https://www.youtube.com/watch?v=cZmJq4gboMg"]
+  tldr: We propose a three-stage scheme to standardize data selection methods and develop two metrics (efficiency and flexibility) to evaluate the effectiveness of a data selector.
+
+- title: "Humans or LLMs as the Judge? A Study on Judgement Biases"
+  authors: "Guiming Chen\\*, Shunian Chen\\*, **Ziche Liu**, Feng Jiang, Benyou Wang"
+  note: "*=Equal Contribution"
+  venue: EMNLP 2024
+  image: llm-as-a-judge.webp
+  links:
+    - [Paper, "https://aclanthology.org/2024.emnlp-main.474/"]
+    - [Data, "https://github.com/FreedomIntelligence/Humans_LLMs_Judgement_Bias"]
+  tldr: We investigate judgment biases in human and LLM judges, demonstrating their vulnerability through experiments with a curated dataset based on Bloom's Taxonomy.
+
+- title: "AceGPT, Localizing Large Language Models in Arabic"
+  authors: "Huang Huang\\*, Fei Yu\\*, Jianqing Zhu\\*, Xuening Sun, Hao Cheng, Song Dingjie, Zhihong Chen, Mosen Alharthi, Bang An, Juncai He, **Ziche Liu**, Junying Chen, Jianquan Li, Benyou Wang, Lian Zhang, Ruoyu Sun, Xiang Wan, Haizhou Li, Jinchao Xu"
+  note: "*=Equal Contribution"
+  venue: NAACL 2024
+  image: logo.svg
+  links:
+    - [Paper, "https://aclanthology.org/2024.naacl-long.450/"]
+    - [Code, "https://github.com/FreedomIntelligence/AceGPT"]
+    - [Demo, "https://www.acegpt.org/"]
+  tldr: We leverage high-quality SFT data and culturally-aware RLAIF to effectively localize LLM for Arabic, addressing cultural sensitivity and local values.

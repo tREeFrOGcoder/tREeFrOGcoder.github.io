@@ -1,0 +1,23 @@
+title: Ziche Liu
+description: Senior undergrad at CUHK-Shenzhen, visiting student at UC Berkeley. World models, LLMs, and data.
+url: https://zicheliu.com
+lang: en
+
+# GitHub Pages 自带 Jekyll 3.9，不用任何第三方插件 → push 即上线，没有 CI 会坏
+plugins: []
+
+# 不发布到线上的东西
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - tools            # 本地脚本
+  - docs             # 方案文档
+  - gallery/photos   # 6000px 原图：只做生成用的源，线上只发 derived/
+  - "**/.DS_Store"
+  - README.md
+
+# 目录里的 index.html 直接映射成干净 URL
+permalink: pretty
+sass:
+  style: compressed

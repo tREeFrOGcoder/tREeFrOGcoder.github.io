@@ -1,0 +1,29 @@
+/* ══ 页面骨架 ══════════════════════════════════════════════════════
+   侧栏 250 / 正文 750 —— 与改版前完全一致的比例。 */
+.container{display:flex;gap:var(--s6);max-width:1200px;margin:0 auto;padding:var(--s7) var(--s6)}
+
+aside{flex:0 0 250px;position:sticky;top:calc(var(--nav-h) + var(--s6));align-self:flex-start}
+
+main{flex:1;min-width:0;max-width:750px;display:flex;flex-direction:column;gap:var(--s7)}
+
+/* Gallery 这类需要整宽的页面 */
+.wide{max-width:1400px;margin:0 auto;padding:var(--s6) clamp(1rem,3vw,2.5rem) var(--s8)}
+
+section{scroll-margin-top:calc(var(--nav-h) + var(--s4))}
+section + section{border-top:1px solid var(--rule);padding-top:var(--s7)}
+main > section > :last-child{margin-bottom:0}
+
+/* ── 平板 ── */
+@media (max-width:900px){
+  .container{flex-direction:column;gap:var(--s6);padding:var(--s6) var(--s5)}
+  aside{position:static;flex:none;display:flex;align-items:center;gap:var(--s5)}
+  main{max-width:none}
+}
+
+/* ── 手机 ── */
+@media (max-width:640px){
+  :root{--f-xl:1.45rem}
+  .container{padding:var(--s5) var(--s4)}
+  aside{flex-direction:column;align-items:flex-start;gap:var(--s3)}
+  .wide{padding:var(--s5) var(--s4) var(--s7)}
+}

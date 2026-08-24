@@ -1,0 +1,8 @@
+- k: Language & LLMs
+  v: My NLP work has studied which data actually helps large models, how human and LLM judges can be biased, and how to adapt systems across cultures. I think of language as a compact interface on top of richer perception and interaction, not a full replacement for them.
+- k: Embodied world models
+  v: At BAIR, I build action-conditioned video world models that let agents imagine futures and respond to control signals over long horizons. More broadly, I'm interested in models that learn language, vision, and action together, instead of treating one as a small add-on to the others.
+- k: Evaluation & learning over time
+  v: I also work on how to evaluate these grounded agents in interactive, changing settings, where they need to handle uncertainty, ask good questions, and keep learning without forgetting.
+- k: Broader curiosities
+  v: I'm intrigued by human memory, consciousness, and intelligence, and how they might quietly inspire the next generation of grounded models.

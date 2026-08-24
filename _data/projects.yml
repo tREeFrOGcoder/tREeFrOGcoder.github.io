@@ -1,0 +1,10 @@
+# 原来占了一个 nav tab，内容只有三行链接 —— 现在并进 Fun
+- title: "CS180 — Intro to Computer Vision & Computational Photography"
+  href: /cs180-portfolio/
+  note: course portfolio
+- title: RoadLight Sim
+  href: "https://github.com/tREeFrOGcoder/RoadSimLight"
+  note: INDENG 174
+- title: TEDD-Ranker
+  href: "https://github.com/tREeFrOGcoder/TEDD-Ranker"
+  note: NAACL 2025

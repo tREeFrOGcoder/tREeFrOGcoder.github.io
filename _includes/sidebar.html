@@ -1,0 +1,13 @@
+<aside>
+  <div class="avatar">
+    <img src="{{ '/assets/img/me.webp' | relative_url }}" alt="Ziche Liu" width="200" height="200">
+  </div>
+  <div class="rail-links">
+    {%- for l in site.data.links %}
+    <a href="{{ l.href }}"{% unless l.href contains 'mailto:' %} target="_blank" rel="noopener"{% endunless %}>
+      {% include icon.html name=l.icon %}<span>{{ l.label }}</span>
+      {%- if l.note %}<span class="note">{{ l.note }}</span>{% endif -%}
+    </a>
+    {%- endfor %}
+  </div>
+</aside>

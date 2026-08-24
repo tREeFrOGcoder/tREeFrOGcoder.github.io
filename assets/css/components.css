@@ -1,0 +1,211 @@
+/* ══ 组件 ══════════════════════════════════════════════════════════ */
+
+/* ── Header / 导航 ────────────────────────────────────────────────── */
+header{
+  position:sticky;top:0;z-index:500;height:var(--nav-h);
+  display:flex;align-items:center;justify-content:flex-end;gap:var(--s5);
+  padding:0 var(--s6);
+  background:color-mix(in srgb, var(--accent-soft) 72%, transparent);
+  -webkit-backdrop-filter:saturate(180%) blur(14px);
+  backdrop-filter:saturate(180%) blur(14px);
+  border-bottom:1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+  transition:background-color .35s var(--ease), border-color .35s var(--ease);
+}
+nav{display:flex;gap:var(--s5);font-size:var(--f-base);font-weight:var(--w-bold)}
+nav a{position:relative;background-image:none;color:var(--accent);letter-spacing:.01em}
+nav a::after{
+  content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;
+  background:currentColor;transform:scaleX(0);transform-origin:left;
+  transition:transform .3s var(--ease);
+}
+nav a:hover{color:var(--accent-hi)}
+nav a:hover::after, nav a.active::after{transform:scaleX(1)}
+nav a.active{color:var(--accent-hi)}
+
+/* ── 明暗切换 ──────────────────────────────────────────────────────
+   改版前用 ☾ / ☼ 两个字符，两个问题：
+   ① 字形宽度不同 → 每次切换整条导航横移 7.03px（实测）
+   ② 它们是字体字形，Windows/安卓上可能变成彩色 emoji 或方框
+   现在：按钮 40×40 写死 + flex:0 0 auto，里面放内联 SVG。
+   图标怎么变都在这个盒子里，布局位移严格为 0。 */
+.theme-btn{
+  flex:0 0 auto;width:40px;height:40px;
+  display:grid;place-items:center;
+  padding:0;border:0;background:none;cursor:pointer;
+  color:var(--accent);border-radius:50%;
+  transition:color .2s var(--ease), background-color .2s var(--ease);
+}
+.theme-btn:hover{color:var(--accent-hi);background:color-mix(in srgb, var(--ink) 8%, transparent)}
+.theme-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.sunmoon{display:block;width:21px;height:21px}
+/* 太阳和月亮是两个独立图标，叠在同一块画布上，旋转着互换。
+   （先试过用 <mask> 把圆盘啃成月牙 —— mask 内容上的 CSS transform
+     不被可靠支持，暗色下只会渲染成一个实心圆。这版不依赖 mask。）
+   transform-box:view-box 必须显式写，否则旧版 Chrome 的旋转中心会跑偏。 */
+.sunmoon .ic{
+  transform-box:view-box;transform-origin:12px 12px;
+  transition:transform .45s var(--ease), opacity .3s var(--ease);
+}
+.sunmoon .sun {opacity:1;transform:none}
+.sunmoon .moon{opacity:0;transform:rotate(-70deg) scale(.45)}
+:root[data-theme=dark] .sunmoon .sun {opacity:0;transform:rotate(70deg) scale(.45)}
+:root[data-theme=dark] .sunmoon .moon{opacity:1;transform:none}
+
+/* ── 侧栏 ─────────────────────────────────────────────────────────── */
+/* .avatar 必须 flex:0 0 auto，否则窄屏 aside 变横向 flex 时头像会被压扁。
+   .avatar img 必须 height:auto —— <img> 上的 height 属性会被当成 CSS height，
+   宽高都被指定时 aspect-ratio 直接失效，头像就成了椭圆。 */
+.avatar{flex:0 0 auto;width:200px;max-width:100%}
+.avatar img{
+  display:block;width:100%;height:auto;aspect-ratio:1;
+  border-radius:50%;object-fit:cover;
+  border:4px solid var(--accent-soft);
+  box-shadow:0 4px 14px rgb(var(--shadow)/.16);
+  transition:filter .35s var(--ease), opacity .35s var(--ease),
+             border-color .35s var(--ease), transform .5s var(--ease);
+}
+.avatar img:hover{transform:translateY(-2px) scale(1.015)}
+:root[data-theme=dark] .avatar img{filter:brightness(.92);opacity:.9}
+:root[data-theme=dark] .avatar img:hover{filter:brightness(1);opacity:1}
+
+.rail-links{margin-top:var(--s5);display:flex;flex-direction:column;gap:var(--s1)}
+.rail-links a{
+  display:flex;align-items:center;gap:var(--s2);
+  padding:var(--s1) var(--s2);margin-left:calc(var(--s2) * -1);
+  border-radius:6px;font-size:var(--f-base);background-image:none;
+  transition:background-color .2s var(--ease), color .2s var(--ease), transform .2s var(--ease);
+}
+.rail-links a:hover{background:color-mix(in srgb, var(--accent) 10%, transparent);transform:translateX(2px)}
+/* 尺寸用 em 跟着字号走，想调大小改这一个数字即可 */
+.rail-links .icon{width:1.2em;height:1.2em;flex:0 0 auto}
+.rail-links .icon path{fill:currentColor}
+.rail-links .note{margin-left:auto;font-size:var(--f-xs);color:var(--ink-3);opacity:0;
+  transition:opacity .25s var(--ease)}
+.rail-links a:hover .note{opacity:1}
+
+/* ── 正文块 ───────────────────────────────────────────────────────── */
+.lead{color:var(--ink-2)}
+.callout{
+  margin-top:var(--s4);padding:var(--s3) var(--s4);border-radius:8px;
+  background:color-mix(in srgb, var(--accent) 8%, transparent);
+  border-left:3px solid var(--accent);font-size:var(--f-sm);
+}
+.rk{font-weight:var(--w-bold);color:var(--ink)}
+
+/* ── Publications ─────────────────────────────────────────────────
+   图右文左。grid-row:1 必须显式写，否则自动排布会把缩略图放到第 2 行。 */
+.pub{
+  display:grid;grid-template-columns:1fr 30%;gap:var(--s4);align-items:start;
+  padding:var(--s3);margin:0 calc(var(--s3) * -1);border-radius:10px;
+  transition:background-color .25s var(--ease);
+}
+.pub:hover{background:color-mix(in srgb, var(--accent) 5%, transparent)}
+.pub + .pub{margin-top:var(--s4)}
+.pub-thumb{
+  grid-column:2;grid-row:1;cursor:zoom-in;
+  border-radius:6px;overflow:hidden;background:var(--surface);
+  box-shadow:0 2px 8px rgb(var(--shadow)/.10);
+  transition:transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.pub:hover .pub-thumb{transform:translateY(-3px);box-shadow:0 8px 20px rgb(var(--shadow)/.16)}
+.pub-thumb img{display:block;width:100%;height:auto}
+:root[data-theme=dark] .pub-thumb img{filter:brightness(.9)}
+:root[data-theme=dark] .pub:hover .pub-thumb img{filter:brightness(1)}
+
+.pub-body{grid-column:1;grid-row:1;min-width:0}
+.pub h3{margin-bottom:var(--s1);letter-spacing:-.005em}
+.pub .authors{font-size:var(--f-sm);color:var(--ink-2);margin:0 0 var(--s2)}
+.pub .authors strong{color:var(--ink)}
+.venue{
+  display:inline-block;background:var(--accent-soft);color:var(--ink);
+  font-size:var(--f-xs);font-weight:var(--w-bold);letter-spacing:.02em;
+  padding:.18em .55em;border-radius:4px;
+  transition:background-color .35s var(--ease), color .35s var(--ease);
+}
+.pub-links{font-size:var(--f-sm);margin:var(--s2) 0 var(--s1);display:flex;gap:var(--s2);flex-wrap:wrap}
+.pub-links .sep{color:var(--ink-3)}
+.tldr{font-size:var(--f-sm);color:var(--ink-2);margin:0}
+.tldr b{color:var(--ink)}
+
+/* ── Education ────────────────────────────────────────────────────
+   日期不可点，所以绝不能用主色（主色 = 可点击）。改用中性灰 + 等宽数字，
+   靠字重和留白建立层级。 */
+.edu + .edu{margin-top:var(--s5)}
+.edu p{margin-bottom:var(--s1)}
+.edu-when{
+  font-size:var(--f-sm);font-weight:var(--w-bold);font-style:italic;
+  color:var(--ink-3);font-variant-numeric:tabular-nums;letter-spacing:.01em;
+}
+.edu-what{font-weight:var(--w-bold);color:var(--ink)}
+
+/* ── Fun 里收编的 projects ── */
+.proj-lead{margin-top:var(--s4)}
+.proj-note{font-size:var(--f-xs);color:var(--ink-3);margin-left:.35em;font-weight:var(--w-bold)}
+
+/* ── 回到顶部 ── */
+.top-btn{
+  position:fixed;right:var(--s6);bottom:var(--s6);width:44px;height:44px;
+  border:0;border-radius:50%;background:var(--accent);color:var(--bg);
+  font-size:var(--f-md);cursor:pointer;z-index:1000;
+  box-shadow:0 4px 14px rgb(var(--shadow)/.25);
+  opacity:0;transform:translateY(8px) scale(.9);pointer-events:none;
+  transition:opacity .3s var(--ease), transform .3s var(--ease), background-color .3s;
+}
+.top-btn.show{opacity:.45;transform:none;pointer-events:auto}
+.top-btn:hover{opacity:1;transform:scale(1.08)}
+.top-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px;opacity:1}
+
+/* ── 页脚 ── */
+footer{
+  border-top:1px solid var(--rule);margin-top:var(--s8);
+  padding:var(--s5) var(--s6) var(--s6);
+  text-align:center;font-size:var(--f-xs);color:var(--ink-3);line-height:1.6;
+}
+footer span{display:block;opacity:.8}
+
+/* ── 论文图放大：点开变大 + 周围变暗，再点缩小 ────────────────────
+   FLIP：先量首末位置，再用 transform 补差 —— 所以是从缩略图原位长出来的，
+   不是凭空淡入，而且全程只动 transform，不触发重排。 */
+#zoom{
+  position:fixed;inset:0;z-index:2000;display:grid;place-items:center;
+  background:rgba(10,16,20,0);cursor:zoom-out;
+  -webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);
+  transition:background-color .28s var(--ease), backdrop-filter .28s var(--ease);
+}
+#zoom[hidden]{display:none}
+#zoom.on{background:rgba(10,16,20,.82);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+#zoom img{
+  max-width:min(1100px,92vw);max-height:88vh;width:auto;height:auto;display:block;
+  border-radius:6px;box-shadow:0 24px 70px #0009;background:#fff;
+  transform-origin:top left;will-change:transform;
+}
+:root[data-theme=dark] #zoom img{background:var(--bg)}
+
+/* ── 响应式 ───────────────────────────────────────────────────────── */
+@media (max-width:900px){
+  .avatar{width:120px}
+  .avatar img{border-width:3px}
+  .rail-links{margin:0;flex-direction:row;flex-wrap:wrap;gap:var(--s3)}
+  .rail-links .note{display:none}
+}
+@media (max-width:640px){
+  /* 窄屏：5 个 tab 加起来比屏幕宽（实测 390px 下溢出 31px）。
+     不做汉堡菜单 —— 改成可横滑的一条，右边一道渐隐提示还有内容。 */
+  header{justify-content:space-between;padding:0;gap:0}
+  nav{
+    flex:1 1 auto;min-width:0;gap:var(--s4);font-size:var(--f-sm);
+    overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;padding:0 var(--s2) 0 var(--s4);
+    -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 22px),transparent);
+    mask-image:linear-gradient(to right,#000 calc(100% - 22px),transparent);
+  }
+  nav::-webkit-scrollbar{display:none}
+  nav a{white-space:nowrap;flex:0 0 auto}
+  .theme-btn{width:44px;height:44px;margin-right:var(--s2)}  /* 触摸目标 ≥44 */
+  .avatar{width:104px}
+  .pub{grid-template-columns:1fr;gap:var(--s3)}
+  .pub-thumb{grid-column:1;grid-row:1;max-width:100%}
+  .pub-body{grid-row:2}
+  .top-btn{right:var(--s4);bottom:var(--s4)}
+}

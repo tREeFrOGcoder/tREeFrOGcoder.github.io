@@ -1,0 +1,10 @@
+- label: Scholar
+  icon: scholar
+  href: "https://scholar.google.com/citations?user=cQ0xpOkAAAAJ&hl=en&authuser=1"
+- label: GitHub
+  icon: github
+  href: "https://github.com/tREeFrOGcoder"
+- label: Email
+  icon: mail
+  href: "mailto:archerliu@berkeley.edu"
+  note: archerliu@berkeley.edu

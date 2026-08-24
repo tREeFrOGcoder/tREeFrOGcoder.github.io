@@ -1,0 +1,20 @@
+{%- comment -%} 用法: {% include pub-card.html p=pub %} {%- endcomment -%}
+<article class="pub">
+  <div class="pub-thumb">
+    <img src="{{ '/assets/img/paper/' | append: include.p.image | relative_url }}"
+         alt="{{ include.p.title | escape }}" loading="lazy" decoding="async">
+  </div>
+  <div class="pub-body">
+    <h3>{{ include.p.title }}</h3>
+    <p class="authors">{{ include.p.authors | markdownify | remove: '<p>' | remove: '</p>' }}
+      {%- if include.p.note %} <span class="note-eq">({{ include.p.note }})</span>{% endif %}</p>
+    <span class="venue">{{ include.p.venue }}</span>
+    <p class="pub-links">
+      {%- for l in include.p.links -%}
+        {% unless forloop.first %}<span class="sep">/</span>{% endunless %}
+        <a href="{{ l[1] }}" target="_blank" rel="noopener">{{ l[0] }}</a>
+      {%- endfor -%}
+    </p>
+    <p class="tldr"><b>TL;DR</b> {{ include.p.tldr }}</p>
+  </div>
+</article>

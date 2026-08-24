@@ -1,0 +1,24 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
+<meta name="description" content="{{ page.description | default: site.description }}">
+<link rel="icon" type="image/png" href="{{ '/assets/img/favicon.png' | relative_url }}">
+<link rel="canonical" href="{{ page.url | absolute_url }}">
+
+<link rel="stylesheet" href="{{ '/assets/css/tokens.css'     | relative_url }}">
+<link rel="stylesheet" href="{{ '/assets/css/base.css'       | relative_url }}">
+<link rel="stylesheet" href="{{ '/assets/css/layout.css'     | relative_url }}">
+<link rel="stylesheet" href="{{ '/assets/css/components.css' | relative_url }}">
+{% if page.gallery %}<link rel="stylesheet" href="{{ '/assets/css/gallery.css' | relative_url }}">{% endif %}
+
+<!-- 主题必须在首帧渲染前定好，否则刷新时会先闪一帧亮色再变暗。
+     改版前这段脚本在 <body> 里，所以每次刷新都闪。 -->
+<script>
+(function(){
+  try{
+    var t = localStorage.getItem("theme");
+    if(!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    document.documentElement.dataset.theme = t;
+  }catch(e){}
+})();
+</script>

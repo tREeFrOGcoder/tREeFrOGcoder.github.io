@@ -1,0 +1,57 @@
+/* ══ 排版基础 ══════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font);
+  font-size:var(--f-base);
+  font-weight:var(--w-body);
+  line-height:1.6;
+  /* 刻意不写 -webkit-font-smoothing:antialiased —— 那会让 macOS 上的
+     正文明显变细，实测墨量掉 7%，读起来发虚。用系统默认的次像素渲染。 */
+  transition:background-color .35s var(--ease), color .35s var(--ease);
+}
+
+b, strong{font-weight:var(--w-bold)}
+
+/* 链接：下划线从左生长。主色只用在真正可点的东西上。 */
+a{
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:var(--w-bold);
+  background-image:linear-gradient(currentColor,currentColor);
+  background-size:0 1.5px;
+  background-position:0 100%;
+  background-repeat:no-repeat;
+  transition:color .2s var(--ease), background-size .28s var(--ease);
+}
+a:hover{color:var(--accent-hi);background-size:100% 1.5px}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+
+h1,h2{
+  font-size:var(--f-xl);
+  line-height:1.25;
+  letter-spacing:-.015em;
+  font-weight:var(--w-bold);
+  margin:0 0 var(--s4);
+}
+h3{font-size:var(--f-base);font-weight:var(--w-bold);line-height:1.35;margin:0}
+p{margin:0 0 var(--s3)}
+
+ul.clean{margin:var(--s2) 0 0;padding-left:1.15rem}
+ul.clean li{margin-bottom:var(--s1)}
+ul.clean li::marker{color:var(--ink-3)}
+
+img{max-width:100%}
+
+/* 只对键盘可见的跳过链接，鼠标用户永远看不到 */
+.skip{position:absolute;left:-9999px;top:0;z-index:9999;padding:var(--s2) var(--s4);
+  background:var(--surface);border-radius:0 0 6px 0}
+.skip:focus{left:0}
