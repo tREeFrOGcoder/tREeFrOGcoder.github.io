@@ -1,216 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ziche Gallery</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" type="image/png" href="../src/misc/dark3.PNG">
-</head>
-<body>
-  <header>
-    <nav>
-      <a href="../">Homepage</a>
-    </nav>
-    <button class="dark-switch" id="darkSwitch" aria-label="Toggle Dark Mode">☾</button>
-  </header>
+---
+layout: wide
+title: Gallery
+description: Photography and modern origami by Ziche Liu.
+gallery: true
+nav:
+  - [Homepage, "/"]
+---
 
-  <main>
-    <section id="gallery">
-      <h1> </h1>
-      <h1>Photography Gallery</h1>
+<div class="ghead">
+  <h1>Photography &amp; Origami</h1>
+  <span class="sub">点图放大 · ←→ 翻页 · ESC 关闭</span>
+</div>
 
-      <div class="photo-grid invisible">
-        <!-- Each photo now only needs one definition of title/timestamp in data-* attributes.
-             The inner .photo-info markup has been removed to avoid duplication.
-             (You may add a hover overlay via JS or CSS if desired using the data attributes.) -->
-        <div class="photo"
-             data-title="Addison Street View"
-             data-timestamp="2025-01-19">
-          <img src="photos/AddisonStreet.webp" alt="AddisonStreet">
-        </div>
+<div class="ctl">
+  <div class="ctl-g"><b>排布</b>
+    <button data-mode="justified" class="on">对齐行</button>
+    <button data-mode="masonry">瀑布流</button>
+  </div>
+  <div class="ctl-g"><b>尺寸</b>
+    <button data-size="220">紧凑</button>
+    <button data-size="320" class="on">舒适</button>
+    <button data-size="440">大图</button>
+  </div>
+  <div class="ctl-g"><b>筛选</b>
+    <button data-filter="all" class="on">全部</button>
+    <button data-filter="photo">摄影</button>
+    <button data-filter="origami">折纸</button>
+  </div>
+</div>
 
-        <div class="photo"
-             data-title="Bald Cypress"
-             data-timestamp="2024-01-03">
-          <img src="photos/BaldCypress.webp" alt="BaldCypress">
-        </div>
+<div id="grid" data-manifest="{{ '/gallery/photos.json' | relative_url }}"></div>
 
-        <div class="photo"
-             data-title="Carpenter Bee"
-             data-timestamp="2024-05-03">
-          <img src="photos/CarpenterBee.webp" alt="CarpenterBee">
-        </div>
+<!-- Lightbox -->
+<div id="light" hidden tabindex="-1" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button id="light-x" aria-label="Close">&times;</button>
 
-        <div class="photo"
-             data-title="Tiger Beetle"
-             data-timestamp="2023-06-10">
-          <img src="photos/tigerbeetle.webp" alt="tigerbeetle">
-        </div>
+  <button class="edge nav-prev" id="light-prev" aria-label="Previous photo">
+    <svg viewBox="0 0 24 24"><polyline points="15 5 8 12 15 19"/></svg></button>
+  <button class="edge nav-next" id="light-next" aria-label="Next photo">
+    <svg viewBox="0 0 24 24"><polyline points="9 5 16 12 9 19"/></svg></button>
 
-
-        <div class="photo"
-             data-title="Damselfly"
-             data-timestamp="2024-08-16">
-          <img src="photos/Damselfy.webp" alt="Damselfly">
-        </div>
-
-
-        <div class="photo"
-             data-title="Nymphalidae"
-             data-timestamp="2023-06-10">
-          <img src="photos/Nymphalidae.webp" alt="Nymphalidae">
-        </div>
-
-        
-
-        <div class="photo"
-             data-title="European Mantis"
-             data-timestamp="2024-08-15">
-          <img src="photos/Mantis.webp" alt="Mantis">
-        </div>
-
-        <div class="photo"
-             data-title="Church at Yosemite"
-             data-timestamp="2024-08-15">
-          <img src="photos/Church.webp" alt="Church">
-        </div>
-
-
-        <div class="photo"
-             data-title="Half Moon Bay"
-             data-timestamp="2025-01-12">
-          <img src="photos/HalfMoonBay.webp" alt="HalfMoonBay">
-        </div>
-
-
-        <div class="photo"
-             data-title="Mural"
-             data-timestamp="2025-01-09">
-          <img src="photos/Mural.webp" alt="Mural">
-        </div>
-
-        
-
-        <div class="photo"
-             data-title="Pur"
-             data-timestamp="2024-06-21">
-          <img src="photos/Pur.webp" alt="Pur">
-        </div>
-
-        <!-- <div class="photo"
-             data-title="Steller's jay"
-             data-timestamp="2025-01-20">
-          <img src="photos/StellerJay.webp" alt="StellerJay">
-        </div> -->
-
-    
-        <div class="photo"
-            data-title="Blakiston's Fish Owl (designed by Katsuta Kyohei)"
-            data-timestamp="2024-10-12">
-          <img src="photos/Owl.webp" alt="Owl">
-        </div>
-
-        <!-- <div class="photo"
-             data-title=""
-             data-timestamp="2025-01-19">
-          <img src="photos/" alt="">
-        </div> -->
-
-       
-      </div>
-    </section>
-  </main>
-
-  <!-- Lightbox -->
-  <div id="lightbox" class="lightbox">
-    <span class="close-lightbox">&times;</span>
-    <img id="lightbox-img" src="" alt="Enlarged photo">
-    <div class="lightbox-info">
-      <div id="lightbox-title" class="lightbox-title"></div>
-      <div id="lightbox-timestamp" class="lightbox-timestamp"></div>
-    </div>
+  <div id="light-stage">
+    <figure id="light-fig"><img id="light-img" alt=""></figure>
   </div>
 
-  <!-- Toggle Dark Mode Script -->
-  <script>
-    // Get the button and the document body
-    const darkSwitch = document.getElementById("darkSwitch");
-    const body = document.body;
-
-    // Check for previously saved theme preference
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      body.classList.toggle("dark", savedTheme === "dark");
-      darkSwitch.textContent = savedTheme === "dark" ? "☼" : "☾";
-    }
-
-    // Add event listener to toggle dark mode
-    darkSwitch.addEventListener("click", () => {
-      const isDark = body.classList.toggle("dark");
-      darkSwitch.textContent = isDark ? "☼" : "☾";
-      localStorage.setItem("theme", isDark ? "dark" : "light"); // Save theme preference
-    });
-  </script>
-
-  <!-- Go to top button -->
-  <button id="go-to-top" class="go-to-top">↑ <strong>Top</strong></button>
-
-  <!-- Scripts -->
-  <script>
-    // Show/hide Go to Top button
-    const goToTopButton = document.getElementById("go-to-top");
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 200) {
-        goToTopButton.classList.add("show");
-      } else {
-        goToTopButton.classList.remove("show");
-      }
-    });
-    // Scroll to top
-    goToTopButton.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-
-
-    
-
-    // Lightbox functionality
-    const lightbox = document.getElementById("lightbox");
-    const lightboxImg = document.getElementById("lightbox-img");
-    const lightboxTitle = document.getElementById("lightbox-title");
-    const lightboxTimestamp = document.getElementById("lightbox-timestamp");
-    const closeLightbox = document.querySelector(".close-lightbox");
-
-    document.querySelectorAll(".photo").forEach(photo => {
-      photo.addEventListener("click", () => {
-        const img = photo.querySelector("img");
-        // Set lightbox info
-        lightboxImg.src = img.src;
-        lightboxTitle.textContent = photo.dataset.title;
-        lightboxTimestamp.textContent = photo.dataset.timestamp;
-        // Show lightbox
-        lightbox.style.display = "flex";
-      });
-    });
-
-    closeLightbox.addEventListener("click", () => {
-      lightbox.style.display = "none";
-    });
-
-
-  </script>
-  <!-- Gallery Layout Script -->
-  <script src="gallery-layout.js"></script>
-
-
-  <footer class="copyright-footer">
-    <div class="copyright-text">
-        © 2025 Ziche Liu. All rights reserved.
-        <span class="attribution-notice">Design by Ziche Liu. Template may be used with proper attribution.</span>
-        <span class="attribution-notice">Last updated: 2025-03</span>
+  <div id="light-bar">
+    <div id="light-cap"></div>
+    <div id="light-nav">
+      <button class="nav-prev" aria-label="Previous photo">&lsaquo;</button>
+      <span id="light-cnt"></span>
+      <button class="nav-next" aria-label="Next photo">&rsaquo;</button>
     </div>
-  </footer>
-
-</body>
-</html>
+  </div>
+</div>

@@ -1,0 +1,93 @@
+{
+ "AddisonStreet": {
+  "title": "Addison Street View",
+  "shot": "2025-01-19",
+  "tags": [
+   "photo"
+  ]
+ },
+ "BaldCypress": {
+  "title": "Bald Cypress",
+  "shot": "2024-01-03",
+  "tags": [
+   "photo"
+  ]
+ },
+ "CarpenterBee": {
+  "title": "Carpenter Bee",
+  "shot": "2024-05-03",
+  "tags": [
+   "photo"
+  ]
+ },
+ "tigerbeetle": {
+  "title": "Tiger Beetle",
+  "shot": "2023-06-10",
+  "tags": [
+   "photo"
+  ]
+ },
+ "Damselfy": {
+  "title": "Damselfly",
+  "shot": "2024-08-16",
+  "tags": [
+   "photo"
+  ]
+ },
+ "Nymphalidae": {
+  "title": "Nymphalidae",
+  "shot": "2023-06-10",
+  "tags": [
+   "photo"
+  ]
+ },
+ "Mantis": {
+  "title": "European Mantis",
+  "shot": "2024-08-15",
+  "tags": [
+   "photo"
+  ]
+ },
+ "Church": {
+  "title": "Church at Yosemite",
+  "shot": "2024-08-15",
+  "tags": [
+   "photo"
+  ]
+ },
+ "HalfMoonBay": {
+  "title": "Half Moon Bay",
+  "shot": "2025-01-12",
+  "tags": [
+   "photo"
+  ]
+ },
+ "Mural": {
+  "title": "Mural",
+  "shot": "2025-01-09",
+  "tags": [
+   "photo"
+  ]
+ },
+ "Pur": {
+  "title": "Pur",
+  "shot": "2024-06-21",
+  "tags": [
+   "photo"
+  ]
+ },
+ "StellerJay": {
+  "title": "Steller's jay",
+  "shot": "2025-01-20",
+  "tags": [
+   "photo"
+  ]
+ },
+ "Owl": {
+  "title": "Blakiston's Fish Owl (designed by Katsuta Kyohei)",
+  "shot": "2024-10-12",
+  "tags": [
+   "origami"
+  ]
+ }
+}

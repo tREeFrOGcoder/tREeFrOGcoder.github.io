@@ -1,0 +1,128 @@
+/* ══ Gallery ══════════════════════════════════════════════════════ */
+/* 颜色/字阶全部来自 assets/css/tokens.css，这里只加 Gallery 自己的量 */
+:root{
+  /* 左右翻页区宽度。lightbox 的左右内边距用同一个值，
+     所以箭头永远待在照片外面，不可能压到画面上。 */
+  --lb-side:clamp(64px,9vw,124px);
+  --lb-top:60px;
+}
+
+.ghead{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.ghead h1{font-size:1.7rem;font-weight:700;letter-spacing:-.02em;margin:0}
+.ghead .sub{color:var(--ink-3);font-size:.9rem}
+
+/* ── 控件条 ── */
+.ctl{display:flex;gap:1.25rem;flex-wrap:wrap;align-items:center;margin-bottom:1.5rem;
+  padding-bottom:1rem;border-bottom:1px solid var(--rule)}
+.ctl-g{display:flex;align-items:center;gap:.3rem}
+.ctl-g > b{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);margin-right:.35rem}
+.ctl button{border:1px solid var(--rule);background:transparent;color:var(--ink-2);
+  font:600 .84rem/1 inherit;padding:.5rem .78rem;border-radius:99px;cursor:pointer;
+  transition:.18s var(--ease)}
+.ctl button:hover{border-color:var(--accent);color:var(--accent)}
+.ctl button.on{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.ctl button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ── 网格：绝对定位，算出来什么样就是什么样 ── */
+#grid{position:relative;width:100%;opacity:0;transition:opacity .5s var(--ease)}
+#grid.live{opacity:1}
+
+.tile{position:absolute;top:0;left:0;margin:0;overflow:hidden;border-radius:3px;
+  background:var(--surface);cursor:zoom-in;will-change:transform;
+  transform:translate3d(0,0,0)}
+/* 只有"重排"才加过渡；resize 拖动时没有，才能 1:1 跟手 */
+#grid.animating .tile{transition:transform .42s var(--ease),width .42s var(--ease),height .42s var(--ease)}
+
+.tile .ph{position:absolute;inset:0;background-size:cover;background-position:center;
+  filter:blur(12px);transform:scale(1.08);transition:opacity .45s var(--ease)}
+.tile.ready .ph{opacity:0}
+.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+  opacity:0;transition:opacity .45s var(--ease),transform .6s var(--ease)}
+.tile.ready img{opacity:1}
+.tile:hover img{transform:scale(1.035)}
+
+/* 键盘焦点：不要浏览器默认那个粗蓝框。
+   改成贴着画面内缘的一道白色发丝 + 一层很浅的暗晕 —— 在任何照片上都看得清，
+   但读起来像"相册里被选中的那张"，而不是一个蓝色方块。 */
+.tile:focus-visible{outline:none}
+.tile:focus-visible::after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;
+  border-radius:inherit;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.95), inset 0 0 0 5px rgba(0,0,0,.28)}
+
+.tile figcaption{position:absolute;inset:auto 0 0 0;padding:1.6rem .7rem .55rem;
+  background:linear-gradient(to top,rgba(0,0,0,.72),rgba(0,0,0,.28) 55%,transparent);
+  color:#fff;opacity:0;transform:translateY(6px);pointer-events:none;z-index:5;
+  transition:opacity .28s var(--ease),transform .28s var(--ease)}
+.tile:hover figcaption,.tile:focus-visible figcaption{opacity:1;transform:none}
+.tile figcaption .t{display:block;font-weight:600;font-size:.88rem;line-height:1.3;
+  text-shadow:0 1px 3px #0008}
+.tile figcaption .d{display:block;font-size:.75rem;opacity:.82;margin-top:.1rem}
+
+/* ══ Lightbox ═════════════════════════════════════════════════════ */
+#light{position:fixed;inset:0;z-index:9000;display:flex;flex-direction:column;
+  background:rgba(8,10,14,.9);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
+  opacity:0;transition:opacity .26s var(--ease)}
+#light.on{opacity:1}
+#light[hidden]{display:none}
+
+/* 舞台的左右内边距 == 翻页区宽度 ⇒ 照片和箭头井水不犯河水 */
+#light-stage{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;
+  padding:var(--lb-top) var(--lb-side) .5rem}
+#light-fig{margin:0;max-width:100%;max-height:100%;display:flex;position:relative;
+  transition:transform .3s var(--ease),opacity .22s var(--ease)}
+#light-img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;
+  border-radius:2px;box-shadow:0 24px 70px #000a;
+  opacity:0;transform:scale(.985);transition:opacity .3s var(--ease),transform .4s var(--ease)}
+#light-img.in{opacity:1;transform:none}
+
+/* ── 底部信息 + always-on 翻页控件 ── */
+#light-bar{flex:0 0 auto;padding:1rem 1.2rem 1.8rem;text-align:center;color:#fff}
+#light-cap .t{display:block;font-size:1.05rem;font-weight:600;letter-spacing:-.005em}
+#light-cap .d{display:block;font-size:.83rem;opacity:.62;margin-top:.22rem}
+#light-cap .s{display:block;font-size:.76rem;opacity:.5;margin-top:.3rem;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.02em}
+#light-nav{display:inline-flex;align-items:center;gap:.35rem;margin-top:.9rem;
+  padding:.15rem;border-radius:99px;background:#ffffff12}
+#light-nav button{width:36px;height:32px;border:0;background:none;color:#fff;opacity:.6;
+  font-size:1.25rem;line-height:1;cursor:pointer;border-radius:99px;
+  transition:opacity .18s var(--ease),background-color .18s var(--ease)}
+#light-nav button:hover{opacity:1;background:#ffffff1c}
+#light-nav button:focus-visible{outline:2px solid #fff;outline-offset:2px;opacity:1}
+#light-cnt{font:600 .8rem/1 ui-monospace,Menlo,monospace;letter-spacing:.06em;opacity:.65;
+  min-width:4.2em;text-align:center}
+
+/* ── 关闭键：必须盖在翻页热区之上，否则右上角点不中 ── */
+#light-x{position:absolute;top:.7rem;right:1rem;z-index:20;
+  width:44px;height:44px;display:grid;place-items:center;border:0;border-radius:50%;
+  background:none;color:#fff;font-size:1.9rem;line-height:1;cursor:pointer;opacity:.5;
+  transition:opacity .18s var(--ease),background-color .18s var(--ease)}
+#light-x:hover{opacity:1;background:#ffffff1a}
+#light-x:focus-visible{outline:2px solid #fff;outline-offset:2px;opacity:1}
+
+/* ── 左右翻页热区：只占用照片外的留白，且顶部让出关闭键 ── */
+.edge{position:absolute;top:var(--lb-top);bottom:5.5rem;width:var(--lb-side);z-index:10;
+  border:0;background:none;color:#fff;cursor:pointer;
+  display:grid;place-items:center;padding:0;opacity:.38;
+  transition:opacity .2s var(--ease)}
+.edge:hover{opacity:.95}          /* 不再有渐变色块，玻璃感保持干净 */
+#light-prev{left:0}
+#light-next{right:0}
+.edge svg{width:30px;height:30px;stroke:currentColor;stroke-width:1.5;fill:none;
+  filter:drop-shadow(0 1px 3px #0009);transition:transform .22s var(--ease)}
+#light-prev:hover svg{transform:translateX(-4px)}
+#light-next:hover svg{transform:translateX(4px)}
+/* 焦点环只套在箭头图标上，不去框那一整条热区 */
+.edge:focus-visible{outline:none;opacity:1}
+.edge:focus-visible svg{outline:2px solid #fff;outline-offset:9px;border-radius:50%}
+
+@media (max-width:640px){
+  :root{--lb-side:8px;--lb-top:52px}
+  .edge{display:none}            /* 窄屏靠底部的 ‹ n/N › 和滑动，边缘箭头反而难懂 */
+  #light-stage{padding:var(--lb-top) 8px .25rem}
+  #light-bar{padding:.7rem 1rem 1.4rem}
+  #light-cap .t{font-size:.95rem}
+  #light-nav button{width:44px;height:38px}
+  .ghead h1{font-size:1.4rem}
+}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}

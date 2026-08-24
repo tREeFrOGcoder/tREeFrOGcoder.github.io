@@ -1,0 +1,235 @@
+[
+ {
+  "id": "AddisonStreet",
+  "w": 6000,
+  "h": 3376,
+  "ar": 1.77725,
+  "lqip": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAADwAwCdASoYAA4APulgqE0pJaQiMAgBIB0JZQC/OB+FCh9GLaD0GYAAAP7ZXRfLI5h35DkStoZgpADPNOu7o1DetrH6XQJPaH+CzI8d0ZBqX3ukcm+9iERYu630rb8Cmu1p8kpGgqqtzf2llzLt/jfYyhIt6sYQAAA=",
+  "src": {
+   "400": "derived/AddisonStreet-400.webp",
+   "800": "derived/AddisonStreet-800.webp",
+   "1600": "derived/AddisonStreet-1600.webp",
+   "2400": "derived/AddisonStreet-2400.webp"
+  },
+  "title": "Addison Street View",
+  "shot": "2025-01-19",
+  "tags": [
+   "photo"
+  ]
+ },
+ {
+  "id": "BaldCypress",
+  "w": 6000,
+  "h": 3376,
+  "ar": 1.77725,
+  "lqip": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAAAQBACdASoYAA4APuleqE0pJSOiMAgBIB0JagCdACLq+2wR4Sd7yN9FwAD+3LDAYCQOggzSrr39DnBE2Y+6YhpO+THabYf4EM490MWypVCnUFPADCtsYt6c8HZT948sNvz/usE4mcYAxn+5j0K4nlJrqOR2izZiZNAIChER9zogCZ0gAM2KaGjvCsB7cAAA",
+  "src": {
+   "400": "derived/BaldCypress-400.webp",
+   "800": "derived/BaldCypress-800.webp",
+   "1600": "derived/BaldCypress-1600.webp",
+   "2400": "derived/BaldCypress-2400.webp"
+  },
+  "title": "Bald Cypress",
+  "shot": "2024-01-03",
+  "tags": [
+   "photo"
+  ]
+ },
+ {
+  "id": "CarpenterBee",
+  "w": 4724,
+  "h": 2658,
+  "ar": 1.77728,
+  "lqip": "data:image/webp;base64,UklGRrYAAABXRUJQVlA4IKoAAAAwBACdASoYAA4APulgqE0pJaOiMAgBIB0JYwAD46nlAYhBPe9/dGmOZ4AA/qVzbmObYnYJeUslgjy7A3/Kis6C4qxOXuZqJsbbl3Ub/odsUQIJkF0xQ9sjBeIjdSWreMc6FhAHzXpZY8ZDWAQ+1ywPaABmSiQhTjMI/Gur0dsNQNLwyCmMhcOdE0zLmNTTtG7RxxmibjY3qHAlQ5ficPtjNkqLDvPXUaAAAA==",
+  "src": {
+   "400": "derived/CarpenterBee-400.webp",
+   "800": "derived/CarpenterBee-800.webp",
+   "1600": "derived/CarpenterBee-1600.webp",
+   "2400": "derived/CarpenterBee-2400.webp"
+  },
+  "title": "Carpenter Bee",
+  "shot": "2024-05-03",
+  "tags": [
+   "photo"
+  ]
+ },
+ {
+  "id": "Church",
+  "w": 3376,
+  "h": 6000,
+  "ar": 0.56267,
+  "lqip": "data:image/webp;base64,UklGRtgAAABXRUJQVlA4IMwAAACQBgCdASoYACsAPtFSok0oJKMiOrmYAQAaCWUA0JAuC2uPYxtJGyKensYGWyfFkl8S5fOe/siR2uCZXd24AP7wconEKXkWNB4tGYnzzyK6gb5/gfgcNzo5rUf78WT2ctqQt2AnDn+oAwfccRQPb7nqg5Absm8UoKNdNo7oN89iaL8jWrUPkDDFeM0wgA7UNCrXQ6SUu8CKBgfP+amzjArOASYgvZejjRLKcnE5WqwRtsUvKgqq8+pwt6VHiGoZxtcEHGenDfTfIpwAAAA=",
+  "src": {
+   "400": "derived/Church-400.webp",
+   "800": "derived/Church-800.webp",
+   "1600": "derived/Church-1600.webp",
+   "2400": "derived/Church-2400.webp"
+  },
+  "title": "Church at Yosemite",
+  "shot": "2024-08-15",
+  "tags": [
+   "photo"
+  ]
+ },
+ {
+  "id": "Damselfy",
+  "w": 2757,
+  "h": 1551,
+  "ar": 1.77756,
+  "lqip": "data:image/webp;base64,UklGRooAAABXRUJQVlA4IH4AAADQAwCdASoYAA4APulgqE0pJaQiMAgBIB0JYgAAYXBYDYno2/TSOiAA/jw44H0BNHiyIMHcDQvypBB8OWNcg+5FbWoN+L4Sf6S6cN67S5zJoVg4U9/LAQYtYVhKHcItn+Nn8A6eEBaP2C/HkHBL/SSI7BV/TH8ikiJFTvWLAAA=",
+  "src": {
+   "400": "derived/Damselfy-400.webp",
+   "800": "derived/Damselfy-800.webp",
+   "1600": "derived/Damselfy-1600.webp",
+   "2400": "derived/Damselfy-2400.webp"
+  },
+  "title": "Damselfly",
+  "shot": "2024-08-16",
+  "tags": [
+   "photo"
+  ]
+ },
+ {
+  "id": "HalfMoonBay",
+  "w": 3376,
+  "h": 6000,
+  "ar": 0.56267,
+  "lqip": "data:image/webp;base64,UklGRvAAAABXRUJQVlA4IOQAAADwBQCdASoYACsAPulgp08pJSMiKrgN+SAdCUAXZmyBI96ZvpxsjzNFXW58Y9WxvSFy7nIFfN+FAAD+7lPH3AqWuLAnomr91YgUXn1UTTZIqh02qD9op621NzDUSTb7bW3TyCW9Z8f63MmyVM7qVnADm32mXSdslMzxiUNx75cJytnUNvc+kszRgR2U5aoFc6B+ssccihuIONc7/24cT5gmNIJuWf5bY8Kq/hj5dwozdHfgmV8dp344QSqpEMMs9dfGxBDdzjIZdgjb5bLX/cp9l4EIDWF3PUiccmAr1hVsjH9xYAA=",
+  "src": {
+   "400": "derived/HalfMoonBay-400.webp",
+   "800": "derived/HalfMoonBay-800.webp",
+   "1600": "derived/HalfMoonBay-1600.webp",
+   "2400": "derived/HalfMoonBay-2400.webp"
+  },
+  "title": "Half Moon Bay",
+  "shot": "2025-01-12",
+  "tags": [
+   "photo"
+  ]
+ },
+ {
+  "id": "Mantis",
+  "w": 6000,
+  "h": 3376,
+  "ar": 1.77725,
+  "lqip": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAQBACdASoYAA4APulgqU2pJaQiMAgBIB0JYwCdACHPbTChJWWIOjFSwAD+5dPmmlvF8w1CKwNYcTGAsnsBPbYRCd5eyZDq9upWu+OUtO4e45tMstfZFHozThAAAA==",
+  "src": {
+   "400": "derived/Mantis-400.webp",
+   "800": "derived/Mantis-800.webp",
+   "1600": "derived/Mantis-1600.webp",
+   "2400": "derived/Mantis-2400.webp"
+  },
+  "title": "European Mantis",
+  "shot": "2024-08-15",
+  "tags": [
+   "photo"
+  ]
+ },
+ {
+  "id": "Mural",
+  "w": 3376,
+  "h": 6000,
+  "ar": 0.56267,
+  "lqip": "data:image/webp;base64,UklGRvIAAABXRUJQVlA4IOYAAACwBgCdASoYACsAPulssVIpJaSipWmZIB0JYgCsACMmmwHuoZN9TwPHGDRlgf24sokAbNw+31fN910qAomgAAD+3bmmR3TrXFxxl+Hui8FgiMSj75jW5bGk3CgedpLpxveamlGF2FvnKVEDwiDw7HKHH49rtMoculbVMkNtvbIVUW43rkOPM5Vt4Guuz6G4cXbOpu2lCsk9KRFxv2Gph1ehFuitgsa4hMH5J6H68jNMTmkpPvq033Fm1g+bDmKXOhVH2yizOBrXVbSUg0pTASvQP3icPvkEgcNQhVyD0AujY4eQRaCAAA==",
+  "src": {
+   "400": "derived/Mural-400.webp",
+   "800": "derived/Mural-800.webp",
+   "1600": "derived/Mural-1600.webp",
+   "2400": "derived/Mural-2400.webp"
+  },
+  "title": "Mural",
+  "shot": "2025-01-09",
+  "tags": [
+   "photo"
+  ]
+ },
+ {
+  "id": "Nymphalidae",
+  "w": 2532,
+  "h": 1425,
+  "ar": 1.77684,
+  "lqip": "data:image/webp;base64,UklGRtAAAABXRUJQVlA4IMQAAACQBACdASoYAA4APuleqE0pJSOiMAgBIB0JagCdAYwm5akm1pGbiZEaUbUihjgA97arxdG1k6n0ePqh5XfiR85M21pvJUaOynPyfcRNbU2GxY3hsx94+fsG9fqwDqPUFrjDgbSuNcetdiCLbnri5sk9cg4nbj5gQEkvOD/lEq4kPd1OFS+9I9uoxYmKwMlVTgjuzrL/11MEfdR/7tvcfPwP16eUcW0XHPjWW2G5otfsDxTM3V0ieKbIgpBFDFkkrgAobAAA",
+  "src": {
+   "400": "derived/Nymphalidae-400.webp",
+   "800": "derived/Nymphalidae-800.webp",
+   "1600": "derived/Nymphalidae-1600.webp",
+   "2400": "derived/Nymphalidae-2400.webp"
+  },
+  "title": "Nymphalidae",
+  "shot": "2023-06-10",
+  "tags": [
+   "photo"
+  ]
+ },
+ {
+  "id": "Owl",
+  "w": 2048,
+  "h": 2048,
+  "ar": 1.0,
+  "lqip": "data:image/webp;base64,UklGRtgAAABXRUJQVlA4IMwAAAAwBQCdASoYABgAPulqqlCpJaOiqAqpIB0JQBOmW+A0XIqweb7wiQZCyyIvthdEGj+JgAD+4M3cD0YtoXRbiDaBrhe+9PtVDkrZNITTTl66Gv/Pbot5V+UKvbtVEr4n48fJzl0Qn/jK+NukbEvyvIB+NGhurF2ZK3AU1JIdgJhjXXL9ZOdk9xFeB7cJcxuIrKZ+QW+/g+Up5huAfH90A4a/gtC52s+F2GkxNPQmjTEYUCLuxmkI4os4X1Nb1iCrodO71IToJDyA3rGJCAA=",
+  "src": {
+   "400": "derived/Owl-400.webp",
+   "800": "derived/Owl-800.webp",
+   "1600": "derived/Owl-1600.webp"
+  },
+  "title": "Blakiston's Fish Owl (designed by Katsuta Kyohei)",
+  "shot": "2024-10-12",
+  "tags": [
+   "origami"
+  ]
+ },
+ {
+  "id": "Pur",
+  "w": 5554,
+  "h": 3125,
+  "ar": 1.77728,
+  "lqip": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAABQAwCdASoYAA4APulgqE0pJaQiMAgBIB0JQBadBlFakNsCOAD+wZ0DMwHVfwQglvtsoI0jPtLsrzlkrYCY5Dol5nticRsC+R+txAG57G6f6AAA",
+  "src": {
+   "400": "derived/Pur-400.webp",
+   "800": "derived/Pur-800.webp",
+   "1600": "derived/Pur-1600.webp",
+   "2400": "derived/Pur-2400.webp"
+  },
+  "title": "Pur",
+  "shot": "2024-06-21",
+  "tags": [
+   "photo"
+  ]
+ },
+ {
+  "id": "StellerJay",
+  "w": 6000,
+  "h": 3376,
+  "ar": 1.77725,
+  "lqip": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAADQAwCdASoYAA4APulgqE0pJaOiMAgBIB0JYgCsACKLPxbKGcTbZQAA/tkUii9fyOu/2aM/1pjN3vZVqSAKYBunlZz9Rvjqf/SvsEhVHvNTZbP64V1VxmTrsJZJsjmJNi0AwAAA",
+  "src": {
+   "400": "derived/StellerJay-400.webp",
+   "800": "derived/StellerJay-800.webp",
+   "1600": "derived/StellerJay-1600.webp",
+   "2400": "derived/StellerJay-2400.webp"
+  },
+  "title": "Steller's jay",
+  "shot": "2025-01-20",
+  "tags": [
+   "photo"
+  ]
+ },
+ {
+  "id": "tigerbeetle",
+  "w": 2532,
+  "h": 1425,
+  "ar": 1.77684,
+  "lqip": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAABQBACdASoYAA4APulep00pJSOiMAgBIB0JQBOmUBbJQPwikEf/1AA1FSaQAP6/wpHX/bEKQWyA7ZfFktATLbRLUSbZ8t7Tljzza8lwrfymFvDzQk932d7pOu1Sl+Li3nRkQt12lsXBhv6Xge0qpTVZZ6EHQSF3RZQk7qQWB4tJ9/PzxJPeDqTohYhQAAAA",
+  "src": {
+   "400": "derived/tigerbeetle-400.webp",
+   "800": "derived/tigerbeetle-800.webp",
+   "1600": "derived/tigerbeetle-1600.webp",
+   "2400": "derived/tigerbeetle-2400.webp"
+  },
+  "title": "Tiger Beetle",
+  "shot": "2023-06-10",
+  "tags": [
+   "photo"
+  ]
+ }
+]
