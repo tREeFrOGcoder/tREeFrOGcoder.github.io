@@ -5,6 +5,15 @@ description: Photography and modern origami by Ziche Liu.
 gallery: true
 nav:
   - [Homepage, "/"]
+
+# ── 展示参数 ──────────────────────────────────────────────
+# 平时页面上不放任何按钮，就按下面三个值渲染。
+# 想换手感时：把 tune 改成 true，页面顶部会出现三组按钮，
+# 现场点着试，试到满意再把满意的值写回下面，tune 改回 false。
+tune:   false
+mode:   justified   # justified（对齐行） | masonry（瀑布流）
+size:   320         # 目标行高 px。220 紧凑 / 320 舒适 / 440 大图
+filter: all         # all | photo | origami
 ---
 
 <div class="ghead">
@@ -12,24 +21,30 @@ nav:
   <span class="sub">Click to enlarge &middot; &larr;&rarr; to browse &middot; ESC to close</span>
 </div>
 
+{%- if page.tune %}
 <div class="ctl">
   <div class="ctl-g"><b>Layout</b>
-    <button data-mode="justified" class="on">Justified</button>
-    <button data-mode="masonry">Masonry</button>
+    <button data-mode="justified"{% if page.mode == 'justified' %} class="on"{% endif %}>Justified</button>
+    <button data-mode="masonry"{% if page.mode == 'masonry' %} class="on"{% endif %}>Masonry</button>
   </div>
   <div class="ctl-g"><b>Size</b>
-    <button data-size="220">Compact</button>
-    <button data-size="320" class="on">Comfortable</button>
-    <button data-size="440">Large</button>
+    <button data-size="220"{% if page.size == 220 %} class="on"{% endif %}>Compact</button>
+    <button data-size="320"{% if page.size == 320 %} class="on"{% endif %}>Comfortable</button>
+    <button data-size="440"{% if page.size == 440 %} class="on"{% endif %}>Large</button>
   </div>
   <div class="ctl-g"><b>Filter</b>
-    <button data-filter="all" class="on">All</button>
-    <button data-filter="photo">Photos</button>
-    <button data-filter="origami">Origami</button>
+    <button data-filter="all"{% if page.filter == 'all' %} class="on"{% endif %}>All</button>
+    <button data-filter="photo"{% if page.filter == 'photo' %} class="on"{% endif %}>Photos</button>
+    <button data-filter="origami"{% if page.filter == 'origami' %} class="on"{% endif %}>Origami</button>
   </div>
 </div>
+{%- endif %}
 
-<div id="grid" data-manifest="{{ '/gallery/photos.json' | relative_url }}"></div>
+<div id="grid"
+     data-manifest="{{ '/gallery/photos.json' | relative_url }}"
+     data-mode="{{ page.mode }}"
+     data-size="{{ page.size }}"
+     data-filter="{{ page.filter }}"></div>
 
 <!-- Lightbox -->
 <div id="light" hidden tabindex="-1" role="dialog" aria-modal="true" aria-label="Photo viewer">

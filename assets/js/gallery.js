@@ -18,10 +18,12 @@ const Gallery = (() => {
 
   let PHOTOS = [];      // manifest
   let items = [];       // 当前可见的 {photo, el, imgEl, ar}
-  let mode = "justified";
-  let targetH = 320;
+  /* 展示参数来自 gallery/index.html 的 front-matter（渲染成 #grid 的 data-*）。
+     页面平时不放按钮；把那边的 tune 改成 true 就会出现三组按钮供现场调。 */
+  let mode    = grid.dataset.mode   || "justified";
+  let targetH = +grid.dataset.size  || 320;
+  let filter  = grid.dataset.filter || "all";
   let gap = 10;
-  let filter = "all";
   let lastW = 0;
 
   /* ─────────────────── 1. 布局算法 ─────────────────── */

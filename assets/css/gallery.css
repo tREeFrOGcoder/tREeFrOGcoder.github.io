@@ -7,13 +7,14 @@
   --lb-top:60px;
 }
 
-.ghead{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem}
+/* 分隔线长在标题栏上：控件条平时不渲染，线不能挂在它身上 */
+.ghead{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+  padding-bottom:1rem;margin-bottom:1.5rem;border-bottom:1px solid var(--rule)}
 .ghead h1{font-size:1.7rem;font-weight:700;letter-spacing:-.02em;margin:0}
 .ghead .sub{color:var(--ink-3);font-size:.9rem}
 
 /* ── 控件条 ── */
-.ctl{display:flex;gap:1.25rem;flex-wrap:wrap;align-items:center;margin-bottom:1.5rem;
-  padding-bottom:1rem;border-bottom:1px solid var(--rule)}
+.ctl{display:flex;gap:1.25rem;flex-wrap:wrap;align-items:center;margin-bottom:1.5rem}
 .ctl-g{display:flex;align-items:center;gap:.3rem}
 .ctl-g > b{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
   color:var(--ink-3);margin-right:.35rem}
@@ -64,6 +65,10 @@
   background:rgba(8,10,14,.9);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
   opacity:0;transition:opacity .26s var(--ease)}
 #light.on{opacity:1}
+/* #light 是 position:fixed;inset:0，打开时会被 .focus() 拿走焦点。
+   一旦用键盘翻页，:focus-visible 就命中它，浏览器沿着整个窗口画一圈默认焦点环。
+   模态框本身不需要焦点环（它已经占满屏了），去掉。里面的按钮各自有自己的白色焦点环。 */
+#light:focus,#light:focus-visible{outline:none}
 #light[hidden]{display:none}
 
 /* 舞台的左右内边距 == 翻页区宽度 ⇒ 照片和箭头井水不犯河水 */
