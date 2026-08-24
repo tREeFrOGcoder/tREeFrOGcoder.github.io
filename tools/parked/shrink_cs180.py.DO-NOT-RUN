@@ -1,0 +1,174 @@
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║  暂缓执行 —— 不要跑这个脚本，除非 Ziche 明确同意。                  ║
+# ║                                                                  ║
+# ║  2026-08-23 跑过一次，随后被完整还原。原因：                        ║
+# ║  Ziche 的决定是「CS180 一点都不要动」，把首页上的链接暂时摘掉即可。 ║
+# ║                                                                  ║
+# ║  实测结果（真跑出来的数字，不是估算）：                             ║
+# ║    GIF → 动画 WebP   省 330 MB   12~26× 压缩率                    ║
+# ║    PNG → WebP        省 142 MB   5.6~23×                          ║
+# ║    JPG 就地降采样    省  86 MB   1.1~19×                          ║
+# ║    合计 559 MB，cs180 759MB → 约 200MB                            ║
+# ║                                                                  ║
+# ║  两个已知风险：                                                     ║
+# ║  1. JPG 是**就地覆盖**，原文件只在 git 历史里。                     ║
+# ║  2. 会改写 5 个子页 HTML 的 src 扩展名（37 处引用）。               ║
+# ║     Ziche 说过子页内容一个字都不能改 —— 扩展名算不算"改"，          ║
+# ║     需要他本人确认。                                                ║
+# ║                                                                  ║
+# ║  重跑之前请先 `python3 ... --dry-run`。                            ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+#!/usr/bin/env python3
+"""
+CS180 巨型资源压缩。
+
+设计原则：**绝不覆盖原文件**。
+  - GIF  → 同名 .webp（动画 WebP），`<img>` 标签不变，只改扩展名
+  - PNG  → 同名 .webp（大图才转，小图/透明图保留）
+  - JPG  → 就地按像素预算降采样（会覆盖，所以先跑 --dry-run 确认）
+然后把 6 个子页 HTML 里的 src 扩展名批量改掉。
+原文件在 git 历史里，随时能取回；确认无误后再单独一个提交删除。
+
+用法:
+    python3 tools/shrink_cs180.py --dry-run     # 只报告，不动任何文件
+    python3 tools/shrink_cs180.py               # 真的干活
+"""
+import os, re, subprocess, sys
+from PIL import Image
+Image.MAX_IMAGE_PIXELS = None   # 允许打开 16000x9000 这种巨图
+
+ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "cs180-portfolio")
+DRY = "--dry-run" in sys.argv
+
+# 不按"最长边"压 —— 那会把 16000x9000 的步骤长图压成 2000x1125，单帧全糊。
+# 改成按总像素预算，并给短边设下限，保住长条图里每一帧的可读性。
+MAX_PIXELS = 6_000_000
+MIN_SHORT  = 1200
+MAX_DIM    = 2600       # 单边硬上限，防止极端长条被拉到离谱尺寸
+GIF_MIN = 2 * 1024**2   # 小于这个的 GIF 不折腾
+IMG_MIN = 1 * 1024**2   # 小于这个的静态图不折腾
+
+saved = {"gif": 0, "png": 0, "jpg": 0}
+renames = {}            # 旧文件名 → 新文件名（只含扩展名变化的）
+
+
+def mb(n): return n / 1024**2
+
+
+def fit(im):
+    """按像素预算缩放，但短边不低于 MIN_SHORT —— 长条步骤图靠这个保住可读性。"""
+    w, h = im.size
+    if w * h <= MAX_PIXELS:
+        return im
+    s = (MAX_PIXELS / (w * h)) ** 0.5
+    if min(w, h) * s < MIN_SHORT:              # 短边触底，按短边重算
+        s = MIN_SHORT / min(w, h)
+    if max(w, h) * s > MAX_DIM * 3:            # 极端长条再收一点
+        s = MAX_DIM * 3 / max(w, h)
+    if s >= 1:
+        return im
+    return im.resize((max(1, round(w * s)), max(1, round(h * s))), Image.LANCZOS)
+
+
+def do_gif(path):
+    """动画 GIF → 动画 WebP。<img> 标签不用改，只改扩展名。"""
+    out = os.path.splitext(path)[0] + ".webp"
+    before = os.path.getsize(path)
+    if DRY:
+        print(f"  [GIF] {mb(before):6.1f} MB  {os.path.relpath(path, ROOT)}")
+        return before * 0.93          # 经验值，仅用于 dry-run 估算
+    r = subprocess.run(["gif2webp", "-q", "72", "-m", "6", "-mixed", path, "-o", out],
+                       capture_output=True)
+    if r.returncode != 0 or not os.path.exists(out):
+        print(f"  ✗ gif2webp 失败: {path}\n    {r.stderr.decode()[:200]}")
+        return 0
+    after = os.path.getsize(out)
+    if after >= before:               # 没变小就别换
+        os.remove(out); return 0
+    renames[os.path.basename(path)] = os.path.basename(out)
+    print(f"  [GIF] {mb(before):6.1f} → {mb(after):5.2f} MB  ({before/after:4.1f}×)  {os.path.relpath(path, ROOT)}")
+    return before - after
+
+
+def do_png(path):
+    out = os.path.splitext(path)[0] + ".webp"
+    before = os.path.getsize(path)
+    if DRY:
+        print(f"  [PNG] {mb(before):6.1f} MB  {os.path.relpath(path, ROOT)}")
+        return before * 0.9
+    try:
+        im = Image.open(path)
+        has_alpha = im.mode in ("RGBA", "LA", "P") and "transparency" in im.info or im.mode in ("RGBA", "LA")
+        im = im.convert("RGBA" if has_alpha else "RGB")
+        im = fit(im)
+        im.save(out, "WEBP", quality=86, method=5)
+    except Exception as e:
+        print(f"  ✗ {path}: {e}"); return 0
+    after = os.path.getsize(out)
+    if after >= before:
+        os.remove(out); return 0
+    renames[os.path.basename(path)] = os.path.basename(out)
+    print(f"  [PNG] {mb(before):6.1f} → {mb(after):5.2f} MB  ({before/after:4.1f}×)  {os.path.relpath(path, ROOT)}")
+    return before - after
+
+
+def do_jpg(path):
+    """JPG 就地降采样（扩展名不变，所以 HTML 不用改）。"""
+    before = os.path.getsize(path)
+    try:
+        im = Image.open(path); w, h = im.size
+    except Exception:
+        return 0
+    if w * h <= MAX_PIXELS and before < 4 * 1024**2:
+        return 0
+    if DRY:
+        print(f"  [JPG] {mb(before):6.1f} MB  {w}x{h}  {os.path.relpath(path, ROOT)}")
+        return before * 0.8
+    im = fit(im.convert("RGB"))
+    im.save(path, "JPEG", quality=88, optimize=True, progressive=True)
+    after = os.path.getsize(path)
+    print(f"  [JPG] {mb(before):6.1f} → {mb(after):5.2f} MB  ({before/max(after,1):4.1f}×)  {os.path.relpath(path, ROOT)}")
+    return before - after
+
+
+def main():
+    if DRY:
+        print("── DRY RUN：只报告，不动任何文件 ──\n")
+    for dirpath, _, files in os.walk(ROOT):
+        for f in sorted(files):
+            p = os.path.join(dirpath, f)
+            try: size = os.path.getsize(p)
+            except OSError: continue
+            ext = os.path.splitext(f)[1].lower()
+            if ext == ".gif" and size >= GIF_MIN:
+                saved["gif"] += do_gif(p)
+            elif ext == ".png" and size >= IMG_MIN:
+                saved["png"] += do_png(p)
+            elif ext in (".jpg", ".jpeg") and size >= IMG_MIN:
+                saved["jpg"] += do_jpg(p)
+
+    # 改 HTML 里的扩展名引用
+    if renames and not DRY:
+        print(f"\n── 改写 HTML 里的 {len(renames)} 个引用 ──")
+        for dirpath, _, files in os.walk(ROOT):
+            for f in files:
+                if not f.endswith(".html"):
+                    continue
+                p = os.path.join(dirpath, f)
+                s = orig = open(p, encoding="utf-8", errors="ignore").read()
+                for old, new in renames.items():
+                    s = re.sub(r'(?<=[/"\'])' + re.escape(old) + r'(?=["\'])', new, s)
+                if s != orig:
+                    open(p, "w", encoding="utf-8").write(s)
+                    print(f"  ✓ {os.path.relpath(p, ROOT)}")
+
+    tot = sum(saved.values())
+    print(f"\n省下: GIF {mb(saved['gif']):.0f} MB · PNG {mb(saved['png']):.0f} MB · "
+          f"JPG {mb(saved['jpg']):.0f} MB  = 共 {mb(tot):.0f} MB")
+    if not DRY and renames:
+        print("原 GIF/PNG 仍在磁盘上；确认页面无误后再单独提交删除。")
+
+
+if __name__ == "__main__":
+    main()
