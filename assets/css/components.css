@@ -131,13 +131,32 @@ nav a.active{color:var(--accent-hi)}
 /* ── Education ────────────────────────────────────────────────────
    日期不可点，所以绝不能用主色（主色 = 可点击）。改用中性灰 + 等宽数字，
    靠字重和留白建立层级。 */
-.edu + .edu{margin-top:var(--s5)}
-.edu p{margin-bottom:var(--s1)}
-.edu-when{
-  font-size:var(--f-sm);font-weight:var(--w-bold);font-style:italic;
-  color:var(--ink-3);font-variant-numeric:tabular-nums;letter-spacing:.01em;
+/* ── Education：简历式。学校是标题，学位在下一行，日期右对齐 ──
+   徽标大小只由 --edu-mark 决定，想调就改这一个值。
+   _data/education.yml 里删掉 mark: 那一行 = 该条不显示徽标。 */
+.edu{
+  --edu-mark:32px;
+  display:grid;grid-template-columns:auto 1fr auto;
+  column-gap:var(--s3);row-gap:.15rem;align-items:baseline;
 }
-.edu-what{font-weight:var(--w-bold);color:var(--ink)}
+.edu + .edu{margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--rule)}
+.edu-mark{
+  grid-column:1;grid-row:1 / span 2;align-self:center;
+  width:var(--edu-mark);height:var(--edu-mark);object-fit:contain;
+  margin-right:var(--s1);
+}
+.edu-school{grid-column:2;grid-row:1;font-weight:var(--w-bold);color:var(--ink)}
+.edu-when{
+  grid-column:3;grid-row:1;font-size:var(--f-sm);color:var(--ink-3);
+  font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+.edu-degree{grid-column:2;grid-row:2;color:var(--ink-2);font-size:var(--f-sm)}
+.edu-items{margin-top:var(--s1)}
+/* 没有徽标时把两列收成一列，别留一条空的 auto 轨道 */
+.edu:not(:has(.edu-mark)){grid-template-columns:1fr auto}
+.edu:not(:has(.edu-mark)) .edu-school,
+.edu:not(:has(.edu-mark)) .edu-degree{grid-column:1}
+.edu:not(:has(.edu-mark)) .edu-when{grid-column:2}
 
 /* ── Fun 里收编的 projects ── */
 .proj-lead{margin-top:var(--s4)}
@@ -204,6 +223,15 @@ footer span{display:block;opacity:.8}
   nav a{white-space:nowrap;flex:0 0 auto}
   .theme-btn{width:44px;height:44px;margin-right:var(--s2)}  /* 触摸目标 ≥44 */
   .avatar{width:104px}
+  /* 窄屏：日期挪到学校名下面，否则学校名会被挤成一条窄柱 */
+  .edu{grid-template-columns:auto 1fr;row-gap:.1rem}
+  .edu-when{grid-column:2;grid-row:2;font-size:var(--f-xs)}
+  .edu-degree{grid-column:2;grid-row:3}
+  .edu-mark{grid-row:1 / span 3}
+  .edu:not(:has(.edu-mark)){grid-template-columns:1fr}
+  .edu:not(:has(.edu-mark)) .edu-when{grid-column:1;grid-row:2}
+  .edu:not(:has(.edu-mark)) .edu-degree{grid-column:1;grid-row:3}
+
   .pub{grid-template-columns:1fr;gap:var(--s3)}
   .pub-thumb{grid-column:1;grid-row:1;max-width:100%}
   .pub-body{grid-row:2}

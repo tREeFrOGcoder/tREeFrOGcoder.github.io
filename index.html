@@ -8,7 +8,7 @@ nav:
   - [Fun, "#fun"]
 ---
 
-<section id="about">
+<!-- <section id="about">
   <h1>About</h1>
   <p>Hi! I'm Ziche Liu, a senior undergrad at the Chinese University of Hong Kong, Shenzhen,
      and currently a visiting student at UC Berkeley, enjoying every bit of
@@ -34,7 +34,34 @@ nav:
     with your group, I'd be genuinely happy to
     <a href="mailto:archerliu@berkeley.edu">connect and chat</a>!
   </div>
+</section> -->
+
+<section id="about">
+  <h1>About</h1>
+
+  <p>Hi! I'm Ziche Liu, a first-year Ph.D. student in Computer Science and Engineering at
+     <b>UC San Diego</b>, where I am fortunate to be advised by
+     <a href="https://shangjingbo1226.github.io/" target="_blank" rel="noopener">Prof. Jingbo Shang</a>.
+     I received my B.S. from the Chinese University of Hong Kong, Shenzhen, and spent a year at UC Berkeley as a visiting student during my undergraduate studies.</p>
+  
+  <p>Previously, I worked closely with
+    <a href="https://fjiangai.github.io/" target="_blank" rel="noopener">Dr. Feng Jiang</a>
+    under the supervision of
+    <a href="https://www.colips.org/~eleliha/" target="_blank" rel="noopener">Prof. Haizhou Li</a>
+    on <b>data selection for LLM fine-tuning</b>, and with
+    <a href="https://wabyking.github.io/old.html" target="_blank" rel="noopener">Prof. Benyou Wang</a>
+    on <b>model localization</b> and <b>bias analysis in LLM-as-a-judge</b>.
+    During my time at UC Berkeley, I also worked on <b>world models</b>
+    at Berkeley AI Research (BAIR).</p>
+
+  <p>My research interests broadly lie in <b>LLM, agents, and embodied world models</b>,
+     particularly in understanding, evaluating, and improving their ability to
+     learn, reason, and interact with complex environments. I'm always happy to connect and chat about research so please feel free to reach out!</p>
 </section>
+
+
+
+
 
 <section id="research">
   <h2>Research</h2>
@@ -56,10 +83,16 @@ nav:
   <h2>Education</h2>
   {%- for e in site.data.education %}
   <div class="edu">
-    <p><span class="edu-when">{{ e.when }}</span> &nbsp;<span class="edu-what">{{ e.what }}</span></p>
-    <ul class="clean">
-      {%- for i in e.items %}<li>{{ i }}</li>{% endfor %}
-    </ul>
+    {%- if e.mark %}
+    <img class="edu-mark" src="{{ '/assets/img/edu/' | append: e.mark | relative_url }}" alt="" loading="lazy">
+    {%- endif %}
+    <div class="edu-school">{{ e.school }}</div>
+    <div class="edu-when">{{ e.when }}</div>
+    <div class="edu-degree">{{ e.degree }}
+      {%- if e.items %}
+      <ul class="clean edu-items">{% for i in e.items %}<li>{{ i }}</li>{% endfor %}</ul>
+      {%- endif %}
+    </div>
   </div>
   {%- endfor %}
 </section>

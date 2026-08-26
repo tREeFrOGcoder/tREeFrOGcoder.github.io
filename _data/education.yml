@@ -1,12 +1,28 @@
-- when: "2024.08 — now"
-  what: Visiting Student at UC Berkeley
-  items:
-    - BGA Scholarship (10 among all 600 Berkeley Global Access participants)
+# 简历式：学校是标题，学位在下面一行，日期右对齐。
+#   school  学校名（加粗那一行）
+#   degree  具体学位／身份
+#   when    起止时间。破折号用 em dash —
+#   mark    校徽文件名，相对 /assets/img/edu/。不想要就整行删掉（三条都删=全站不显示徽标）
+#   items   额外条目（获奖等）。暂时不列，留着以后要用时打开
 
-- when: "2022.09 — now"
-  what: Bachelor at the Chinese University of Hong Kong, Shenzhen
-  items:
-    - Academic Performance Scholarship, 2022
-    - Dean's List from CUHK(SZ), 2022-2023, 2023-2024
-    - Undergrad Research Awards 22nd, 23rd, 24th from CUHK(SZ), 2023, 2024
-    - Member of the Nobel Class in CUHK(SZ) (Full Scholarship, Top 0.4% among all cohorts), 2023-now
+- school: UC San Diego
+  degree: Ph.D. Student in Computer Science and Engineering
+  when: "2026.09 — now"
+  mark: ucsd.webp
+
+- school: UC Berkeley
+  degree: Visiting Student
+  when: "2024.08 — 2025.12"
+  mark: berkeley.webp
+  # items:
+  #   - BGA Scholarship (10 among all 600 Berkeley Global Access participants)
+
+- school: Chinese University of Hong Kong, Shenzhen
+  degree: B.S. in Data Science
+  when: "2022.09 — 2026.05"
+  mark: cuhk-sz.webp
+  # items:
+  #   - Academic Performance Scholarship, 2022
+  #   - Dean's List from CUHK(SZ), 2022-2023, 2023-2024
+  #   - Undergrad Research Awards 22nd, 23rd, 24th from CUHK(SZ), 2023, 2024
+  #   - Member of the Nobel Class in CUHK(SZ) (Full Scholarship, Top 0.4%), 2023-now

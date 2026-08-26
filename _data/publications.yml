@@ -2,6 +2,16 @@
 #   image  相对 /assets/img/paper/ 的文件名
 #   links  [显示文字, 网址] 的列表，按顺序排
 #   note   作者行末尾的小字（可省略）
+- title: "BOOKMARKS: Efficient Active Storyline Memory for Role-playing"
+  authors: "Letian Peng, **Ziche Liu**, Yiming Huang, Longfei Yun, Kun Zhou, Yupeng Hou, Jingbo Shang"
+  # note: "*=Equal Contribution"
+  venue: preprint
+  image: bookmark.webp
+  links:
+    - [Paper, "https://arxiv.org/abs/2605.14169"]
+    - [Code, "https://github.com/KomeijiForce/BOOKMARKS_Koishiday_2026"]
+  tldr: We introduce BOOKMARKS, an efficient active storyline memory system that selectively maintains evolving narrative states for long-horizon role-playing.
+
 - title: "Take the essence and discard the dross: A Rethinking on Data Selection for Fine-Tuning Large Language Models"
   authors: "**Ziche Liu\\***, Rui Ke\\*, Feng Jiang, Haizhou Li"
   note: "*=Equal Contribution"
