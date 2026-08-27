@@ -585,17 +585,28 @@ const Gallery = (() => {
     document.fonts?.ready.then(() => layout(false));   // 字体到位后宽度可能变
     setTimeout(() => layout(false), 60);               // 滚动条出现后的兜底
 
-    /* 控件 */
-    document.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => {
-      document.querySelectorAll("[data-mode]").forEach(x => x.classList.remove("on"));
+    /* 控件
+       ⚠️ 选择器必须**限定在 .ctl 里面**，不能写成 document.querySelectorAll("[data-mode]")。
+       #grid 自己就带着 data-mode / data-size / data-filter（展示参数从 front-matter
+       传进来的，见 gallery/index.html），所以那种写法会把 onclick 装到 #grid 身上。
+       而 .ctl 平时根本不渲染（page.tune 为 false），于是线上唯一匹配到的元素就是 #grid ——
+       点任何一张照片，事件冒泡到 #grid，触发 filter 那个处理器：build() 把 13 个
+       .tile 全部销毁重建，layout(true) 再挂上 .animating。新建的 .tile 从 CSS 默认的
+       translate3d(0,0,0)（= 网格左上角）出发，420ms 滑回各自的位置 ——
+       正好在灯箱淡入的那 260ms 里，看起来就是"一堆照片冲到眼前又瞬间消失"。
+       实测：点第一张后 t+16ms，#grid 收到 14 次 childList、39 次 style 写入，
+       class 变成 "live on animating"，第 2 块的 x 从 726 掉回 60 再滑回 726。 */
+    const ctl = s => document.querySelectorAll(".ctl " + s);
+    ctl("[data-mode]").forEach(b => b.onclick = () => {
+      ctl("[data-mode]").forEach(x => x.classList.remove("on"));
       b.classList.add("on"); mode = b.dataset.mode; layout(true);
     });
-    document.querySelectorAll("[data-size]").forEach(b => b.onclick = () => {
-      document.querySelectorAll("[data-size]").forEach(x => x.classList.remove("on"));
+    ctl("[data-size]").forEach(b => b.onclick = () => {
+      ctl("[data-size]").forEach(x => x.classList.remove("on"));
       b.classList.add("on"); targetH = +b.dataset.size; layout(true);
     });
-    document.querySelectorAll("[data-filter]").forEach(b => b.onclick = () => {
-      document.querySelectorAll("[data-filter]").forEach(x => x.classList.remove("on"));
+    ctl("[data-filter]").forEach(b => b.onclick = () => {
+      ctl("[data-filter]").forEach(x => x.classList.remove("on"));
       b.classList.add("on"); filter = b.dataset.filter; build(); layout(true);
     });
 

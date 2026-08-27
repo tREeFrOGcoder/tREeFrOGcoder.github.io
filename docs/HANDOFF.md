@@ -748,3 +748,61 @@ UCSD 和 UCB 的校徽能看出来区别，你可以把三个校徽稍微放大�
 ⚠️ 另一个：`Emulation.setEmulatedMedia` **不支持覆盖 `hover` 特性**，
 `matchMedia('(hover:none)')` 照样是 false —— 触屏那条只能靠读 `document.styleSheets`
 确认规则解析进去了，验不了真机行为。
+
+### 10.12 「点开第一张时一堆照片冲到面前又瞬间消失」（2026-08-27）
+
+**他的话**：以电脑为例，现在点开照片第一张时，屏幕上还是会有一堆照片突然冲到面前然后
+瞬间又消失了的奇怪 bug，这个问题我之前就报过，但是没解决。
+
+**为什么 §10.5 没修掉它**：§10.5 修的是 **lightbox 那张图**的切入动画。
+这一条是**网格本身**在动，两套完全不同的机制 —— 我上次只盯着灯箱，没往身后看。
+
+**根因**（和缩放、动画、滚动条统统无关）：
+
+```js
+document.querySelectorAll("[data-filter]").forEach(b => b.onclick = () => {
+  ...; build(); layout(true);
+});
+```
+
+`#grid` 自己就带着 `data-mode` / `data-size` / `data-filter`（展示参数从
+`gallery/index.html` 的 front-matter 传进来的）。而那三组按钮在 `.ctl` 里，
+**`.ctl` 平时根本不渲染**（`page.tune` 是 false）——
+于是线上唯一匹配 `[data-filter]` 的元素就是 `#grid` 本身，
+`onclick` 被装到了网格容器上。
+
+点任何一张照片 → 事件冒泡到 `#grid` → 触发那个"切换筛选"的处理器 →
+`build()` 把 13 个 `.tile` 全部销毁重建 → `layout(true)` 挂上 `.animating`。
+新建的 `.tile` 从 CSS 默认的 `transform:translate3d(0,0,0)`（= 网格左上角）出发，
+420ms 缓动滑回各自的位置 —— 而灯箱的淡入只要 260ms。
+两段时间一叠，就是"一堆照片从左上角冲出来，然后被灯箱盖住消失"。
+
+三个处理器（mode/size/filter）都装到了同一个 `#grid.onclick` 上，
+后赋值的覆盖前面的，所以实际跑的是 filter 那个 —— 这也是它会 `build()` 重建的原因。
+
+**改法**：把选择器限定进控件条。
+
+```js
+const ctl = s => document.querySelectorAll(".ctl " + s);
+```
+
+**怎么验的**（这个 bug 靠肉眼和截图都抓不住，headless 一秒只给几帧）：
+在页面里挂一个 rAF 逐帧记录器 + 一个盯着 `#grid` 的 MutationObserver，然后派真实鼠标事件。
+修复前，点击后 t+16ms：
+
+```
+#grid childList 变化 14 次、style 写入 39 次，class → "live on animating"
+第 2 块 tile 的 x：726 → 60 → 133 → 204 → 272 → 524 → 644 → … → 726
+（60 = 网格左边缘 = transform 是 identity；后面那串是 420ms 的缓动回归）
+document.contains(旧的 tile 节点) === false   ← 铁证：节点被重建了
+```
+
+修复后，三个宽度（1440 / 1024 / 390）× 每个宽度点 5 张（第 1/2/5/8/13 张）：
+`childList 变化 = 0`、`#grid class 变化 = 0`、tile 的 x 全程只有一个值、
+灯箱正常开、方向键正常翻、Esc 正常关 —— **15/15 通过**。
+另外把 `tune: true` 打开单独验了一遍：Layout / Size / Filter 八个按钮全部照常工作
+（gridH 1827→2696→609，Origami 筛出 1 张，切回 All 恢复 13 张），
+且 tune 模式下点照片同样不再重建网格。
+
+⚠️ **测试坑**：验第 6 张时一度以为"灯箱打不开"，其实是那张图在视口外，
+派过去的鼠标坐标 y > 900 根本没落在页面上。派事件前先 `scrollIntoView`。
