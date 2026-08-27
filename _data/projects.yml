@@ -7,9 +7,17 @@
 #   href: /cs180-portfolio/
 #   note: course portfolio
 
+- title: SweetFlower Milk Tea Simulator
+  href: "https://github.com/tREeFrOGcoder/SweetFlower-Milk-Tea-Simulator"
+  note: Web App for the milk tea business simulation case study in INDENG150
+
+- title: Photo Tagger & Gallery
+  href: "https://github.com/tREeFrOGcoder/Photo-Tagger-Gallery"
+  note: Web App for keyboard-first photo tagging & a finished-photo gallery
+
 - title: RoadLight Sim
   href: "https://github.com/tREeFrOGcoder/RoadSimLight"
-  note: INDENG174
+  note: INDENG174 at UCB
 
 - title: TEDD-Ranker
   href: "https://github.com/tREeFrOGcoder/TEDD-Ranker"
