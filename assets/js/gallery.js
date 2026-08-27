@@ -243,13 +243,29 @@ const Gallery = (() => {
 
     /* 交叉淡入淡出。新图先在背面层装好、等它真正栅格化（双 rAF），
        才同时开始"新的淡入 / 旧的淡出"。全程没有任何一次硬切 src。 */
-    function swap(url, alt, dir, after) {
+    function swap(url, alt, dir, token, after) {
       const cur = layers[front], next = layers[1 - front];
       next.src = url;
       next.alt = alt;
+
+      /* ⚠️ 这里必须掐过渡，别删。
+         这一层身上八成还留着它【上一次退场】时写下的 translateX(∓26px)，
+         而 .lb-img 的 transition 一直开着 —— 直接赋新起点，浏览器会把它
+         「动画过去」而不是「瞬移过去」。两帧后我们一松手，它就从半路
+         （甚至反方向的 -26px）滑向 0，看上去就是"照片从反方向飞进来"。
+         实测连按 5 次「下一张」，浏览器拿到的插值起点是
+         +2.8 / -9.4 / +26 / +26 / -26 px —— 完全看运气，所以时对时错。
+         正确姿势：掐掉过渡 → 摆好起点 → 强制重排 → 再把过渡放回来。 */
       next.classList.remove("in");
+      next.style.transition = "none";
       next.style.transform = dir ? `translateX(${dir * 26}px)` : "";
+      void next.offsetWidth;              // 强制重排，让上面两行立刻落地
+      next.style.transition = "";
+
       nextFrame(() => {
+        /* nextFrame 要等两帧，这期间可能又翻页了。front 是在这里面才翻的，
+           不挡住的话两次 swap 会抢同一层，淡入淡出直接打架。 */
+        if (token !== seq) return;
         next.style.transform = "";
         next.classList.add("in");
         cur.classList.remove("in");
@@ -266,6 +282,7 @@ const Gallery = (() => {
       const p = it.photo;
       const token = ++seq;
       idx = i;
+      resetZoom(false);          // 换一张就回到 1×，否则新图会顶着上一张的缩放上屏
 
       /* 文字不参与动画，立刻更新，不会闪 */
       cap.innerHTML = `<span class="t">${p.title || p.id}</span>` +
@@ -280,7 +297,7 @@ const Gallery = (() => {
       pre.src = url;
       ready(pre).then(() => {
         if (token !== seq) return;                 // 已经被更新的一次取代
-        swap(url, p.title || p.id, dir, () => {
+        swap(url, p.title || p.id, dir, token, () => {
           if (best <= 1600) return;
           const hi = new Image();                  // 上屏之后再悄悄换最高档
           hi.src = p.src[String(best)];
@@ -307,6 +324,147 @@ const Gallery = (() => {
           && Math.abs(e.clientY - (r.top + r.height / 2)) <= im.naturalHeight * s / 2;
     }
 
+    /* ── 缩放与手势（手机端）─────────────────────────────────────────
+       为什么要自己写一套，而不是用系统自带的捏合：
+       #light 是 position:fixed 铺满整屏的，iOS 原生捏合缩的是「视觉视口」，
+       固定定位层并不跟着走 —— 结果是越缩越糊、而且没法平移到照片的另一角，
+       用起来就是"照片根本放不大"。
+       另一半原因是手势打架：原来的滑动翻页只读 touches[0]，双指捏合时
+       随便哪根手指先抬起来，都会被当成一次横滑 —— 一捏就翻页。
+
+       现在的分工：
+         单指横滑（且未放大）→ 翻页
+         双指捏合            → 缩放，绝不翻页
+         双击                → 2.5× / 还原
+         放大后单指拖动      → 平移，此时不翻页
+       换照片或关闭时自动还原到 1×。 */
+    const MAXZ = 4;
+    let z = 1, zx = 0, zy = 0;
+
+    function applyZoom(anim) {
+      figure.style.transition = anim ? "transform .3s var(--ease)" : "none";
+      figure.style.transform =
+        (z === 1 && !zx && !zy) ? "" : `translate(${zx}px,${zy}px) scale(${z})`;
+      // 放大后照片会溢出舞台压到标题栏上，这时才裁切；1× 时不裁，免得切掉投影
+      box.classList.toggle("zoomed", z > 1);
+    }
+
+    /* 照片在舞台里的真实显示尺寸（object-fit:contain 之后，未缩放时） */
+    function photoBox() {
+      const bw = figure.offsetWidth, bh = figure.offsetHeight;
+      const im = layers[front];
+      if (!im || !im.naturalWidth) return { w: bw, h: bh, bw, bh };
+      const s = Math.min(bw / im.naturalWidth, bh / im.naturalHeight);
+      return { w: im.naturalWidth * s, h: im.naturalHeight * s, bw, bh };
+    }
+
+    /* 只允许把「超出舞台的那部分」拖进视野，拖不出一片空白 */
+    function clampPan() {
+      const { w, h, bw, bh } = photoBox();
+      const mx = Math.max(0, (w * z - bw) / 2);
+      const my = Math.max(0, (h * z - bh) / 2);
+      zx = Math.min(mx, Math.max(-mx, zx));
+      zy = Math.min(my, Math.max(-my, zy));
+    }
+
+    function resetZoom(anim) { z = 1; zx = 0; zy = 0; applyZoom(anim); }
+
+    /* 舞台「没有变换时」的中心（视口坐标）。变换绕中心做，减掉平移即可。 */
+    function stageCenter() {
+      const r = figure.getBoundingClientRect();
+      return { x: r.left + r.width / 2 - zx, y: r.top + r.height / 2 - zy };
+    }
+
+    /* 以 (vx,vy) 为锚点缩放到 nz —— 锚点底下的画面内容保持不动 */
+    function zoomAt(nz, vx, vy, anim) {
+      nz = Math.max(1, Math.min(MAXZ, nz));
+      const c = stageCenter(), k = nz / z;
+      zx = vx - c.x - k * (vx - c.x - zx);
+      zy = vy - c.y - k * (vy - c.y - zy);
+      z = nz;
+      if (z === 1) { zx = 0; zy = 0; }
+      clampPan();
+      applyZoom(anim);
+    }
+
+    let g = null;                                  // 当前手势
+    let lastTap = 0, lastTapX = 0, lastTapY = 0;
+    let swallowClick = 0;                          // 拖动/捏合后紧跟的那个 click 要吞掉
+
+    box.addEventListener("touchstart", e => {
+      if (e.touches.length === 1) {
+        const t = e.touches[0];
+        g = { multi: false, moved: false, x: t.clientX, y: t.clientY, szx: zx, szy: zy };
+      } else if (e.touches.length === 2) {
+        const [a, b] = e.touches;
+        g = { multi: true, moved: true,
+              d0: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY) || 1,
+              m0x: (a.clientX + b.clientX) / 2, m0y: (a.clientY + b.clientY) / 2,
+              sz: z, szx: zx, szy: zy, c: stageCenter() };
+      }
+    }, { passive: true });
+
+    box.addEventListener("touchmove", e => {
+      if (!g) return;
+      if (g.multi && e.touches.length === 2) {
+        e.preventDefault();                        // 别让浏览器同时去缩整个页面
+        const [a, b] = e.touches;
+        const d = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+        const mx = (a.clientX + b.clientX) / 2, my = (a.clientY + b.clientY) / 2;
+        const nz = Math.max(1, Math.min(MAXZ, g.sz * (d / g.d0)));
+        // 起手时两指中点压住的那块画面，缩放后仍要待在当前中点底下
+        const ux = (g.m0x - g.c.x - g.szx) / g.sz;
+        const uy = (g.m0y - g.c.y - g.szy) / g.sz;
+        z = nz;
+        zx = mx - g.c.x - nz * ux;
+        zy = my - g.c.y - nz * uy;
+        if (z === 1) { zx = 0; zy = 0; }
+        clampPan(); applyZoom(false);
+      } else if (!g.multi && e.touches.length === 1) {
+        const t = e.touches[0];
+        const dx = t.clientX - g.x, dy = t.clientY - g.y;
+        if (!g.moved && Math.hypot(dx, dy) > 8) g.moved = true;
+        if (z > 1) {                               // 已放大 → 单指拖动 = 平移
+          e.preventDefault();
+          zx = g.szx + dx; zy = g.szy + dy;
+          clampPan(); applyZoom(false);
+        }
+      }
+    }, { passive: false });
+
+    box.addEventListener("touchend", e => {
+      if (!g) return;
+      const fin = e.touches.length === 0;          // 所有手指都抬起来了才算一次手势结束
+      if (g.moved) swallowClick = Date.now() + 500;
+
+      if (!g.multi && fin) {
+        const t = e.changedTouches[0];
+        const dx = t.clientX - g.x, dy = t.clientY - g.y;
+        if (!g.moved) {
+          const now = Date.now();
+          if (now - lastTap < 320 &&
+              Math.hypot(t.clientX - lastTapX, t.clientY - lastTapY) < 32) {
+            zoomAt(z > 1 ? 1 : 2.5, t.clientX, t.clientY, true);   // 双击
+            swallowClick = now + 500;
+            lastTap = 0;
+          } else {
+            lastTap = now; lastTapX = t.clientX; lastTapY = t.clientY;
+          }
+        } else if (z === 1 && Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+          go(dx < 0 ? 1 : -1);                     // 只有「未放大 + 单指 + 明显横向」才翻页
+        }
+      }
+      if (fin) {
+        if (z <= 1.02) resetZoom(true);            // 捏回来了就彻底归位
+        g = null;
+      }
+    }, { passive: true });
+
+    function go(d) {
+      if (!open) return;
+      render((idx + d + items.length) % items.length, d);
+    }
+
     return {
       show(i) {
         lastFocus = document.activeElement;
@@ -321,6 +479,7 @@ const Gallery = (() => {
         open = false;
         seq++;                     // 作废还在飞的加载，免得关了之后又闪一下
         box.classList.remove("on");
+        resetZoom(false);
         setTimeout(() => {
           box.hidden = true;
           layers.forEach(l => {
@@ -333,9 +492,12 @@ const Gallery = (() => {
         history.replaceState(null, "", location.pathname + location.search);
         lastFocus?.focus();
       },
-      go(d) { if (!open) return; render((idx + d + items.length) % items.length, d); },
+      go,
       onPhoto,
-      get isOpen() { return open; }
+      get isOpen() { return open; },
+      get isZoomed() { return z > 1; },
+      /* 拖动/捏合之后浏览器还会补发一个 click，别让它把弹窗关掉 */
+      get eatClick() { return Date.now() < swallowClick; }
     };
   })();
 
@@ -391,6 +553,8 @@ const Gallery = (() => {
          那一整条占满宽、上百 px 高，却不在名单里 —— 看起来就是"暗处点了没反应"。
          左右翻页热区是 <button>，会被 closest 拦住，所以照旧翻页不关闭；
          它们 hover 有高亮，用户看得出那是控件。 */
+      if (Light.eatClick) return;      // 刚拖/捏完，浏览器补发的那个 click
+      if (Light.isZoomed) return;      // 放大状态下点画面不关闭，交给 × 或捏回去
       if (e.target.closest("button, a") || Light.onPhoto(e)) return;
       Light.close();
     });
@@ -403,12 +567,8 @@ const Gallery = (() => {
     // 边缘热区和底部控件用同一组 class，行为完全一致
     document.querySelectorAll(".nav-prev").forEach(b => b.onclick = e => { e.stopPropagation(); Light.go(-1); });
     document.querySelectorAll(".nav-next").forEach(b => b.onclick = e => { e.stopPropagation(); Light.go(1); });
-    let sx = 0;
-    box.addEventListener("touchstart", e => sx = e.touches[0].clientX, { passive: true });
-    box.addEventListener("touchend", e => {
-      const dx = e.changedTouches[0].clientX - sx;
-      if (Math.abs(dx) > 55) Light.go(dx < 0 ? 1 : -1);
-    }, { passive: true });
+    /* 触摸手势（滑动翻页 / 捏合缩放 / 双击 / 平移）统一在 Light 模块里，
+       因为它们要和缩放状态联动 —— 放大时就不能再翻页了。 */
 
     /* 深链：#PhotoId 直接打开 */
     if (location.hash) {

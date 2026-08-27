@@ -1,6 +1,17 @@
 /* ══ 排版基础 ══════════════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{
+  scroll-behavior:smooth;
+  /* iOS Safari 的「文字自动放大」默认是 auto，而且它按【每个块级容器的宽度】
+     各算各的放大系数。于是横竖屏一转，各块的系数就都变了 —— 实测横屏下
+     .pub-body 只占 main 的 68%（窄屏那条单列规则失效、卡片变回图文两栏），
+     它拿到的系数比正文小，看起来就是「字号不统一、Publications 那块变小」。
+     锁成 100%，字号完全交回给我们自己的 CSS。（Chrome/Firefox 不受影响，
+     它们对带 width=device-width 的页面本来就不放大。） */
+  -webkit-text-size-adjust:100%;
+     -moz-text-size-adjust:100%;
+          text-size-adjust:100%;
+}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *{transition-duration:.01ms!important;animation-duration:.01ms!important}

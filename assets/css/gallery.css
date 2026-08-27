@@ -70,13 +70,20 @@
    模态框本身不需要焦点环（它已经占满屏了），去掉。里面的按钮各自有自己的白色焦点环。 */
 #light:focus,#light:focus-visible{outline:none}
 #light[hidden]{display:none}
+/* 手势全部由 JS 接管（捏合缩放 / 滑动翻页 / 双击 / 平移）。
+   不写这行的话浏览器会同时去缩「视觉视口」，和我们自己的缩放打架。 */
+#light{touch-action:none}
 
 /* 舞台的左右内边距 == 翻页区宽度 ⇒ 照片和箭头井水不犯河水 */
 /* 舞台尺寸只由窗口决定，永远不随照片比例变 —— 这是不闪的关键。
    两层图各自 object-fit:contain 居中，比例由图自己负责。 */
 #light-stage{flex:1;display:flex;min-height:0;
   padding:var(--lb-top) var(--lb-side) .5rem;cursor:zoom-out}
-#light-fig{position:relative;flex:1;min-width:0;min-height:0;margin:0}
+#light-fig{position:relative;flex:1;min-width:0;min-height:0;margin:0;
+  transform-origin:50% 50%;will-change:transform}
+/* 放大后照片会溢出舞台、压到底部标题栏上，这时才裁掉。
+   1× 时不裁 —— 否则照片下方那圈 drop-shadow 会被切平。 */
+#light.zoomed #light-stage{overflow:hidden}
 /* 阴影用 drop-shadow 不用 box-shadow：前者贴着照片的真实边缘走，
    后者会画在整个图层盒子上（盒子现在比照片大，黑边也算盒子）。 */
 .lb-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;

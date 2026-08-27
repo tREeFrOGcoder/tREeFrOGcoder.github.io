@@ -570,3 +570,68 @@ if os.fork()==0:
 
 看 `<link>` 有没有 `?v=`。现在有了（`_includes/head.html` / `_layouts/default.html`），
 但如果以后加了新的 CSS/JS 文件，**记得也带上 `?v={{ v }}`**。
+
+### 10.6 「手机横竖屏字号不一样，Publications 那块还会变小」
+
+**他的话**：主页字体大小在手机横竖屏时不一样，publication 区域字体大小没有统一，会变小。
+
+**根因**：不是我们的 CSS —— 实测 390 竖屏和 844 横屏下，authored 字号完全一致
+（About 16 / TL;DR 15 两边都一样）。真凶是 **iOS Safari 的文字自动放大**：
+`text-size-adjust` 默认 `auto`，而它按【每个块级容器的宽度】各算各的放大系数。
+横屏 844px 时 `max-width:640px` 那条单列规则失效，`.pub` 变回 `1fr 30%` 两栏，
+`.pub-body` 只剩 **main 宽度的 68%**（竖屏是 100%）——
+块窄 ⇒ 系数小 ⇒ Publications 的字比正文小。两个症状同一个根因。
+
+**改法**：`assets/css/base.css` 的 `html{}` 加 `-webkit-text-size-adjust:100%`（含标准写法）。
+
+**怎么验的**：CDP `Emulation.setDeviceMetricsOverride` 量两个方向的 computed
+`fontSize` + `.pub-body/main` 宽度比；改完 `text-size-adjust` 从 `auto` → `100%`。
+⚠️ Chrome/Firefox **复现不了**这个 bug（它们对带 `width=device-width` 的页面本来就不放大），
+只有 iOS Safari 有 —— 所以最终以真机为准。
+
+### 10.7 「gallery 依然有照片切入方向不对的问题」
+
+**他的话**：gallery 依然有照片切入方向不对的问题。
+
+**根因**：`swap()` 把新起点 `translateX(±26px)` 写到一个**过渡还开着**的图层上。
+那层身上往往还留着它上次「退场」时写的 `translateX(∓26px)`，于是浏览器把它
+**动画过去**而不是**瞬移过去**；两帧后我们一松手，它就从半路（甚至反方向的 -26px）
+滑向 0 —— 看上去就是"从反方向飞进来"。
+实测连按 5 次「下一张」，浏览器拿到的插值起点是
+`+2.8 / -9.4 / +26 / +26 / -26 px` —— **完全看运气，所以时对时错**。
+
+**改法**：`assets/js/gallery.js` 的 `swap()`：
+掐掉过渡 → 摆好起点 → `void next.offsetWidth` 强制重排 → 再把过渡放回来。
+另外给 `nextFrame` 回调加了 `token !== seq` 竞态检查（`front` 是在回调里才翻的，
+不挡住的话连按时两次 swap 会抢同一层）。
+
+**怎么验的**：`el.getAnimations()` 读 CSSTransition 的 `effect.getKeyframes()`，
+拿到浏览器真正的插值 **from → to**。修好后 →/← 各 5 次、以及每 120ms 连按 6 次，
+起点全部精确是 `+26.0 / -26.0`。
+（这招比读 `getComputedStyle` 靠谱：不受"headless 不产帧、过渡不推进"影响 —— 见坑 11.2。）
+
+### 10.8 「手机版没法放大照片，和左右翻页手势冲突」
+
+**他的话**：gallery 手机版，没法放大照片，因为和左右翻页的手势冲突。
+
+**根因**（两个叠一起）：
+1. 原来的滑动翻页只读 `touches[0]`，**双指捏合时随便哪根手指先抬起来，
+   都会被算成一次横滑** → 一捏就翻页。
+2. 就算不翻页也放不大：`#light` 是 `position:fixed` 铺满屏的，
+   iOS 原生捏合缩的是「视觉视口」，固定定位层不跟着走 —— 越缩越糊、还没法平移。
+
+**改法**：自己做一套手势状态机（都在 `gallery.js` 的 Light 模块里）：
+`#light{touch-action:none}` 先把浏览器的手势夺回来，然后
+单指横滑（且未放大）= 翻页 / 双指捏合 = 缩放（锚点跟手）/ 双击 = 2.5× 切换 /
+放大后单指拖动 = 平移。换照片和关闭时自动还原 1×。
+缩放施加在 `#light-fig` 上（两层图一起缩，不打扰交叉淡入）；
+`#light.zoomed #light-stage{overflow:hidden}` 只在放大时裁切，1× 时不裁免得切掉投影。
+
+**怎么验的**：合成 `TouchEvent` 跑了 9 项（捏合不翻页 / 放大后拖动是平移 /
+捏回去归位 / 未放大横滑才翻页 / 双击 / 竖滑不误翻页 / 翻页后缩放归零 / touch-action=none）。
+⚠️ 两个坑：
+- **`Input.dispatchTouchEvent` 在这台机器的 headless 上永远不返回**（单指也一样），
+  只能用页内合成 `TouchEvent`。合成事件测不了浏览器的原生手势仲裁，但足够测我们自己的 handler。
+- headless 里 `setTimeout(140)` **实测跑了 2000ms**，双击窗口(320ms)必然错过；
+  而且 `applyZoom(true)` 走 .3s 过渡、不产帧就冻在起始值 —— 一度误判"双击坏了"。
+  改成读**内联 style 的目标值**才测准（同坑 11.2 / 11.3）。
