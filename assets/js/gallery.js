@@ -340,13 +340,57 @@ const Gallery = (() => {
        换照片或关闭时自动还原到 1×。 */
     const MAXZ = 4;
     let z = 1, zx = 0, zy = 0;
+    let committed = false, settleT = 0;
 
+    /* ── 为什么缩放要分「手势中」和「落定后」两种画法 ───────────────
+       transform:scale 只是把【已经栅格化好的位图】整块拉大，并不会拿源图
+       重新采样。实测手机尺寸下 2.5× 时，画面的高频细节只有
+       「把 1× 截图数字拉伸 2.5 倍」的 0.92 倍 —— 等于根本没放大，纯糊。
+       （去掉 will-change 也没用，实测仍是 0.73 倍。）
+       所以：手势进行中用 transform（GPU 合成，跟手不掉帧），
+       手指一松就把缩放「落定」成真实布局尺寸 —— 这时浏览器才会拿
+       2400px 的源图重新采样，细节是真的出来。 */
     function applyZoom(anim) {
+      if (committed) { layers.forEach(clearBox); committed = false; }
       figure.style.transition = anim ? "transform .3s var(--ease)" : "none";
       figure.style.transform =
         (z === 1 && !zx && !zy) ? "" : `translate(${zx}px,${zy}px) scale(${z})`;
       // 放大后照片会溢出舞台压到标题栏上，这时才裁切；1× 时不裁，免得切掉投影
       box.classList.toggle("zoomed", z > 1);
+    }
+
+    const clearBox = l => {
+      l.style.width = l.style.height = l.style.left = l.style.top =
+        l.style.right = l.style.bottom = "";
+    };
+
+    /* 把当前的 z/zx/zy 换算成图层的真实布局尺寸，几何上和 transform 完全等价：
+       transform 是绕中心缩放，所以左上角要往回挪 (尺寸增量/2)。 */
+    function commitZoom() {
+      const bw = figure.offsetWidth, bh = figure.offsetHeight;
+      figure.style.transition = "none";
+      figure.style.transform = "";
+      if (z === 1 && !zx && !zy) { layers.forEach(clearBox); committed = false; return; }
+      const w = bw * z, h = bh * z;
+      const left = zx - (w - bw) / 2, top = zy - (h - bh) / 2;
+      layers.forEach(l => {
+        l.style.right = "auto"; l.style.bottom = "auto";   // inset:0 里的 right/bottom 要让开
+        l.style.width = w + "px";  l.style.height = h + "px";
+        l.style.left  = left + "px"; l.style.top  = top + "px";
+      });
+      committed = true;
+    }
+    const scheduleCommit = d => { clearTimeout(settleT); settleT = setTimeout(commitZoom, d); };
+
+    /* 放到「1 源图像素 = 1 屏幕物理像素」那一档 —— 再往上就是硬拉了。
+       横幅图在手机上大约 2.2×，竖图因为本来就快占满屏，只有 1.2× 左右。 */
+    function nativeZoom() {
+      const im = layers[front];
+      const bw = figure.offsetWidth, bh = figure.offsetHeight;
+      if (!im || !im.naturalWidth) return 2.5;
+      const s = Math.min(bw / im.naturalWidth, bh / im.naturalHeight);
+      const dpr = Math.min(devicePixelRatio || 1, 3);
+      return Math.max(1.8, Math.min(MAXZ, 1 / (s * dpr)));
     }
 
     /* 照片在舞台里的真实显示尺寸（object-fit:contain 之后，未缩放时） */
@@ -367,7 +411,7 @@ const Gallery = (() => {
       zy = Math.min(my, Math.max(-my, zy));
     }
 
-    function resetZoom(anim) { z = 1; zx = 0; zy = 0; applyZoom(anim); }
+    function resetZoom(anim) { clearTimeout(settleT); z = 1; zx = 0; zy = 0; applyZoom(anim); }
 
     /* 舞台「没有变换时」的中心（视口坐标）。变换绕中心做，减掉平移即可。 */
     function stageCenter() {
@@ -392,6 +436,8 @@ const Gallery = (() => {
     let swallowClick = 0;                          // 拖动/捏合后紧跟的那个 click 要吞掉
 
     box.addEventListener("touchstart", e => {
+      clearTimeout(settleT);
+      if (committed) applyZoom(false);   // 落定状态换回 transform，手势才跟得动
       if (e.touches.length === 1) {
         const t = e.touches[0];
         g = { multi: false, moved: false, x: t.clientX, y: t.clientY, szx: zx, szy: zy };
@@ -444,9 +490,10 @@ const Gallery = (() => {
           const now = Date.now();
           if (now - lastTap < 320 &&
               Math.hypot(t.clientX - lastTapX, t.clientY - lastTapY) < 32) {
-            zoomAt(z > 1 ? 1 : 2.5, t.clientX, t.clientY, true);   // 双击
+            zoomAt(z > 1 ? 1 : nativeZoom(), t.clientX, t.clientY, true);   // 双击
             swallowClick = now + 500;
             lastTap = 0;
+            scheduleCommit(340);          // 等 .3s 的缩放动画跑完再落定成布局尺寸
           } else {
             lastTap = now; lastTapX = t.clientX; lastTapY = t.clientY;
           }
@@ -456,6 +503,7 @@ const Gallery = (() => {
       }
       if (fin) {
         if (z <= 1.02) resetZoom(true);            // 捏回来了就彻底归位
+        else scheduleCommit(0);                    // 还在放大 → 立刻落定，把清晰度找回来
         g = null;
       }
     }, { passive: true });
