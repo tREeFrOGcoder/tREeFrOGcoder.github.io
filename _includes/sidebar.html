@@ -5,8 +5,13 @@
   <div class="rail-links">
     {%- for l in site.data.links %}
     <a href="{{ l.href }}"{% unless l.href contains 'mailto:' %} target="_blank" rel="noopener"{% endunless %}>
-      {% include icon.html name=l.icon %}<span>{{ l.label }}</span>
-      {%- if l.note %}<span class="note">{{ l.note }}</span>{% endif -%}
+      {% include icon.html name=l.icon %}<span class="lbl">{{ l.label }}</span>
+      {%- comment -%}
+        下面 `%}` 后面那个空格是故意留的。.tip 绝对定位，空格在 flex 容器里
+        不会生成匿名 flex item，画面上一点变化没有；但屏幕阅读器念这条链接时
+        会从「Emailzil199@ucsd.edu」变成「Email zil199@ucsd.edu」。
+      {%- endcomment -%}
+      {%- if l.note %} <span class="tip">{{ l.note }}</span>{% endif -%}
     </a>
     {%- endfor %}
   </div>

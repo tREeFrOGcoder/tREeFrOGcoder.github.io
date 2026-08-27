@@ -69,20 +69,57 @@ nav a.active{color:var(--accent-hi)}
 :root[data-theme=dark] .avatar img{filter:brightness(.92);opacity:.9}
 :root[data-theme=dark] .avatar img:hover{filter:brightness(1);opacity:1}
 
-.rail-links{margin-top:var(--s5);display:flex;flex-direction:column;gap:var(--s1)}
+/* 这三条是链接，不是按钮——所以说和正文链接同一种话：
+   鼠标划过去，文字下面长出一条主色线。仅此而已。
+   之前每条是整行宽的圆角块（padding + hover 底色 + 位移），
+   在 250px 的窄栏里那三块背景比头像还抢眼，而且它在说“我是按钮”。
+   align-items:flex-start 是关键：纵向 flex 默认 stretch，
+   不写这行每个 <a> 依旧是整栏宽，只是你看不见它的背景而已。 */
+.rail-links{margin-top:var(--s5);display:flex;flex-direction:column;
+  align-items:flex-start;gap:var(--s2)}
 .rail-links a{
-  display:flex;align-items:center;gap:var(--s2);
-  padding:var(--s1) var(--s2);margin-left:calc(var(--s2) * -1);
-  border-radius:6px;font-size:var(--f-base);background-image:none;
-  transition:background-color .2s var(--ease), color .2s var(--ease), transform .2s var(--ease);
+  position:relative;                 /* 邮箱浮窗的定位系 */
+  display:inline-flex;align-items:center;gap:var(--s2);
+  font-size:var(--f-base);
+  background-image:none;             /* 下划线只画在文字上，不把图标一块划进去 */
 }
-.rail-links a:hover{background:color-mix(in srgb, var(--accent) 10%, transparent);transform:translateX(2px)}
+/* 直接复用 base.css 里正文链接那套“从左长出来”的手法 */
+.rail-links .lbl{
+  background-image:linear-gradient(currentColor,currentColor);
+  background-size:0 1.5px;background-position:0 100%;background-repeat:no-repeat;
+  transition:background-size .28s var(--ease);
+}
+.rail-links a:hover .lbl,
+.rail-links a:focus-visible .lbl{background-size:100% 1.5px}
 /* 尺寸用 em 跟着字号走，想调大小改这一个数字即可 */
 .rail-links .icon{width:1.2em;height:1.2em;flex:0 0 auto}
 .rail-links .icon path{fill:currentColor}
-.rail-links .note{margin-left:auto;font-size:var(--f-xs);color:var(--ink-3);opacity:0;
-  transition:opacity .25s var(--ease)}
-.rail-links a:hover .note{opacity:1}
+
+/* Email 的地址改成贴着链接浮出来的小窗。
+   原来它是 margin-left:auto 推到 250px 栏最右边的一段灰字，
+   “Email”和地址中间隔着半个侧栏，看着像两个不相干的东西。
+
+   往【下】开，不往上：往上开会整个盖住 GitHub 那一行（浮窗 28px + 8px 间距
+   = 36px，而行距只有 34px，实测一点不剩）。Email 是最后一条，下面是空的。
+   往右开也不行：窄屏那套横排布局里它会顶出视口，多出一条横向滚动条。
+   left:0 + 尖角在 14px 处 ⇒ 尖角正好指在 Email 图标上。 */
+.rail-links .tip{
+  position:absolute;left:0;top:calc(100% + 8px);z-index:30;
+  padding:.32rem .55rem;border-radius:6px;white-space:nowrap;
+  background:var(--ink);color:var(--bg);
+  font:var(--w-body) var(--f-xs)/1.35 var(--font);letter-spacing:.01em;
+  box-shadow:0 6px 18px rgb(var(--shadow)/.22);
+  opacity:0;transform:translateY(-4px);pointer-events:none;
+  transition:opacity .18s var(--ease),transform .18s var(--ease);
+}
+.rail-links .tip::after{                     /* 小尖角 */
+  content:"";position:absolute;bottom:100%;left:14px;
+  border:5px solid transparent;border-bottom-color:var(--ink);
+}
+.rail-links a:hover .tip,
+.rail-links a:focus-visible .tip{opacity:1;transform:none}
+/* 触屏没有 hover，浮窗只会在手指点下去那一瞬闪一下，不如不出 */
+@media (hover:none){.rail-links .tip{display:none}}
 
 /* ── 正文块 ───────────────────────────────────────────────────────── */
 .lead{color:var(--ink-2)}
@@ -135,7 +172,7 @@ nav a.active{color:var(--accent-hi)}
    徽标大小只由 --edu-mark 决定，想调就改这一个值。
    _data/education.yml 里删掉 mark: 那一行 = 该条不显示徽标。 */
 .edu{
-  --edu-mark:32px;
+  --edu-mark:42px;
   display:grid;grid-template-columns:auto 1fr auto;
   column-gap:var(--s3);row-gap:.15rem;align-items:baseline;
 }
@@ -205,8 +242,7 @@ footer span{display:block;opacity:.8}
 @media (max-width:900px){
   .avatar{width:120px}
   .avatar img{border-width:3px}
-  .rail-links{margin:0;flex-direction:row;flex-wrap:wrap;gap:var(--s3)}
-  .rail-links .note{display:none}
+  .rail-links{margin:0;flex-direction:row;flex-wrap:wrap;align-items:center;gap:var(--s4)}
 }
 @media (max-width:640px){
   /* 窄屏：5 个 tab 加起来比屏幕宽（实测 390px 下溢出 31px）。

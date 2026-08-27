@@ -698,3 +698,53 @@ if os.fork()==0:
 `close()` 里那个 300ms 的 `box.hidden=true` 实测要 557~1290ms 才落地。
 我一度以为"点底部标题栏关不掉"（5 次里错 2 次），
 实际 6/6 都关了，只是等 1s 读太早。**判"没关"要看 `.on` 有没有被摘掉，别只看 `hidden`。**
+
+### 10.11 「侧栏那三条不该是块」+ 校徽放大（2026-08-27）
+
+**他的话**：主页最左侧的那三个 scholar 的侧栏，现在每个 item 都是一整条有鼠标反馈的块，
+我感觉没必要那么长，就是这些东西甚至本来就不应该是块，而是应该跟正文里那些可点击的链接一样，
+鼠标划过去下面就出一条动态蓝色线的那种才对；然后 email 那里，鼠标移过去会出一个局部跟随的小浮窗；
+UCSD 和 UCB 的校徽能看出来区别，你可以把三个校徽稍微放大一点点。
+
+**根因（三条链接）**：`.rail-links a` 原来是 `display:flex` + padding + 圆角 + hover 底色，
+在 250px 的侧栏里等于三块横贯全栏的色块。**光去掉背景不够** ——
+`.rail-links` 是纵向 flex，`align-items` 默认 `stretch`，
+不写 `align-items:flex-start` 每个 `<a>` 的**盒子**依旧是整栏宽，
+只是你看不见它而已（鼠标划到 200px 处照样命中）。
+
+**改法**：
+- `.rail-links{align-items:flex-start}` + `a{display:inline-flex}` ⇒ 宽度只有内容那么宽
+  （实测 250px → 85.9 / 80.5 / 69.9px）。
+- 下划线复用 base.css 里正文链接那套 `linear-gradient` + `background-size:0→100% 1.5px`，
+  但**挂在 `.lbl` 上不挂在 `<a>` 上** —— 挂 `<a>` 上会把图标一起划进去。
+  为此 `sidebar.html` 给标签 span 加了 `class="lbl"`。
+- hover 颜色由全局 `a:hover{color:var(--accent-hi)}` 接管，和正文链接完全同款。
+
+**根因（Email）**：`.note` 是 `margin-left:auto` 推到侧栏最右边的一段灰字，
+"Email" 和地址中间隔着半个侧栏，读起来像两个不相干的东西。
+
+**改法**：改成绝对定位的小浮窗 `.tip`，`opacity` 过渡，`pointer-events:none`。
+**开口方向试了三次才对**：
+- 往上开 ✗ —— 浮窗 28px + 8px 间距 = 36px，而行距只有 33.6px，实测把 GitHub 整行盖死。
+- 往右开 ✗ —— ≤900px 那套横排布局里 Email 是最后一条，浮窗会顶出视口多一条横向滚动条。
+- 往下开 ✓ —— Email 本来就是最后一条，下面是空的。实测 1280/1024/900/760/640/390/320
+  七个宽度下都 `overlaps: []` 且 `scrollWidth == innerWidth`。
+- `@media (hover:none)` 下整个不显示：触屏没有 hover，只会在手指点下去那一瞬闪一下。
+
+**顺手修的无障碍**：`{%- if l.note %}` 后面**故意留一个字面空格**，
+不然屏幕阅读器把这条链接念成「Emailzil199@ucsd.edu」。
+空格在 flex 容器里不生成匿名 flex item，画面零变化（实测宽度仍是 69.9px）。
+
+**校徽**：`--edu-mark` 32px → **42px**。源图是 192×192，42px@2x=84px 还在源分辨率里面，
+不糊。42 是上限附近 —— 一条的内容高度实测 52px，再大就顶边了。
+42px 下 UCSD 的「UNIVERSITY OF CALIFORNIA / SAN DIEGO」环字和 Berkeley 的
+蓝环 + 1868 已经能一眼分开。
+
+**怎么验的**：CDP 量三条链接的 `getBoundingClientRect`、七个宽度下的浮窗遮挡与横向溢出、
+亮/暗两套配色下的 hover 计算值、键盘 Tab 三次的下划线/浮窗/焦点环。
+⚠️ 又一个 headless 坑：**不产帧的话 `:hover` 根本不会应用**，
+`getComputedStyle` 读出来永远是静止态。派了 `Input.dispatchMouseEvent` 之后
+必须 `Page.captureScreenshot` 逼一帧出来再读（同 §11.2）。
+⚠️ 另一个：`Emulation.setEmulatedMedia` **不支持覆盖 `hover` 特性**，
+`matchMedia('(hover:none)')` 照样是 false —— 触屏那条只能靠读 `document.styleSheets`
+确认规则解析进去了，验不了真机行为。

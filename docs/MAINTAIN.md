@@ -134,14 +134,23 @@ ruby -ryaml -e 'YAML.load_file("_data/publications.yml"); puts "YAML OK"'
 文件：`_data/education.yml`
 
 ```yaml
-- when: "2026.09 — now"
-  what: PhD Student at 某某大学
-  items:
+- school: 某某大学              # 加粗那一行
+  degree: PhD Student in ...   # 学校名下面那行
+  when: "2026.09 — now"        # 右边的日期
+  mark: ucsd.webp              # 校徽文件名，放在 assets/img/edu/ 里
+  items:                       # 可选，没有就整段删掉
     - 拿了什么奖，哪一年
-    - 再来一条
 ```
 
 `when` 那个破折号是 **em dash `—`**（不是减号）。想省事就复制现有那行改数字。
+
+**校徽**：`mark:` 那行删掉 = 这一条不显示徽标（三条都删 = 整个 Education 收成一列，
+不会留空轨道）。加新校徽就丢一个方形 PNG/WebP 进 `assets/img/edu/`，
+边长 ≥128px 就够（现有三个是 192×192）。
+
+**想调徽标大小**：`assets/css/components.css` 里 `.edu{--edu-mark:42px}`，
+全站只有这一个数字管它。上限约 46px —— 再大就顶到那一条的上下边界了
+（一条的内容高度实测 52px）。
 
 ---
 
@@ -172,6 +181,11 @@ ruby -ryaml -e 'YAML.load_file("_data/publications.yml"); puts "YAML OK"'
 去 `_includes/icon.html` 里照着现有的格式加一个新的 `{% when "名字" %}` 分支，
 把 SVG 路径贴进去，并且**给它算一个贴合图形的 viewBox**（不然它会和另外三个不等大 —— 这是改版前的老问题）。
 这一步比较麻烦，可以找 AI 帮忙。
+
+**`note:` 字段**（目前只有 Email 用）：鼠标划上去时，在这条链接**下方**浮出来的
+小黑框里显示的文字。任何一条加上 `note:` 都会有这个浮窗。
+样式在 `components.css` 的 `.rail-links .tip`；触屏（`@media (hover:none)`）不显示 ——
+手指点下去那一瞬闪一下没有意义。
 
 ---
 
