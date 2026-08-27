@@ -298,10 +298,19 @@ const Gallery = (() => {
       ready(pre).then(() => {
         if (token !== seq) return;                 // 已经被更新的一次取代
         swap(url, p.title || p.id, dir, token, () => {
-          if (best <= 1600) return;
-          const hi = new Image();                  // 上屏之后再悄悄换最高档
-          hi.src = p.src[String(best)];
-          ready(hi).then(() => { if (token === seq) layers[front].src = hi.src; });
+          /* 上屏之后在后台悄悄换成能拿到的最高清版本：优先 6000px 原图，
+             没有 full 就退回 src 里的最高档。换的是同一个 <img> 的 src，
+             画面尺寸不变，用户只会觉得"越看越清楚"。
+             等 300ms 再开始：连着按方向键快速翻页时不该把每张原图都拽下来，
+             停下来看的那张才值得花这个流量。 */
+          const hiUrl = (p.full && p.full.url) || (best > 1600 ? p.src[String(best)] : null);
+          if (!hiUrl) return;
+          setTimeout(() => {
+            if (token !== seq) return;
+            const hi = new Image();
+            hi.src = hiUrl;
+            ready(hi).then(() => { if (token === seq) layers[front].src = hi.src; });
+          }, 300);
         });
       });
 
@@ -338,7 +347,7 @@ const Gallery = (() => {
          双击                → 2.5× / 还原
          放大后单指拖动      → 平移，此时不翻页
        换照片或关闭时自动还原到 1×。 */
-    const MAXZ = 4;
+    const MAXZ_HARD = 6;          // 再高就没意义了，纯粹晃眼
     let z = 1, zx = 0, zy = 0;
     let committed = false, settleT = 0;
 
@@ -382,16 +391,19 @@ const Gallery = (() => {
     }
     const scheduleCommit = d => { clearTimeout(settleT); settleT = setTimeout(commitZoom, d); };
 
-    /* 放到「1 源图像素 = 1 屏幕物理像素」那一档 —— 再往上就是硬拉了。
-       横幅图在手机上大约 2.2×，竖图因为本来就快占满屏，只有 1.2× 左右。 */
-    function nativeZoom() {
+    /* 能放到多大，由「1 源图像素 = 1 屏幕物理像素」决定 —— 到这一档为止都是
+       真细节，再往上才是硬拉。注意它会随着后台把 6000px 原图换上来而自动变大：
+       只有 2400px 档时横幅图约 2.1×，原图到位后能到 5× 以上。 */
+    function maxZoom() {
       const im = layers[front];
       const bw = figure.offsetWidth, bh = figure.offsetHeight;
-      if (!im || !im.naturalWidth) return 2.5;
+      if (!im || !im.naturalWidth) return 3;
       const s = Math.min(bw / im.naturalWidth, bh / im.naturalHeight);
       const dpr = Math.min(devicePixelRatio || 1, 3);
-      return Math.max(1.8, Math.min(MAXZ, 1 / (s * dpr)));
+      return Math.max(2, Math.min(MAXZ_HARD, 1 / (s * dpr)));
     }
+    /* 双击给一个舒服的档位就行；想看更细的用捏合，最高能到 maxZoom() */
+    const dblZoom = () => Math.min(2.5, maxZoom());
 
     /* 照片在舞台里的真实显示尺寸（object-fit:contain 之后，未缩放时） */
     function photoBox() {
@@ -421,7 +433,7 @@ const Gallery = (() => {
 
     /* 以 (vx,vy) 为锚点缩放到 nz —— 锚点底下的画面内容保持不动 */
     function zoomAt(nz, vx, vy, anim) {
-      nz = Math.max(1, Math.min(MAXZ, nz));
+      nz = Math.max(1, Math.min(maxZoom(), nz));
       const c = stageCenter(), k = nz / z;
       zx = vx - c.x - k * (vx - c.x - zx);
       zy = vy - c.y - k * (vy - c.y - zy);
@@ -457,7 +469,7 @@ const Gallery = (() => {
         const [a, b] = e.touches;
         const d = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
         const mx = (a.clientX + b.clientX) / 2, my = (a.clientY + b.clientY) / 2;
-        const nz = Math.max(1, Math.min(MAXZ, g.sz * (d / g.d0)));
+        const nz = Math.max(1, Math.min(maxZoom(), g.sz * (d / g.d0)));
         // 起手时两指中点压住的那块画面，缩放后仍要待在当前中点底下
         const ux = (g.m0x - g.c.x - g.szx) / g.sz;
         const uy = (g.m0y - g.c.y - g.szy) / g.sz;
@@ -490,7 +502,7 @@ const Gallery = (() => {
           const now = Date.now();
           if (now - lastTap < 320 &&
               Math.hypot(t.clientX - lastTapX, t.clientY - lastTapY) < 32) {
-            zoomAt(z > 1 ? 1 : nativeZoom(), t.clientX, t.clientY, true);   // 双击
+            zoomAt(z > 1 ? 1 : dblZoom(), t.clientX, t.clientY, true);   // 双击
             swallowClick = now + 500;
             lastTap = 0;
             scheduleCommit(340);          // 等 .3s 的缩放动画跑完再落定成布局尺寸

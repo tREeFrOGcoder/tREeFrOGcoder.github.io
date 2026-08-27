@@ -109,6 +109,10 @@ def main():
             if not os.path.exists(dst) or os.path.getmtime(dst) < os.path.getmtime(p):
                 rgb.resize((tw, th), Image.LANCZOS).save(dst, "WEBP", quality=QUALITY[tw], method=5)
             rec["src"][str(tw)] = f"{OUT}/{stem}-{tw}.webp"
+
+        # 原图单独放在 full 里，**不塞进 src** —— src 是网格缩略图挑档用的，
+        # 混进 6000px 会让大屏上的缩略图去下载原图。lightbox 才读 full。
+        rec["full"] = {"url": f"{SRC}/{f}", "w": w}
         out.append(rec)
         print(f"  {stem:22s} {w}x{h}  →  {len(rec['src'])} 档   {rec.get('shot','(无EXIF日期)')}")
 
@@ -118,6 +122,8 @@ def main():
     orig = sum(os.path.getsize(os.path.join(SRC, x)) for x in files)
     print(f"\n{len(out)} 张 → {dest}")
     print(f"原图合计 {orig/1048576:.1f} MB   生成的多档合计 {tot/1048576:.1f} MB")
+    print(f"注意：原图现在会随站点一起发布（lightbox 放大时按需加载），"
+          f"所以 _config.yml 里不能再 exclude gallery/{SRC}/")
 
 
 if __name__ == "__main__":

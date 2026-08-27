@@ -15,7 +15,11 @@
   "shot": "2025-01-19",
   "tags": [
    "photo"
-  ]
+  ],
+  "full": {
+   "url": "photos/AddisonStreet.webp",
+   "w": 6000
+  }
  },
  {
   "id": "BaldCypress",
@@ -33,7 +37,11 @@
   "shot": "2024-01-03",
   "tags": [
    "photo"
-  ]
+  ],
+  "full": {
+   "url": "photos/BaldCypress.webp",
+   "w": 6000
+  }
  },
  {
   "id": "CarpenterBee",
@@ -51,7 +59,11 @@
   "shot": "2024-05-03",
   "tags": [
    "photo"
-  ]
+  ],
+  "full": {
+   "url": "photos/CarpenterBee.webp",
+   "w": 4724
+  }
  },
  {
   "id": "Church",
@@ -69,7 +81,11 @@
   "shot": "2024-08-15",
   "tags": [
    "photo"
-  ]
+  ],
+  "full": {
+   "url": "photos/Church.webp",
+   "w": 3376
+  }
  },
  {
   "id": "Damselfy",
@@ -87,7 +103,11 @@
   "shot": "2024-08-16",
   "tags": [
    "photo"
-  ]
+  ],
+  "full": {
+   "url": "photos/Damselfy.webp",
+   "w": 2757
+  }
  },
  {
   "id": "HalfMoonBay",
@@ -105,7 +125,11 @@
   "shot": "2025-01-12",
   "tags": [
    "photo"
-  ]
+  ],
+  "full": {
+   "url": "photos/HalfMoonBay.webp",
+   "w": 3376
+  }
  },
  {
   "id": "Mantis",
@@ -123,7 +147,11 @@
   "shot": "2024-08-15",
   "tags": [
    "photo"
-  ]
+  ],
+  "full": {
+   "url": "photos/Mantis.webp",
+   "w": 6000
+  }
  },
  {
   "id": "Mural",
@@ -141,7 +169,11 @@
   "shot": "2025-01-09",
   "tags": [
    "photo"
-  ]
+  ],
+  "full": {
+   "url": "photos/Mural.webp",
+   "w": 3376
+  }
  },
  {
   "id": "Nymphalidae",
@@ -159,7 +191,11 @@
   "shot": "2023-06-10",
   "tags": [
    "photo"
-  ]
+  ],
+  "full": {
+   "url": "photos/Nymphalidae.webp",
+   "w": 2532
+  }
  },
  {
   "id": "Owl",
@@ -176,7 +212,11 @@
   "shot": "2024-10-12",
   "tags": [
    "origami"
-  ]
+  ],
+  "full": {
+   "url": "photos/Owl.webp",
+   "w": 2048
+  }
  },
  {
   "id": "Pur",
@@ -194,7 +234,11 @@
   "shot": "2024-06-21",
   "tags": [
    "photo"
-  ]
+  ],
+  "full": {
+   "url": "photos/Pur.webp",
+   "w": 5554
+  }
  },
  {
   "id": "StellerJay",
@@ -212,7 +256,11 @@
   "shot": "2025-01-20",
   "tags": [
    "photo"
-  ]
+  ],
+  "full": {
+   "url": "photos/StellerJay.webp",
+   "w": 6000
+  }
  },
  {
   "id": "tigerbeetle",
@@ -230,6 +278,10 @@
   "shot": "2023-06-10",
   "tags": [
    "photo"
-  ]
+  ],
+  "full": {
+   "url": "photos/tigerbeetle.webp",
+   "w": 2532
+  }
  }
 ]

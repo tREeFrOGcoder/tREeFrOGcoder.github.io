@@ -14,7 +14,8 @@ exclude:
   - tools            # 本地脚本
   - docs             # 方案文档
   # 注意结尾的斜杠：不写斜杠是前缀匹配，会把 gallery/photos.json 一起排除掉
-  - gallery/photos/       # 6000px 原图，只做生成用的源，线上只发 derived/
+  # gallery/photos/ 现在【要发布】—— 点开照片后 lightbox 会在后台把 6000px 原图
+  # 换上来，放大才有真细节可看。13 张合计约 19MB，只在点开某张后才下载。
   - gallery/photos.meta.json   # 你手写的标题，不需要发布
   - "**/.DS_Store"
   - README.md
