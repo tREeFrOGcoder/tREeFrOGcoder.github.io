@@ -290,9 +290,14 @@ Ziche：**不要拍摄参数**。lightbox 只显示标题 + 拍摄日期。
 | Gallery 内容 | 逐条比对 13 张 title | 13/13 与旧站逐字一致 |
 | 暗色 + lightbox | 截图 | 月牙正常、箭头在照片外、关闭键不冲突、`1 / 13` 正常 |
 
+已验（2026-08-27 补）：
+- Gallery 深链**运行时**跑通了：`/gallery/#Owl` → 灯箱直接打开在 `10 / 13`、
+  标题 `Blakiston's Fish Owl`；`/gallery/#AddisonStreet` → `1 / 13`；
+  给一个不存在的 id → 不开灯箱、页面正常渲染、不报错。
+  首页 Fun 区那条 "modern origami" 的 href 确认是 `/gallery/#Owl`，链得上。
+
 还没做：
-- Gallery 深链 `/gallery/#Owl` 的**运行时**验证（manifest 里 `Owl` 存在已确认，但没实跑过打开动作）
-- 真机验证（目前全部是 headless Chrome + iframe）
+- 真机验证（目前全部是 headless Chrome + iframe）。见 10.13。
 
 ### 还没做但讨论过的
 - **折纸单独页面**：Ziche 说"还没想法，暂时也不打算公开折纸 tab"。**不要做。**
@@ -424,7 +429,7 @@ Chrome 在 /Applications/Google Chrome.app/... （截图验收用）
 
 ---
 
-## 10. Gallery / Lightbox 的返修记录（2026-08-24）
+## 10. Gallery / Lightbox 的返修记录（2026-08-24 起，持续追加）
 
 > Ziche 试用后逐条反馈，来回改了三轮。记在这里是为了**下次他再提起时能立刻接上**，
 > 不用重新推一遍。每条的格式是：他的原话 → 根因 → 改法 → 怎么验的。
@@ -507,69 +512,6 @@ Chrome 在 /Applications/Google Chrome.app/... （截图验收用）
 **验收**：`fig` 盒子在 横→竖→横→横→竖 五次切换中恒为 `902x512`（零形变）；
 每次切换后 `in` 类都在新图上；竖幅 2400×4265 → 显示 288×512 居中；
 命中扫描确认 `I` 精确覆盖 288 px 宽的照片、四周黑边全部可关闭。
-
-### 10.6 还没验的 / 可能还会回来找的
-
-- **真机**：全部验证都是 headless Chrome + CDP。他手机上实际手感没反馈过。
-- **Safari**：一次都没测过。`:focus-visible`、`filter:drop-shadow`、
-  `object-fit` 在 Safari 上行为都可能有差异。
-- **手机端翻页提示**：见 10.4 的副作用。
-- **暗色下的 drop-shadow**：`rgba(0,0,0,.55)` 在深色背景上几乎看不见，
-  目前是有意为之（暗色本来也不需要投影），但他没明确表态。
-
----
-
-## 11. 调试这个站的工具与陷阱（省得下次重踩）
-
-这一节全是**实测**，不查证根本想不到。
-
-### 11.1 合成事件测不出 `:focus-visible`
-
-`new KeyboardEvent(...)` + `dispatchEvent` **不会**让浏览器把"最近一次交互"
-标记成键盘，所以 `:focus-visible` 的判定测不出来。
-必须走 CDP 的 `Input.dispatchKeyEvent`（真实事件）。
-本次调试用的最小 WebSocket + CDP 客户端在
-`<scratchpad>/cdp.py`（会随 session 清掉，但只有 40 行，重写很快）。
-
-### 11.2 headless 无 GPU 时，CSS transition 只在产生帧时推进
-
-`getComputedStyle(el).opacity` 会读到**起始值或中间值**，看起来像"过渡没跑"。
-**测量前先 `Page.captureScreenshot` 逼它产一帧**，或者干脆连拍十几帧再读。
-本次差点因此误判交叉淡入是坏的。
-
-### 11.3 `requestAnimationFrame` 在后台标签页/headless 里可能不推进
-
-只靠 rAF 排下一步会把图卡在 `opacity:0`。
-本次给 `nextFrame()` 加了 60 ms `setTimeout` 兜底，谁先到算谁 ——
-和 `site.js` 里 `ready()` 同一个思路（见坑 #7）。
-
-### 11.4 macOS 上 Chrome 窗口有最小宽度（约 500 px）
-
-`--window-size=390` 会被**静默夹到 500**，截出来的图不是 390 的布局。
-量真手机宽度必须用 CDP 的 `Emulation.setDeviceMetricsOverride`。
-（这条是坑 #11 的延伸 —— 之前只知道 `--dump-dom` 有问题，
-现在确认 `--screenshot` 也一样不可信。）
-
-### 11.5 `Page.startScreencast` 在 `--disable-gpu` 下不吐帧
-
-想逐帧看动画会直接卡死。改用「连续 `captureScreenshot` + 每次读一遍状态」。
-
-### 11.6 macOS 没有 `setsid`
-
-想让本地服务器脱离进程组不被回收，用 Python 双 fork：
-
-```python
-if os.fork()==0:
-    os.setsid()
-    if os.fork()==0:
-        os.execv(sys.executable,[sys.executable,'-m','http.server','4323','--bind','0.0.0.0'])
-    os._exit(0)
-```
-
-### 11.7 判断"改了却看不到"的第一件事
-
-看 `<link>` 有没有 `?v=`。现在有了（`_includes/head.html` / `_layouts/default.html`），
-但如果以后加了新的 CSS/JS 文件，**记得也带上 `?v={{ v }}`**。
 
 ### 10.6 「手机横竖屏字号不一样，Publications 那块还会变小」
 
@@ -806,3 +748,88 @@ document.contains(旧的 tile 节点) === false   ← 铁证：节点被重建�
 
 ⚠️ **测试坑**：验第 6 张时一度以为"灯箱打不开"，其实是那张图在视口外，
 派过去的鼠标坐标 y > 900 根本没落在页面上。派事件前先 `scrollIntoView`。
+
+---
+
+### 10.13 还没验的 / 可能还会回来找的
+
+> 这一条随时间变，改完记得回来划掉。
+
+- **Safari**：一次都没测过。`:focus-visible`、`filter:drop-shadow`、`object-fit`
+  在 Safari 上行为都可能有差异。
+- **iOS 真机**：10.6 的 `text-size-adjust:100%` 是唯一一条 Chrome 复现不了的修复
+  （那是 iOS Safari 独有的行为），只能靠他自己在 iPhone 上确认横竖屏字号是否一致。
+  10.8 / 10.9 的手势和放大他已经真机试过并反馈了。
+- **暗色下的 drop-shadow**：`rgba(0,0,0,.55)` 在深色背景上几乎看不见，
+  目前是有意为之（暗色本来也不需要投影），但他没明确表态。
+- **手机端翻页提示**：见 10.4 的副作用。
+
+---
+
+## 11. 调试这个站的工具与陷阱（省得下次重踩）
+
+这一节全是**实测**，不查证根本想不到。
+
+### 11.1 合成事件测不出 `:focus-visible`
+
+`new KeyboardEvent(...)` + `dispatchEvent` **不会**让浏览器把"最近一次交互"
+标记成键盘，所以 `:focus-visible` 的判定测不出来。
+必须走 CDP 的 `Input.dispatchKeyEvent`（真实事件）。
+本次调试用的最小 WebSocket + CDP 客户端在
+`<scratchpad>/cdp.py`（会随 session 清掉，但只有 40 行，重写很快）。
+
+### 11.2 headless 无 GPU 时，CSS transition 只在产生帧时推进
+
+`getComputedStyle(el).opacity` 会读到**起始值或中间值**，看起来像"过渡没跑"。
+**测量前先 `Page.captureScreenshot` 逼它产一帧**，或者干脆连拍十几帧再读。
+本次差点因此误判交叉淡入是坏的。
+
+### 11.3 `requestAnimationFrame` 在后台标签页/headless 里可能不推进
+
+只靠 rAF 排下一步会把图卡在 `opacity:0`。
+本次给 `nextFrame()` 加了 60 ms `setTimeout` 兜底，谁先到算谁 ——
+和 `site.js` 里 `ready()` 同一个思路（见坑 #7）。
+
+### 11.4 macOS 上 Chrome 窗口有最小宽度（约 500 px）
+
+`--window-size=390` 会被**静默夹到 500**，截出来的图不是 390 的布局。
+量真手机宽度必须用 CDP 的 `Emulation.setDeviceMetricsOverride`。
+（这条是坑 #11 的延伸 —— 之前只知道 `--dump-dom` 有问题，
+现在确认 `--screenshot` 也一样不可信。）
+
+### 11.5 `Page.startScreencast` 在 `--disable-gpu` 下不吐帧
+
+想逐帧看动画会直接卡死。改用「连续 `captureScreenshot` + 每次读一遍状态」。
+
+### 11.6 macOS 没有 `setsid`
+
+想让本地服务器脱离进程组不被回收，用 Python 双 fork：
+
+```python
+if os.fork()==0:
+    os.setsid()
+    if os.fork()==0:
+        os.execv(sys.executable,[sys.executable,'-m','http.server','4323','--bind','0.0.0.0'])
+    os._exit(0)
+```
+
+### 11.7 判断"改了却看不到"的第一件事
+
+看 `<link>` 有没有 `?v=`。现在有了（`_includes/head.html` / `_layouts/default.html`），
+但如果以后加了新的 CSS/JS 文件，**记得也带上 `?v={{ v }}`**。
+
+### 11.8 只改 hash 不算导航，`init()` 不会再跑
+
+验深链时连着 `Page.navigate` 到 `/gallery/#Owl` → `/gallery/#AddisonStreet`，
+第二个死活不开灯箱，我一度以为深链坏了。实际是**同一个文档内只变 hash 不会重新加载**，
+`Gallery.init()` 里那段读 `location.hash` 的代码只在加载时跑一次，所以第二次根本没执行。
+
+测的时候每次带一个不同的 query 才算真导航：
+
+```python
+c.goto(f"http://127.0.0.1:4351/gallery/?t={n}#{photo_id}")
+```
+
+（顺带说明产品行为：站内**没有** `hashchange` 监听，所以用户手动改地址栏的 hash
+不会切换照片。这是有意的 —— 灯箱自己用 `history.replaceState` 写 hash，
+装了 `hashchange` 反而会自己触发自己。）
